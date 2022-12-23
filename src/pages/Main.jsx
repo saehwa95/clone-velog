@@ -1,11 +1,12 @@
 import React from "react";
+import styled from "styled-components";
 
 const Main = () => {
   return (
-    <>
-      <div>메인 페이지 </div>
-    </>
+<div>안녕</div>
   );
 };
+
+
 
 export default Main;
