@@ -6,10 +6,12 @@ import PostDetail from "../pages/PostDetail";
 import PostUpdate from "../pages/PostUpdate";
 import SignIn from "../pages/SignIn";
 import SingUp from "../pages/SignUp";
+import Header from "./Header";
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/signin" element={<SignIn />} />
