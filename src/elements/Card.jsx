@@ -40,6 +40,7 @@ const VCard = styled.div`
   border-radius: 4px;
   background-color: #1E1E1E;
   margin: 1rem;
+  cursor: pointer;
   .thumbnail {
   width: 100%;
   height: 11rem;
@@ -72,7 +73,6 @@ const Date = styled.div`
   margin-top: 0.7rem;
   padding: 1rem;
   font-size: 0.75rem;
-  line-height: 1.5;
   color: #ACACAC;
 `
 

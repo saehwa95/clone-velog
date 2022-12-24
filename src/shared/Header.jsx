@@ -1,21 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 import logo from "../image/logo.webp";
-import darkMode from "../image/darkMode.webp";
-import search from "../image/search.webp";
+import { IoMdMoon } from 'react-icons/io';
+import { CiSearch } from 'react-icons/ci';
 
 const Header = () => {
 
   if (window.location.pathname === "/postadd") return null;
   if (window.location.pathname === "/postupdate") return null;
+  
 
   return (
     <Wrap>
       <div className="header">
         <img src={logo} alt="logo" />
         <div className="menu">
-          <img src={darkMode} alt="dark" />
-          <img src={search} alt="search" />
+          <div>
+            <IoMdMoon className="darkMode" />
+          </div>
+          <div>
+            <CiSearch className="search" />
+          </div>
           <button className="login">로그인</button>
         </div>
       </div>
@@ -42,20 +47,39 @@ const Wrap = styled.section`
     align-items: center;
     gap: 1rem;
   }
-  .menu > img:first-child {
-    width: 1.5rem;
+  .menu > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100%;
     cursor: pointer;
+    :hover {
+      background-color: #2A2A2A;
+    }
   }
-  .menu > img:nth-child(2) {
-    width: 1.5rem;
-    cursor: pointer;
+  .menu > div:nth-child(1) {
+    position: relative;
+    left: 10%;
   }
-  .menu > .login {
+  .menu > div:nth-child(2) {
+    position: relative;
+    left: 5%;
+  }
+  .darkMode {
+    font-size: 1.4rem;
+  }
+  .search {
+    font-size: 1.4rem;
+  }
+  .login {
     width: 5rem;
-    height: 2rem;
+    height: 2.2rem;
     background-color: white;
     color: black;
-    border-radius: 15px;
+    border-radius: 1rem;
+    font-size: 1rem;
     font-weight: 700;
     display: flex;
     justify-content: center;
