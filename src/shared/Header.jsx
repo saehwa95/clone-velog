@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import logo from "../image/logo.webp";
-import darkMode from "../image/darkMode.webp";
-import search from "../image/search.webp";
 import { useState } from "react";
 import LoginSignUp from "../pages/LoginSignUp/LoginSignUp";
 import { IoMdMoon } from 'react-icons/io';
@@ -23,17 +21,19 @@ const Header = () => {
     <>
       {modal && <LoginSignUp />}
       <Wrap>
-        <div className="header">
-          <img src={logo} alt="logo" />
-          <div className="menu">
-            <img src={darkMode} alt="dark" />
-            <img src={search} alt="search" />
-            <button className="login" onClick={toggleModal}>
-              로그인
-            </button>
+      <div className="header">
+        <img src={logo} alt="logo" />
+        <div className="menu">
+          <div>
+            <IoMdMoon className="darkMode" />
           </div>
+          <div>
+            <CiSearch className="search" />
+          </div>
+          <button className="login" onClick={toggleModal}>로그인</button>
         </div>
-      </Wrap>
+      </div>
+    </Wrap>
     </>
   );
 };
