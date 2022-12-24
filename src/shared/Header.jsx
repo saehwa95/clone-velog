@@ -5,6 +5,9 @@ import darkMode from "../image/darkMode.webp";
 import search from "../image/search.webp";
 
 const Header = () => {
+  if (window.location.pathname === "/postadd") return null;
+  if (window.location.pathname === "/postupdate") return null;
+
   return (
     <Wrap>
       <div className="header">
@@ -12,7 +15,7 @@ const Header = () => {
         <div className="menu">
           <img src={darkMode} alt="dark" />
           <img src={search} alt="search" />
-          <butto className="login">로그인</butto>
+          <button className="login">로그인</button>
         </div>
       </div>
     </Wrap>

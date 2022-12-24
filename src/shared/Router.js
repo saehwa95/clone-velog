@@ -5,7 +5,7 @@ import PostAdd from "../pages/PostAdd";
 import PostDetail from "../pages/PostDetail";
 import PostUpdate from "../pages/PostUpdate";
 import SignIn from "../pages/SignIn";
-import SingUp from "../pages/SignUp";
+import SignUp from "../pages/SingUP/SignUp";
 import Header from "./Header";
 
 const Router = () => {
@@ -15,7 +15,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SingUp />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/postadd" element={<PostAdd />} />
         <Route path="/postdetail" element={<PostDetail />} />
         <Route path="/postupdate" element={<PostUpdate />} />
