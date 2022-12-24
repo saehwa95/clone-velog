@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import info from '../image/info.webp'
+import Card from "../elements/Card";
+import info from "../image/info.webp";
 
 const Main = () => {
   return (
@@ -11,18 +12,29 @@ const Main = () => {
             <TopBtn>트렌딩</TopBtn>
             <TopBtn>최신</TopBtn>
           </div>
-          <select>
+          <select defaultValue={"이번 주"}>
             <option value={"오늘"}>오늘</option>
-            <option value={"이번 주"} selected>이번 주</option>
+            <option value={"이번 주"}>이번 주</option>
             <option value={"이번 달"}>이번 달</option>
             <option value={"올해"}>올해</option>
           </select>
-        </div> 
+        </div>
         <div>
           <img src={info} alt="info" />
         </div>
       </Top>
-      
+      <CardBox>
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+      </CardBox>
     </Wrap>
   );
 };
@@ -32,7 +44,8 @@ const Wrap = styled.section`
   margin-top: 0.5rem;
   display: flex;
   justify-content: center;
-`
+  flex-wrap: wrap;
+`;
 const Top = styled.div`
   width: 90%;
   height: 5rem;
@@ -45,40 +58,46 @@ const Top = styled.div`
     text-align: center;
   }
   .left-div > select {
-    background: #1E1E1E;
-    color: #ECECEC;
+    background: #1e1e1e;
+    color: #d9d9d9;
     border: transparent;
     border-radius: 4px;
     height: 2rem;
     width: 6rem;
-    font-size: 0.875rem;
+    font-size: 0.8em;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     font-weight: 600;
     :hover {
-      color: #D9D9D9;
+      color: #d9d9d9;
     }
   }
-`
+`;
 
 const TopBtn = styled.button`
   background-color: transparent;
   border: transparent;
-  color: #ACACAC;
+  color: #acacac;
   font-size: 1.125rem;
   width: 7rem;
   cursor: pointer;
-  :hover{
-    color: #ECECEC;
+  :hover {
+    color: #ececec;
     font-weight: 700;
-    border: 2px ;
-    }
-  :focus{
-    color: #ECECEC;
+    border: 2px;
+  }
+  :focus {
+    color: #ececec;
     font-weight: 700;
     border: transparent;
-		border-bottom: 2px solid #ECECEC;
+    border-bottom: 2px solid #ececec;
   }
-`
+`;
+
+const CardBox = styled.div`
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+`;
 
 export default Main;
