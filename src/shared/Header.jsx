@@ -1,30 +1,40 @@
 import React from "react";
 import styled from "styled-components";
 import logo from "../image/logo.webp";
+import darkMode from "../image/darkMode.webp";
+import search from "../image/search.webp";
+import { useState } from "react";
+import LoginSignUp from "../pages/LoginSignUp/LoginSignUp";
 import { IoMdMoon } from 'react-icons/io';
 import { CiSearch } from 'react-icons/ci';
 
 const Header = () => {
+  const [modal, setModal] = useState(false);
 
   if (window.location.pathname === "/postadd") return null;
   if (window.location.pathname === "/postupdate") return null;
   
 
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
   return (
-    <Wrap>
-      <div className="header">
-        <img src={logo} alt="logo" />
-        <div className="menu">
-          <div>
-            <IoMdMoon className="darkMode" />
+    <>
+      {modal && <LoginSignUp />}
+      <Wrap>
+        <div className="header">
+          <img src={logo} alt="logo" />
+          <div className="menu">
+            <img src={darkMode} alt="dark" />
+            <img src={search} alt="search" />
+            <button className="login" onClick={toggleModal}>
+              로그인
+            </button>
           </div>
-          <div>
-            <CiSearch className="search" />
-          </div>
-          <button className="login">로그인</button>
         </div>
-      </div>
-    </Wrap>
+      </Wrap>
+    </>
   );
 };
 
