@@ -1,23 +1,23 @@
-import React from 'react'
-import styled from 'styled-components'
-import logo from '../image/logo.webp'
-import darkMode from '../image/darkMode.webp'
-import search from '../image/search.webp'
+import React from "react";
+import styled from "styled-components";
+import logo from "../image/logo.webp";
+import darkMode from "../image/darkMode.webp";
+import search from "../image/search.webp";
 
 const Header = () => {
   return (
     <Wrap>
-      <div className='header'>
+      <div className="header">
         <img src={logo} alt="logo" />
-        <div className='menu'>
+        <div className="menu">
           <img src={darkMode} alt="dark" />
           <img src={search} alt="search" />
-          <butto className='login'>로그인</butto>
+          <butto className="login">로그인</butto>
         </div>
       </div>
     </Wrap>
-  )
-}
+  );
+};
 
 const Wrap = styled.section`
   width: 100%;
@@ -30,7 +30,7 @@ const Wrap = styled.section`
     align-items: center;
     justify-content: space-between;
   }
-  .header > img{
+  .header > img {
     width: 5rem;
   }
   .menu {
@@ -45,14 +45,12 @@ const Wrap = styled.section`
       width: 1.5;
       border-radius: 100%;
       background-color: pink;
-      
     }
   }
   .menu > img:nth-child(2) {
     width: 1.5rem;
     cursor: pointer;
     :hover {
-      
     }
   }
   .menu > .login {
@@ -67,6 +65,6 @@ const Wrap = styled.section`
     align-items: center;
     cursor: pointer;
   }
-`
+`;
 
-export default Header
+export default Header;
