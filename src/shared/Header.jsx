@@ -5,9 +5,10 @@ import darkMode from "../image/darkMode.webp";
 import search from "../image/search.webp";
 
 const Header = () => {
-  if (window.location.pathname === '/postadd') return null;
-  if (window.location.pathname === '/postupdate') return null;
-  
+
+  if (window.location.pathname === "/postadd") return null;
+  if (window.location.pathname === "/postupdate") return null;
+
   return (
     <Wrap>
       <div className="header">
