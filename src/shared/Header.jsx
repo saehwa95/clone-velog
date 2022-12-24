@@ -44,17 +44,10 @@ const Wrap = styled.section`
   .menu > img:first-child {
     width: 1.5rem;
     cursor: pointer;
-    :hover {
-      width: 1.5;
-      border-radius: 100%;
-      background-color: pink;
-    }
   }
   .menu > img:nth-child(2) {
     width: 1.5rem;
     cursor: pointer;
-    :hover {
-    }
   }
   .menu > .login {
     width: 5rem;
