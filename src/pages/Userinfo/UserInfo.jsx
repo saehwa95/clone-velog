@@ -22,43 +22,46 @@ const UserInfo = () => {
             </StInfoArea>
           </StHeaderContainer>
           <StBodyContainer>
-            <StBodyContentBox>
-              <h3>벨로그 제목</h3>
+            <StBodyWrapper>
+              <StBodyContentBox>
+                <h3>벨로그 제목</h3>
 
-              <StEditTitle>onBoard.log</StEditTitle>
-              <button>수정</button>
-            </StBodyContentBox>
-            <div className="textColor">
-              개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
-            </div>
-            <StBodyContentBox>
-              <h3>소셜 정보</h3>
-              <button className="marginbtn">정보 추가</button>
-            </StBodyContentBox>
-            <div className="textColor">
-              포스트 및 블로그에서 보여지는 프로필에 공개되는 소셜 정보입니다.
-            </div>
-            <StBodyContentBox>
-              <h3>이메일 주소</h3>
-              <StEditTitle>onBoard@gmail.com</StEditTitle>
-            </StBodyContentBox>
-            <div className="textColor">
-              회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
-            </div>
-            <StBodyContentBox>
-              <h3>이메일 수신 설정</h3>
-              <div className="divColumn">
-                <div>댓글 알림</div>
-                <div>벨로그 업데이트 소식</div>
+                <StEditTitle>onBoard.log</StEditTitle>
+                <button>수정</button>
+              </StBodyContentBox>
+              <div className="textColor">
+                개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
               </div>
-            </StBodyContentBox>
-            <StBodyContentBox>
-              <h3>회원 탈퇴</h3>
-              <StUserDeleteBtn>회원 탈퇴</StUserDeleteBtn>
-            </StBodyContentBox>
-            <div className="textColor">
-              탈퇴 시 작성하신 포스트 및 댓글이 모두 삭제되며 복구되지 않습니다.
-            </div>
+            </StBodyWrapper>
+
+            <StBodyWrapper>
+              <StBodyContentBox>
+                <h3>소셜 정보</h3>
+                <button className="marginbtn">정보 추가</button>
+              </StBodyContentBox>
+              <div className="textColor">
+                포스트 및 블로그에서 보여지는 프로필에 공개되는 소셜 정보입니다.
+              </div>
+            </StBodyWrapper>
+            <StBodyWrapper>
+              <StBodyContentBox>
+                <h3>이메일 주소</h3>
+                <StEditTitle>onBoard@gmail.com</StEditTitle>
+              </StBodyContentBox>
+              <div className="textColor">
+                회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
+              </div>
+            </StBodyWrapper>
+            <StBodyWrapper>
+              <StBodyContentBox>
+                <h3>회원 탈퇴</h3>
+                <StUserDeleteBtn>회원 탈퇴</StUserDeleteBtn>
+              </StBodyContentBox>
+              <div className="textColor">
+                탈퇴 시 작성하신 포스트 및 댓글이 모두 삭제되며 복구되지
+                않습니다.
+              </div>
+            </StBodyWrapper>
           </StBodyContainer>
         </StContainer>
       </StMainContainer>
@@ -188,12 +191,12 @@ const StBodyContainer = styled.div`
   .textColor {
     color: #acacac;
     font-size: 0.875rem;
+    margin-bottom: 10px;
   }
 `;
 const StBodyContentBox = styled.div`
   width: 768px;
   height: 91px;
-  border-bottom: 1px solid #2a2a2a;
   display: flex;
   align-items: center;
   h3 {
@@ -231,7 +234,11 @@ const StUserDeleteBtn = styled.button`
   height: 2rem !important;
   font-size: 1rem !important;
   margin-left: 20px;
-  line-height: 0 !important;
+  text-decoration: none !important;
 `;
-
+const StBodyWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #2a2a2a;
+`;
 export default UserInfo;
