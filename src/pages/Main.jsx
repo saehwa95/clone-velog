@@ -1,36 +1,39 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Card from "../elements/Card";
 import info from "../image/info.webp";
 import { BiTrendingUp } from "react-icons/bi";
 import { MdOutlineAccessTime } from "react-icons/md";
+// import { AiOutlineMore } from 'react-icons/ai';
+// import { AiOutlineShareAlt } from 'react-icons/ai';
+
 
 const Main = () => {
-  const onFocus = useRef()
-  
-  const onTrendingHandler = useCallback(() => {
-    console.log(onFocus);
-    console.log("hello world")
-  }, [])
+  const [toggle, setToggle] = useState("trending") 
 
-  useEffect(() => {
-    onTrendingHandler()
-  }, [])
+  // const onTrendingHandler = () => {
+  //   setToggle("trending")
+  //   dispatch()
+  // }
 
+  // const onNewHandler = () => {
+  //   setToggle("new")
+  //   dispatch()
+  // }
 
   return (
     <Wrap>
       <Top>
         <div className="left-div">
           <div className="button-box">
-            <TopBtn>
-              <BiTrendingUp className="trending" onClick={onTrendingHandler} /> 
+            <button className={toggle === "trending" ? "default selected-btn" : "default"} onClick={() => setToggle("trending")}>
+              <BiTrendingUp className="trending" /> 
               <span>트렌딩</span>
-            </TopBtn>
-            <TopBtn>
+            </button>
+            <button className={toggle === "trending" ? "default" : "default selected-btn"} onClick={() => setToggle("new")}>
               <MdOutlineAccessTime className="time" />
               <span>최신</span>
-            </TopBtn>
+            </button>
           </div>
           <div className="select-box">
             <select defaultValue={"이번 주"}>
@@ -68,6 +71,7 @@ const Wrap = styled.section`
   justify-content: center;
   flex-wrap: wrap;
 `;
+
 const Top = styled.div`
   width: 90%;
   height: 5rem;
@@ -81,7 +85,6 @@ const Top = styled.div`
   }
   .button-box {
     display: flex;
-    gap: 0.3rem;
   }
   .trending {
     font-size: 1.5rem;
@@ -104,22 +107,18 @@ const Top = styled.div`
       color: #d9d9d9;
     }
   }
-`;
-
-const TopBtn = styled.button.attrs((props) => ({
-  autoFocus: props.autoFocus,
-}))`
-  background-color: transparent;
-  border: transparent;
-  color: #acacac;
-  font-size: 1.125rem;
-  width: 6.5rem;
-  height: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
+  .default {
+    background-color: transparent;
+    border: transparent;
+    color: #acacac;
+    font-size: 1.125rem;
+    width: 6.5rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
   :hover {
     color: #ececec;
     font-weight: 700;
@@ -131,6 +130,20 @@ const TopBtn = styled.button.attrs((props) => ({
     border: transparent;
     border-bottom: 2px solid #ececec;
   }
+  }
+  .selected-btn {
+    color: #ececec;
+    font-weight: 700;
+    border: transparent;
+    border-bottom: 2px solid #ececec;
+  }
+  /* .etc {
+    font-size: 2rem;
+    cursor: pointer;
+  }
+  .share {
+    font-size: 2rem;
+  } */
 `;
 
 const CardBox = styled.div`
