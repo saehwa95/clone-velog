@@ -1,28 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import info from '../image/info.webp'
+import Card from "../elements/Card";
+import { BiTrendingUp } from "react-icons/bi";
+import { MdOutlineAccessTime } from "react-icons/md";
+import { HiDotsVertical } from 'react-icons/hi';
 
 const Main = () => {
+  const [toggle, setToggle] = useState("trending") 
+
+  // const onTrendingHandler = () => {
+  //   setToggle("trending")
+  //   dispatch()
+  // }
+
+  // const onNewHandler = () => {
+  //   setToggle("new")
+  //   dispatch()
+  // }
+
   return (
     <Wrap>
       <Top>
         <div className="left-div">
-          <div>
-            <TopBtn>트렌딩</TopBtn>
-            <TopBtn>최신</TopBtn>
+          <div className="button-box">
+            <button className={toggle === "trending" ? "default selected-btn" : "default"} onClick={() => setToggle("trending")}>
+              <BiTrendingUp className="trending" /> 
+              <span>트렌딩</span>
+            </button>
+            <button className={toggle === "trending" ? "default" : "default selected-btn"} onClick={() => setToggle("new")}>
+              <MdOutlineAccessTime className="time" />
+              <span>최신</span>
+            </button>
           </div>
-          <select>
-            <option value={"오늘"}>오늘</option>
-            <option value={"이번 주"} selected>이번 주</option>
-            <option value={"이번 달"}>이번 달</option>
-            <option value={"올해"}>올해</option>
-          </select>
-        </div> 
+          <div className="select-box">
+            <select defaultValue={"이번 주"}>
+              <option value={"오늘"}>오늘</option>
+              <option value={"이번 주"}>이번 주</option>
+              <option value={"이번 달"}>이번 달</option>
+              <option value={"올해"}>올해</option>
+            </select>
+          </div>
+        </div>
         <div>
-          <img src={info} alt="info" />
+          <HiDotsVertical className="etc"/>
         </div>
       </Top>
-      
+      <CardBox>
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+      </CardBox>
     </Wrap>
   );
 };
@@ -32,7 +66,9 @@ const Wrap = styled.section`
   margin-top: 0.5rem;
   display: flex;
   justify-content: center;
-`
+  flex-wrap: wrap;
+`;
+
 const Top = styled.div`
   width: 90%;
   height: 5rem;
@@ -42,43 +78,73 @@ const Top = styled.div`
   .left-div {
     display: flex;
     align-items: center;
-    text-align: center;
+    gap: 0.45rem;
   }
-  .left-div > select {
-    background: #1E1E1E;
-    color: #ECECEC;
+  .button-box {
+    display: flex;
+  }
+  .trending {
+    font-size: 1.5rem;
+  }
+  .time {
+    font-size: 1.5rem;
+  }
+  .select-box > select {
+    background: #1e1e1e;
+    color: #d9d9d9;
     border: transparent;
     border-radius: 4px;
     height: 2rem;
     width: 6rem;
-    font-size: 0.875rem;
-    padding-left: 0.5rem;
+    font-size: 0.9em;
+    padding-left: 0.2rem;
     padding-right: 0.5rem;
     font-weight: 600;
     :hover {
-      color: #D9D9D9;
+      color: #d9d9d9;
     }
   }
-`
-
-const TopBtn = styled.button`
-  background-color: transparent;
-  border: transparent;
-  color: #ACACAC;
-  font-size: 1.125rem;
-  width: 7rem;
-  cursor: pointer;
-  :hover{
-    color: #ECECEC;
+  .default {
+    background-color: transparent;
+    border: transparent;
+    color: #acacac;
+    font-size: 1.125rem;
+    width: 6.5rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  :hover {
+    color: #ececec;
     font-weight: 700;
-    border: 2px ;
+    border: 2px;
     }
-  :focus{
-    color: #ECECEC;
+  :focus {
+    color: #ececec;
     font-weight: 700;
     border: transparent;
-		border-bottom: 2px solid #ECECEC;
+    border-bottom: 2px solid #ececec;
   }
+  }
+  .selected-btn {
+    color: #ececec;
+    font-weight: 700;
+    border: transparent;
+    border-bottom: 2px solid #ececec;
+  }
+  .etc {
+    font-size: 1.3rem;
+    color: #acacac;
+    cursor: pointer;
+  }
+`;
+
+const CardBox = styled.div`
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
 `
 
 export default Main;

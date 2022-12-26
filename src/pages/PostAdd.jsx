@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import PostForm from "../components/post/PostForm";
 
 const PostAdd = () => {
   return (
-    <div>게시글 작성</div>
-  )
-}
+    <>
+      <PostForm />
+    </>
+  );
+};
 
-export default PostAdd
+export default PostAdd;

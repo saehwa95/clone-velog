@@ -1,23 +1,46 @@
-import React from 'react'
-import styled from 'styled-components'
-import logo from '../image/logo.webp'
-import darkMode from '../image/darkMode.webp'
-import search from '../image/search.webp'
+import React from "react";
+import styled from "styled-components";
+import logo from "../image/logo.webp";
+import { useState } from "react";
+import LoginSignUp from "../pages/LoginSignUp/LoginSignUp";
+import { IoMdMoon } from 'react-icons/io';
+import { CiSearch } from 'react-icons/ci';
+import { useNavigate } from "react-router-dom";
+
 
 const Header = () => {
+  const navigate = useNavigate()
+  const [modal, setModal] = useState(false);
+
+  if (window.location.pathname === "/postadd") return null;
+  if (window.location.pathname === "/postupdate") return null;
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
   return (
-    <Wrap>
-      <div className='header'>
-        <img src={logo} alt="logo" />
-        <div className='menu'>
-          <img src={darkMode} alt="dark" />
-          <img src={search} alt="search" />
-          <butto className='login'>로그인</butto>
+    <>
+      {modal && <LoginSignUp toggleModal={toggleModal} />}
+      <Wrap>
+      <div className="header">
+        <img src={logo} alt="logo" onClick={() => navigate('/')} />
+        <div className="menu">
+          <div>
+            <IoMdMoon className="darkMode" />
+            </div>
+            <div>
+              <CiSearch className="search" />
+            </div>
+            <button className="login" onClick={toggleModal}>
+              로그인
+            </button>
+          </div>
         </div>
-      </div>
-    </Wrap>
-  )
-}
+      </Wrap>
+    </>
+  );
+};
 
 const Wrap = styled.section`
   width: 100%;
@@ -30,43 +53,54 @@ const Wrap = styled.section`
     align-items: center;
     justify-content: space-between;
   }
-  .header > img{
+  .header > img {
     width: 5rem;
+    cursor: pointer;
   }
   .menu {
     display: flex;
     align-items: center;
     gap: 1rem;
   }
-  .menu > img:first-child {
-    width: 1.5rem;
+  .menu > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100%;
     cursor: pointer;
     :hover {
-      width: 1.5;
-      border-radius: 100%;
-      background-color: pink;
-      
+      background-color: #2a2a2a;
     }
   }
-  .menu > img:nth-child(2) {
-    width: 1.5rem;
-    cursor: pointer;
-    :hover {
-      
-    }
+  .menu > div:nth-child(1) {
+    position: relative;
+    left: 10%;
   }
-  .menu > .login {
+  .menu > div:nth-child(2) {
+    position: relative;
+    left: 5%;
+  }
+  .darkMode {
+    font-size: 1.4rem;
+  }
+  .search {
+    font-size: 1.4rem;
+  }
+  .login {
     width: 5rem;
-    height: 2rem;
+    height: 2.2rem;
     background-color: white;
     color: black;
-    border-radius: 15px;
+    border-radius: 1rem;
+    font-size: 1rem;
     font-weight: 700;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
   }
-`
+`;
 
-export default Header
+export default Header;
