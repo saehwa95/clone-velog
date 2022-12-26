@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Card from "../elements/Card";
-import info from "../image/info.webp";
 import { BiTrendingUp } from "react-icons/bi";
 import { MdOutlineAccessTime } from "react-icons/md";
-// import { AiOutlineMore } from 'react-icons/ai';
-// import { AiOutlineShareAlt } from 'react-icons/ai';
-
+import { HiDotsVertical } from 'react-icons/hi';
 
 const Main = () => {
   const [toggle, setToggle] = useState("trending") 
@@ -45,11 +42,11 @@ const Main = () => {
           </div>
         </div>
         <div>
-          <img src={info} alt="info" />
+          <HiDotsVertical className="etc"/>
         </div>
       </Top>
       <CardBox>
-        <Card />
+        <Card className="card" />
         <Card />
         <Card />
         <Card />
@@ -137,13 +134,11 @@ const Top = styled.div`
     border: transparent;
     border-bottom: 2px solid #ececec;
   }
-  /* .etc {
-    font-size: 2rem;
+  .etc {
+    font-size: 1.3rem;
+    color: #acacac;
     cursor: pointer;
   }
-  .share {
-    font-size: 2rem;
-  } */
 `;
 
 const CardBox = styled.div`

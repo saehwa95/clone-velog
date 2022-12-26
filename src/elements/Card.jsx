@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import heart from "../image/heart.webp";
+import { IoHeartSharp } from 'react-icons/io5';
 
 const Card = () => {
   return (
@@ -24,7 +24,7 @@ const Card = () => {
       </div>
       <div className='likes'>
         <div>
-          <img src={heart} alt='좋아요' />
+          <IoHeartSharp className='heart' />
         </div>
         <div>
           <label>77</label>
@@ -42,12 +42,22 @@ const VCard = styled.div`
   margin: 1rem;
   cursor: pointer;
   :hover {
+    margin: 0px 1rem 1rem 1rem;
+    animation: card-up 0.5s;
+    @keyframes card-up {
+      from {
+        margin: 1rem;
+      }
+      to {
+        margin: 0px 1rem 1rem 1rem;
+      }
+  }
   }
   .thumbnail {
   width: 100%;
   height: 11rem;
   border-top-left-radius: 4px;
-  border-top-right-radius: 4px
+  border-top-right-radius: 4px;
 }
 `
 
@@ -103,8 +113,8 @@ const Bottom = styled.div`
     align-items: center;
     gap: 0.5rem;
   }
-  .likes > div:nth-child(1) > img {
-    width: 1.13rem;
+  .heart {
+    font-size: 1rem;
     margin-top: 0.1rem;
   }
 `
