@@ -45,7 +45,7 @@ const StModalBlock = styled.div`
     }
     to {
       opacity: 1;
-      margin-top: 0;
+      margin-top: 0px;
     }
   }
 `;
@@ -54,7 +54,7 @@ const StImgContainer = styled.div`
   width: 216px;
   height: 100%;
   background-color: #1e1e1e;
-  padding: 24px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,7 +75,7 @@ const StWelcome = styled.div`
 const StInputContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: 24px;
+  padding: 20px;
   color: white;
   background-color: #121212;
   h2,
@@ -115,6 +115,10 @@ const STinputWrapper = styled.div`
     height: 33px !important;
     margin-top: 0 !important;
   }
+  .underCheck {
+    font-size: 0.8rem;
+    color: #acacac;
+  }
   button {
     width: 150px;
     height: 37px;
@@ -136,9 +140,6 @@ const StIconContainer = styled.div`
   }
 `;
 const StLink = styled.div`
-  position: absolute;
-  top: 670px;
-  right: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -154,7 +155,7 @@ const StLink = styled.div`
 `;
 const StLoginLink = styled.div`
   position: absolute;
-  top: 530px;
+  top: 500px;
   right: 10px;
   display: flex;
   flex-direction: column;

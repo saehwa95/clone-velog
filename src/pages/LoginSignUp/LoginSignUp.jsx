@@ -41,6 +41,7 @@ const LoginSignUp = (props) => {
     return new Blob([ia], { type: mimeString });
   };
 
+  //이미지 변경
   const profileImgChangeHandler = (e) => {
     if (e.target.files[0]) {
       setProfileImg(e.target.files[0]);
@@ -57,9 +58,11 @@ const LoginSignUp = (props) => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
+  //모달 토글
   const toggleHandler = () => {
     setToggleOn(!toggleOn);
   };
+
   return (
     <>
       {toggleOn ? (
@@ -112,7 +115,7 @@ const LoginSignUp = (props) => {
                     </div>
                     <h4>비밀번호 재확인</h4>
                     <div>
-                      <input placeholder="비밀번호를 입력하세요." />
+                      <input placeholder="비밀번호를 확인하세요." />
                     </div>
                     <h4>닉네임</h4>
                     <div>

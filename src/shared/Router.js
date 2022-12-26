@@ -8,6 +8,7 @@ import PostUpdate from "../pages/PostUpdate";
 import LoginSignUp from "../pages/LoginSignUp/LoginSignUp";
 import Header from "./Header";
 import UserInfo from "../pages/Userinfo/UserInfo";
+import SignUp from "../pages/LoginSignUp/SignUp";
 
 const Router = () => {
   return (
@@ -21,6 +22,7 @@ const Router = () => {
         <Route path="/postdetail" element={<PostDetail />} />
         <Route path="/postupdate" element={<PostUpdate />} />
         <Route path="/userinfo" element={<UserInfo />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );
