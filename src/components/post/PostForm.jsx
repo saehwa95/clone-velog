@@ -99,17 +99,17 @@ const AddForm = styled.form`
       border: none;
       outline: none;
       border-radius: 4px;
-      border: 1px solid;
-      color: #63e6be;
+      color: #ececec;
+      border: none;
       font-size: 1.125rem;
       font-weight: bold;
       background-color: #2e2e2e;
       :hover {
         background-color: #232323;
       }
-      &.active {
-        color: #ececec;
-        border: none;
+      :focus {
+        color: #63e6be;
+        border: 1px solid;
       }
     }
   }
