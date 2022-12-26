@@ -13,6 +13,7 @@ import {
   STinputWrapper,
   StIconContainer,
   StLink,
+  StLoginLink,
   StToggleButton,
 } from "./style";
 import { IoClose } from "react-icons/io5";
@@ -49,20 +50,26 @@ const LoginSignUp = (props) => {
                   <h2>회원가입</h2>
                   <h4>이메일로 회원가입</h4>
                   <STinputWrapper>
-                    <div>
-                      <input placeholder="이메일을 입력하세요." />
-                      <button>로그인</button>
+                    <div className="emailWrapper">
+                      <input
+                        className="emailInput"
+                        placeholder="이메일을 입력하세요."
+                      />
+                      <button className="emailBtn">중복 확인</button>
                     </div>
                     <h4>비밀번호</h4>
                     <div>
                       <input placeholder="비밀번호를 입력하세요." />
-                      <button>비밀번호</button>
+                    </div>
+                    <h4>비밀번호 재확인</h4>
+                    <div>
+                      <input placeholder="비밀번호를 입력하세요." />
                     </div>
                     <h4>닉네임</h4>
                     <div>
                       <input placeholder="닉네임을 입력하세요." />
-                      <button>닉네임</button>
                     </div>
+                    <button>회원가입</button>
                     <h4>소셜 계정으로 로그인</h4>
                     <StIconContainer>
                       <img src={kakao} />
@@ -72,7 +79,10 @@ const LoginSignUp = (props) => {
                     <StLink>
                       <h4>
                         계정이 이미 있으신가요?
-                        <StToggleButton onClick={toggleHandler}>
+                        <StToggleButton
+                          className="footerBtn"
+                          onClick={toggleHandler}
+                        >
                           로그인
                         </StToggleButton>
                       </h4>
@@ -107,27 +117,29 @@ const LoginSignUp = (props) => {
                   <STinputWrapper>
                     <div>
                       <input placeholder="이메일을 입력하세요." />
-                      <button>로그인</button>
                     </div>
                     <h4>비밀번호</h4>
                     <div>
                       <input placeholder="비밀번호를 입력하세요." />
-                      <button>비밀번호</button>
                     </div>
+                    <button>로그인</button>
                     <h4>소셜 계정으로 로그인</h4>
                     <StIconContainer>
                       <img src={kakao} />
                       <img src={github} />
                       <img src={facebook} />
                     </StIconContainer>
-                    <StLink>
+                    <StLoginLink>
                       <h4>
                         아직 회원이 아니신가요?
-                        <StToggleButton onClick={toggleHandler}>
+                        <StToggleButton
+                          className="footerBtn"
+                          onClick={toggleHandler}
+                        >
                           회원가입
                         </StToggleButton>
                       </h4>
-                    </StLink>
+                    </StLoginLink>
                   </STinputWrapper>
                 </StInputContainer>
               </StModalBlock>

@@ -34,7 +34,7 @@ const StModalBlock = styled.div`
   position: relative;
   width: 38rem;
   min-height: 34rem;
-  top: 10rem;
+  top: 8rem;
   background-color: white;
   display: flex;
   animation: modal-show 0.7s;
@@ -92,15 +92,32 @@ const STinputWrapper = styled.div`
 
   justify-content: space-between;
   input {
-    width: 200px;
+    width: 300px;
     padding: 10px;
     background-color: black;
     border: 1px solid #4d4d4d;
   }
+  .emailInput {
+    width: 220px !important;
+    height: 10px !important;
+  }
+  .emailWrapper {
+    display: flex !important;
+    align-items: center !important;
+  }
+  .emailBtn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 80px !important;
+    height: 33px !important;
+    margin-top: 0 !important;
+  }
   button {
-    width: 100px;
+    width: 150px;
     height: 37px;
     padding: 10px;
+    margin-top: 20px;
     border: none;
     background-color: #96f2d7;
     color: #121212;
@@ -118,14 +135,36 @@ const StIconContainer = styled.div`
 `;
 const StLink = styled.div`
   position: absolute;
-  top: 530px;
-  right: 30px;
+  top: 670px;
+  right: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
   span {
     color: #96f2d7;
+  }
+  .footerBtn {
+    width: 100px !important;
+    height: 33px !important;
+    margin-top: 0 !important;
+  }
+`;
+const StLoginLink = styled.div`
+  position: absolute;
+  top: 530px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  span {
+    color: #96f2d7;
+  }
+  .footerBtn {
+    width: 100px !important;
+    height: 33px !important;
+    margin-top: 0 !important;
   }
 `;
 const StToggleButton = styled.button`
@@ -148,5 +187,6 @@ export {
   STinputWrapper,
   StIconContainer,
   StLink,
+  StLoginLink,
   StToggleButton,
 };
