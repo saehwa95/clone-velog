@@ -34,7 +34,7 @@ const StModalBlock = styled.div`
   position: relative;
   width: 38rem;
   min-height: 34rem;
-  top: 8rem;
+  top: 7rem;
   background-color: white;
   display: flex;
   animation: modal-show 0.7s;
@@ -94,6 +94,7 @@ const STinputWrapper = styled.div`
   input {
     width: 300px;
     padding: 10px;
+    color: white;
     background-color: black;
     border: 1px solid #4d4d4d;
   }
