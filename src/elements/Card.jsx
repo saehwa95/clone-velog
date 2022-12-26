@@ -1,10 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { IoHeartSharp } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
 
 const Card = () => {
+  const navigate = useNavigate()
+
   return (
-    <VCard>
+    <VCard onClick={() => navigate('/postdetail')} >
     <img className='thumbnail' src="https://picok.co.kr/data/file/prayerwoo/m15750122691864/img_m15750122691864_800.jpg" alt="메리크리스마스" />
     <Contents>
       <h4>제목</h4>

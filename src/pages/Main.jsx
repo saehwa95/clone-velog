@@ -46,7 +46,7 @@ const Main = () => {
         </div>
       </Top>
       <CardBox>
-        <Card className="card" />
+        <Card />
         <Card />
         <Card />
         <Card />
