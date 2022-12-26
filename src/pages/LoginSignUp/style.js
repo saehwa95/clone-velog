@@ -61,8 +61,9 @@ const StImgContainer = styled.div`
   justify-content: center;
 `;
 const StImg = styled.img`
-  width: 168px;
-  height: 108px;
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
 `;
 const StWelcome = styled.div`
   font-size: 1.75rem;

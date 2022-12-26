@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   StModalContainer,
   StBackground,
@@ -22,7 +22,41 @@ import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
 
 const LoginSignUp = (props) => {
+  const [profileImg, setProfileImg] = useState("");
   const [toggleOn, setToggleOn] = useState(false);
+
+  const fileInput = useRef(null);
+
+  // dataURL을 Blob으로 변환
+  const dataURItoBlob = (dataURI) => {
+    const splitDataURI = dataURI.split(",");
+    const byteString =
+      splitDataURI[0].indexOf("base64") >= 0
+        ? atob(splitDataURI[1])
+        : decodeURI(splitDataURI[1]);
+    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++)
+      ia[i] = byteString.charCodeAt(i);
+    return new Blob([ia], { type: mimeString });
+  };
+
+  const profileImgChangeHandler = (e) => {
+    if (e.target.files[0]) {
+      setProfileImg(e.target.files[0]);
+    } else {
+      setProfileImg(profileImg);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setProfileImg(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
   const toggleHandler = () => {
     setToggleOn(!toggleOn);
   };
@@ -35,8 +69,23 @@ const LoginSignUp = (props) => {
               <StModalBlock>
                 <StImgContainer>
                   <StImg
-                    src="https://static.velog.io/static/media/undraw_joyride_hnno.fae6b95e.svg"
-                    alt="welcome"
+                    style={{ cursor: "pointer" }}
+                    src={
+                      profileImg
+                        ? profileImg
+                        : "https://addonshop.kr/common/img/default_profile.png"
+                    }
+                    onClick={() => {
+                      fileInput.current.click();
+                    }}
+                  />
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    accept="image/*"
+                    name="profile_img"
+                    onChange={profileImgChangeHandler}
+                    ref={fileInput}
                   />
                   <StWelcome>환영합니다!</StWelcome>
                 </StImgContainer>
@@ -72,9 +121,9 @@ const LoginSignUp = (props) => {
                     <button>회원가입</button>
                     <h4>소셜 계정으로 로그인</h4>
                     <StIconContainer>
-                      <img src={kakao} alt="" />
-                      <img src={github} alt="" />
-                      <img src={facebook} alt="" />
+                      <img src={kakao} alt="kakao" />
+                      <img src={github} alt="github" />
+                      <img src={facebook} alt="facebook" />
                     </StIconContainer>
                     <StLink>
                       <h4>
