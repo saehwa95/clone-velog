@@ -156,7 +156,7 @@ const StLink = styled.div`
 const StLoginLink = styled.div`
   position: absolute;
   top: 500px;
-  right: 10px;
+  right: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
