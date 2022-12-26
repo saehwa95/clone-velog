@@ -27,6 +27,7 @@ export const __addPost = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await axios.post("http://localhost:3001/posts", payload);
+      window.alert("게시글 작성에 성공했습니다.")
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.")
@@ -35,7 +36,18 @@ export const __addPost = createAsyncThunk(
   }
 );
 //게시글 수정
-
+export const __updatePost = createAsyncThunk(
+  "post/updatePost",
+  async(payload, thunkAPI)=>{
+    try{
+      const res = await axios.patch("http://localhost:3001/posts/${payload.postId}", payload)
+      return thunkAPI.fulfillWithValue(res.data);
+    }catch(error){
+      window.alert("게시글 작성에 실패했습니다.")
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+)
 //게시글 삭제
 
 //리듀서
@@ -53,13 +65,25 @@ export const postSlice = createSlice({
     [__addPost.fulfilled]: (state, action) => {
       state.isLoding = false;
       state.isPosting = true;
-      state.posts.push(action.payload);
+      state.posts=action.payload
     },
     [__addPost.pending]: (state, action) => {
       state.isLoding = false;
       state.error = action.payload;
     },
     //게시글 수정
+    [__updatePost.pending]: (state) => {
+      state.isLoding = true;
+    },
+    [__updatePost.fulfilled]: (state, action) => {
+      state.isLoding = false;
+      state.isPosting = true;
+      state.posts=action.payload
+    },
+    [__updatePost.pending]: (state, action) => {
+      state.isLoding = false;
+      state.error = action.payload;
+    },
     //게시글 삭제
   },
 });

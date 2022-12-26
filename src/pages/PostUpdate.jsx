@@ -1,8 +1,9 @@
 import React from 'react'
+import PostUpdateFrom from '../components/post/PostUpdateFrom'
 
 const PostUpdate = () => {
   return (
-    <div>게시글 수정</div>
+    <PostUpdateFrom />
   )
 }
 
