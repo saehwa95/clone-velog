@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 import { IoEarth } from "react-icons/io5";
 import { RiLock2Fill } from "react-icons/ri";
@@ -6,18 +6,20 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const FormBottom = () => {
-  const trueBtn = () => {};
+  const [privateOption, setPrivateOption] = useState(1);
 
-  const falseBtn = () => {};
+  const togglePrivate = (option) => {
+    setPrivateOption(option);
+  };
 
   return (
     <Container>
       <div className="priviate">
-        <button onClick={trueBtn}>
+        <button onClick={()=>{togglePrivate(1)}}> 
           <IoEarth style={{ marginRight: "25px" }} />
-          전체 공개
+          전체공개
         </button>
-        <button onClick={falseBtn}>
+        <button onClick={()=>{togglePrivate(0)}}>
           <RiLock2Fill style={{ marginRight: "25px" }} />
           비공개
         </button>
