@@ -72,9 +72,9 @@ const LoginSignUp = (props) => {
                     <button>회원가입</button>
                     <h4>소셜 계정으로 로그인</h4>
                     <StIconContainer>
-                      <img src={kakao} />
-                      <img src={github} />
-                      <img src={facebook} />
+                      <img src={kakao} alt="" />
+                      <img src={github} alt="" />
+                      <img src={facebook} alt="" />
                     </StIconContainer>
                     <StLink>
                       <h4>
@@ -125,9 +125,9 @@ const LoginSignUp = (props) => {
                     <button>로그인</button>
                     <h4>소셜 계정으로 로그인</h4>
                     <StIconContainer>
-                      <img src={kakao} />
-                      <img src={github} />
-                      <img src={facebook} />
+                      <img src={kakao} alt="" />
+                      <img src={github} alt="" />
+                      <img src={facebook} alt="" />
                     </StIconContainer>
                     <StLoginLink>
                       <h4>
