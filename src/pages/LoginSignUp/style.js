@@ -130,7 +130,9 @@ const StLink = styled.div`
 `;
 const StToggleButton = styled.button`
   border: none;
-  background-color: black;
+  font-size: 1rem;
+  color: #96f2d7 !important;
+  background-color: black !important;
 `;
 
 export {

@@ -20,9 +20,8 @@ import kakao from "../../image/kakao.webp";
 import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
 
-const LoginSignUp = () => {
+const LoginSignUp = (props) => {
   const [toggleOn, setToggleOn] = useState(false);
-
   const toggleHandler = () => {
     setToggleOn(!toggleOn);
   };
@@ -42,7 +41,10 @@ const LoginSignUp = () => {
                 </StImgContainer>
                 <StInputContainer>
                   <StClose>
-                    <IoClose style={{ fontSize: "20px" }} />
+                    <IoClose
+                      style={{ fontSize: "20px" }}
+                      onClick={props.toggleModal}
+                    />
                   </StClose>
                   <h2>회원가입</h2>
                   <h4>이메일로 회원가입</h4>
@@ -69,9 +71,9 @@ const LoginSignUp = () => {
                     </StIconContainer>
                     <StLink>
                       <h4>
-                        아직 회원이 아니신가요?
+                        계정이 이미 있으신가요?
                         <StToggleButton onClick={toggleHandler}>
-                          회원가입
+                          로그인
                         </StToggleButton>
                       </h4>
                     </StLink>
@@ -95,7 +97,10 @@ const LoginSignUp = () => {
                 </StImgContainer>
                 <StInputContainer>
                   <StClose>
-                    <IoClose style={{ fontSize: "20px" }} />
+                    <IoClose
+                      style={{ fontSize: "20px" }}
+                      onClick={props.toggleModal}
+                    />
                   </StClose>
                   <h2>로그인</h2>
                   <h4>이메일로 로그인</h4>
@@ -117,9 +122,9 @@ const LoginSignUp = () => {
                     </StIconContainer>
                     <StLink>
                       <h4>
-                        계정이 이미 있으신가요?
+                        아직 회원이 아니신가요?
                         <StToggleButton onClick={toggleHandler}>
-                          로그인
+                          회원가입
                         </StToggleButton>
                       </h4>
                     </StLink>
