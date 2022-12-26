@@ -7,13 +7,13 @@ import { IoMdMoon } from 'react-icons/io';
 import { CiSearch } from 'react-icons/ci';
 import { useNavigate } from "react-router-dom";
 
+
 const Header = () => {
   const navigate = useNavigate()
   const [modal, setModal] = useState(false);
 
   if (window.location.pathname === "/postadd") return null;
   if (window.location.pathname === "/postupdate") return null;
-  
 
   const toggleModal = () => {
     setModal(!modal);
@@ -21,21 +21,23 @@ const Header = () => {
 
   return (
     <>
-      {modal && <LoginSignUp />}
+      {modal && <LoginSignUp toggleModal={toggleModal} />}
       <Wrap>
       <div className="header">
         <img src={logo} alt="logo" onClick={() => navigate('/')} />
         <div className="menu">
           <div>
             <IoMdMoon className="darkMode" />
+            </div>
+            <div>
+              <CiSearch className="search" />
+            </div>
+            <button className="login" onClick={toggleModal}>
+              로그인
+            </button>
           </div>
-          <div>
-            <CiSearch className="search" />
-          </div>
-          <button className="login" onClick={toggleModal}>로그인</button>
         </div>
-      </div>
-    </Wrap>
+      </Wrap>
     </>
   );
 };
@@ -69,7 +71,7 @@ const Wrap = styled.section`
     border-radius: 100%;
     cursor: pointer;
     :hover {
-      background-color: #2A2A2A;
+      background-color: #2a2a2a;
     }
   }
   .menu > div:nth-child(1) {
