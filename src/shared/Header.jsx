@@ -3,10 +3,13 @@ import styled from "styled-components";
 import logo from "../image/logo.webp";
 import { useState } from "react";
 import LoginSignUp from "../pages/LoginSignUp/LoginSignUp";
-import { IoMdMoon } from "react-icons/io";
-import { CiSearch } from "react-icons/ci";
+import { IoMdMoon } from 'react-icons/io';
+import { CiSearch } from 'react-icons/ci';
+import { useNavigate } from "react-router-dom";
+
 
 const Header = () => {
+  const navigate = useNavigate()
   const [modal, setModal] = useState(false);
 
   if (window.location.pathname === "/postadd") return null;
@@ -20,11 +23,11 @@ const Header = () => {
     <>
       {modal && <LoginSignUp toggleModal={toggleModal} />}
       <Wrap>
-        <div className="header">
-          <img src={logo} alt="logo" />
-          <div className="menu">
-            <div>
-              <IoMdMoon className="darkMode" />
+      <div className="header">
+        <img src={logo} alt="logo" onClick={() => navigate('/')} />
+        <div className="menu">
+          <div>
+            <IoMdMoon className="darkMode" />
             </div>
             <div>
               <CiSearch className="search" />
@@ -52,6 +55,7 @@ const Wrap = styled.section`
   }
   .header > img {
     width: 5rem;
+    cursor: pointer;
   }
   .menu {
     display: flex;

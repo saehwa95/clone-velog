@@ -41,6 +41,8 @@ const VCard = styled.div`
   background-color: #1E1E1E;
   margin: 1rem;
   cursor: pointer;
+  :hover {
+  }
   .thumbnail {
   width: 100%;
   height: 11rem;
@@ -54,13 +56,16 @@ const Contents = styled.div`
   height: 4rem;
   overflow: hidden;
   display: -webkit-box;
-      -webkit-line-clamp: 4;
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   word-wrap: break-word;
   h4 {
     margin-top: -0.4rem;
     margin-bottom: -0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   p {
     font-size: 0.875rem;
