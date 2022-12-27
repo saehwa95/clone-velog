@@ -146,17 +146,21 @@ const SignUp = (props) => {
     ) {
       return alert("회원가입에 필요한 정보를 입력해주세요!");
     }
-    const payload = {
-      email,
-      userName,
-      password,
-    };
-    dispatchEvent(signUpUser(payload));
+    const blob = dataURItoBlob(profileImg);
+    let formData = new FormData();
+    formData.append("email", inputSignUp.email);
+    formData.append("password", inputSignUp.password);
+    formData.append("userName", inputSignUp.userName);
+    formData.append("profileImage", blob, "img.file");
+    // blob.size > 20 && formData.append("image", blob, "img.file");
+
+    dispatchEvent(signUpUser(formData));
     setInputSignUp({
       email: "",
       username: "",
       password: "",
       passwordConfirm: "",
+      profileImg: null,
     });
   };
 
@@ -202,7 +206,7 @@ const SignUp = (props) => {
                     className="emailInput"
                     type="text"
                     name="email"
-                    value={inputSignUp.value}
+                    value={inputSignUp.email}
                     onChange={onChangeHandler}
                     placeholder="이메일을 입력하세요."
                   />
