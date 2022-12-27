@@ -10,7 +10,6 @@ import { __getDetail } from "../redux/modules/postSlice";
 import { __addComment, __getComment } from "../redux/modules/commentSlice";
 
 const PostDetail = () => {
-  
   const [enteredComment, setEnteredComment] = useState("");
   const isLoding = useSelector(state => state.postSlice.isLoding)
   const detail = useSelector(state => state.postSlice.detail.post)
@@ -25,7 +24,7 @@ const PostDetail = () => {
   };
 
   const onSubmitHandler = () => {
-    dispatch(__addComment({id, enteredComment}))
+    dispatch(__addComment({ id, enteredComment }));
   };
 
   useEffect(() => {
@@ -40,12 +39,14 @@ const PostDetail = () => {
           <h1>{detail?.title}</h1>
           <div className="writing-info">
             <div>
-              <span className="top-nick">{detail?.user.userName}</span> · <label>{date}</label>
-
+              <span className="top-nick">{detail?.user.userName}</span> ·{" "}
+              <label>{date}</label>
             </div>
             <div className="modification">
               <label>통계 </label>
-              <label onClick={() => navigate("/postupdate")}>수정 </label>
+              <label onClick={() => navigate(`/postupdate/${id}`)}>
+                수정{" "}
+              </label>
               <label>삭제 </label>
             </div>
           </div>
@@ -53,7 +54,10 @@ const PostDetail = () => {
         </ContentsBox>
         <UserBox>
           <div>
-            <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진" />
+            <img
+              src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
+              alt="프로필 사진"
+            />
           </div>
           <div className="user-info">
             <div className="bottom-nick">{detail?.user.userName}</div>
@@ -66,13 +70,24 @@ const PostDetail = () => {
           </div>
           <div className="comment-input">
             <div>
-              <h3>{detail?._count.comments ? detail?._count.comments : 0}개의 댓글</h3>
+              <h3>
+                {detail?._count.comments ? detail?._count.comments : 0}개의 댓글
+              </h3>
             </div>
             <div>
-              <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
+              <textarea
+                placeholder="댓글을 작성하세요"
+                type="text"
+                name="contents"
+                value={enteredComment}
+                onChange={onEnteredCommentHandler}
+                required
+              ></textarea>
             </div>
             <div>
-              <button className="input-btn" onClick={onSubmitHandler}>댓글 작성</button>
+              <button className="input-btn" onClick={onSubmitHandler}>
+                댓글 작성
+              </button>
             </div>
           </div>
           <div className="comment">

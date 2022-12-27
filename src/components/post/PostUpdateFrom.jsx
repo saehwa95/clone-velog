@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FontEdit from "./FontEdit";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { __updatePost } from "../../redux/modules/postSlice";
 import { RiLock2Fill } from "react-icons/ri";
 import { IoEarth } from "react-icons/io5";
@@ -12,30 +12,23 @@ const PostUpdateFrom = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [privateOption, setPrivateOption] = useState(1);
+  const {id} = useParams()
+  console.log(id)
 
-  const isPosting = useSelector((state) => state.postSlice.isPosting);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const postAddSubmit = (e) => {
+  const postUpdateSubmit = (e) => {
     e.preventDefault();
-    dispatch(__updatePost({ title, content, privateOption }));
+    dispatch(__updatePost({ title, content, privateOption, "postId":id }));
   };
 
   const togglePrivate = (option) => {
     setPrivateOption(option);
   };
 
-  useEffect(() => {
-    if (!isPosting) return;
-    if (isPosting) {
-      navigate("/");
-    }
-  }, [isPosting]);
-
   return (
     <UpdateWrapper>
-      <AddForm onSubmit={postAddSubmit}>
+      <AddForm onSubmit={postUpdateSubmit}>
         <Main>
           <div className="postAdd-title">
             <label>
@@ -143,7 +136,6 @@ const AddForm = styled.form`
     textarea {
       font-size: 1.125rem;
       line-height: 1.5;
-      font-style: italic;
       text-align: top;
       width: 100%;
       height: 530px;
