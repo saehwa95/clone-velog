@@ -31,14 +31,14 @@ const initialState = {
   ],
   isLoading: false,
   error: null,
+  dupCheck: false,
 };
 
-export const signUpUser = createAsyncThunk(
+export const __signUpUser = createAsyncThunk(
   "SIGNUP_USER",
   async (payload, thunkAPI) => {
     try {
       const res = await instance.post(`user/signup`, payload);
-      console.log(res);
       return thunkAPI.fulfillWithValue(res.data.message);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -46,15 +46,29 @@ export const signUpUser = createAsyncThunk(
   }
 );
 
-export const loginUser = createAsyncThunk(
+export const __dupEmail = createAsyncThunk(
+  "DUB_EMAIL",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await instance.post(`user/emailCheck`, payload);
+      window.alert("사용 가능한 이메일입니다");
+      console.log(res.data);
+      return thunkAPI.fulfillWithValue(res.data);
+    } catch (error) {
+      window.alert("중복된 이메일이 있습니다");
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const __loginUser = createAsyncThunk(
   "LOGIN_USER",
   async (payload, thunkAPI) => {
     try {
       const res = await instance.post(`user/login/local`, payload);
-
       localStorage.clear();
-      localStorage.setItem("token", res.data.token)
-      // return thunkAPI.fulfillWithValue(res.)
+      localStorage.setItem("token", res.data.token);
+      return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -66,29 +80,42 @@ const loginSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    //Sign Up extraReducer
-    [signUpUser.pending]: (state) => {
+    //__signUpUser
+    [__signUpUser.pending]: (state) => {
       state.isLoading = true;
     },
-    [signUpUser.fulfilled]: (state, action) => {
+    [__signUpUser.fulfilled]: (state, action) => {
       state.isLoading = false;
       alert("회원가입을 축하합니다!");
     },
-    [signUpUser.rejected]: (state, action) => {
+    [__signUpUser.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
 
-    //Login extraReducer
-    [loginUser.pending]: (state) => {
+    //__dupEmail
+    [__dupEmail.pending]: (state) => {
       state.isLoading = true;
     },
-    [loginUser.fulfilled]: (state, action) => {
+    [__dupEmail.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.dupCheck = action.payload;
+    },
+    [__dupEmail.pending]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    //__loginUser
+    [__loginUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [__loginUser.fulfilled]: (state, action) => {
       state.isLoading = true;
       alert("로그인이 확인되었습니다!");
       window.location.replace("http://localhost:3000");
     },
-    [loginUser.rejected]: (state, action) => {
+    [__loginUser.rejected]: (state, action) => {
       state.isLoading = true;
       state.error = action.payload;
       alert("로그인 정보가 일치하지 않습니다!");
