@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import FontEdit from "./FontEdit";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { __updatePost } from "../../redux/modules/postSlice";
 import { RiLock2Fill } from "react-icons/ri";
@@ -12,12 +12,14 @@ const PostUpdateFrom = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [privateOption, setPrivateOption] = useState(1);
+  const {id} = useParams()
+  console.log(id)
 
   const dispatch = useDispatch();
 
-  const postAddSubmit = (e) => {
+  const postUpdateSubmit = (e) => {
     e.preventDefault();
-    dispatch(__updatePost({ title, content, privateOption }));
+    dispatch(__updatePost({ title, content, privateOption, "postId":id }));
   };
 
   const togglePrivate = (option) => {
@@ -26,7 +28,7 @@ const PostUpdateFrom = () => {
 
   return (
     <UpdateWrapper>
-      <AddForm onSubmit={postAddSubmit}>
+      <AddForm onSubmit={postUpdateSubmit}>
         <Main>
           <div className="postAdd-title">
             <label>
@@ -134,7 +136,6 @@ const AddForm = styled.form`
     textarea {
       font-size: 1.125rem;
       line-height: 1.5;
-      font-style: italic;
       text-align: top;
       width: 100%;
       height: 530px;
