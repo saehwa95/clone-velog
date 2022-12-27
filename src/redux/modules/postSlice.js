@@ -1,13 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 import { instance } from "../api/axios";
-
-// const instance = axios.create({
-//   baseURL:,
-//   headers:{
-//     authorization: `Bearer ${localStorage.getItem("token")}`,
-//   }
-// })
 
 const initialState = {
   posts: [
@@ -19,7 +11,7 @@ const initialState = {
       privateOption: "",
       createdAt: "",
       userName: "",
-      commentCount: ""
+      commentCount: "",
     },
   ],
   detail: {
@@ -30,45 +22,46 @@ const initialState = {
     createdAt: "",
     userName: "",
     profileImage: "",
-    commentCount: ""
+    commentCount: "",
   },
   isLoding: false,
   error: false,
-  isPosting: false,
 };
 
 //게시글 전체 조회
 export const __getPost = createAsyncThunk(
-  'post/getPost',
+  "post/getPost",
   async (payload, thunkAPI) => {
     try {
-      const response = await instance.get("/posts")
-      return thunkAPI.fulfillWithValue(response.data)
+      const response = await instance.get("/posts");
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error);
     }
   }
-)
+);
 //게시글 상세 조회
 export const __getDetail = createAsyncThunk(
-  'post/getDetail',
+  "post/getDetail",
   async (id, thunkAPI) => {
     try {
-      const response = await instance.get(`/posts/${id}`)
-      return thunkAPI.fulfillWithValue(response.data)
+      const response = await instance.get(`/posts/${id}`);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error);
     }
   }
-)
+);
 
 //게시글 작성
 export const __addPost = createAsyncThunk(
   "post/addPost",
   async (payload, thunkAPI) => {
     try {
+      console.log(payload);
       const res = await instance.post(`/posts`, payload);
       window.alert("게시글 작성에 성공했습니다.");
+      window.location.replace("/");
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.");
@@ -81,10 +74,7 @@ export const __updatePost = createAsyncThunk(
   "post/updatePost",
   async (payload, thunkAPI) => {
     try {
-      const res = await instance.patch(
-        `/posts/${payload.postId}`,
-        payload
-      );
+      const res = await instance.patch(`/posts/${payload.postId}`, payload);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.");
@@ -97,13 +87,13 @@ export const __deletePost = createAsyncThunk(
   "post/deletePost",
   async (id, thunkApi) => {
     try {
-      await instance.delete(`/todos/${id}`)
-      return thunkApi.fulfillWithValue(id)
+      await instance.delete(`/todos/${id}`);
+      return thunkApi.fulfillWithValue(id);
     } catch (error) {
-      return thunkApi.rejectWithValue(error)
+      return thunkApi.rejectWithValue(error);
     }
   }
-)
+);
 
 //리듀서
 export const postSlice = createSlice({
@@ -118,7 +108,7 @@ export const postSlice = createSlice({
       })
       .addCase(__getPost.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.posts = action.payload
+        state.posts = action.payload;
       })
       .addCase(__getPost.rejected, (state, action) => {
         state.isLoading = false;
@@ -130,7 +120,7 @@ export const postSlice = createSlice({
       })
       .addCase(__getDetail.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.detail = action.payload
+        state.detail = action.payload;
       })
       .addCase(__getDetail.rejected, (state, action) => {
         state.isLoading = false;
@@ -142,7 +132,6 @@ export const postSlice = createSlice({
       })
       .addCase(__addPost.fulfilled, (state, action) => {
         state.isLoding = false;
-        state.isPosting = true;
         state.posts = action.payload;
       })
       .addCase(__addPost.rejected, (state, action) => {
@@ -173,7 +162,7 @@ export const postSlice = createSlice({
       .addCase(__deletePost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      })
+      });
   },
 });
 

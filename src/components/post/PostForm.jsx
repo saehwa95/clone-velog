@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { BsTypeBold, BsTypeItalic, BsImage } from "react-icons/bs";
 import { CgFormatStrike, CgCode } from "react-icons/cg";
@@ -7,8 +7,8 @@ import { FiLink2 } from "react-icons/fi";
 import { FiArrowLeft } from "react-icons/fi";
 import { IoEarth } from "react-icons/io5";
 import { RiLock2Fill } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { __addPost } from "../../redux/modules/postSlice";
 
 const PostForm = () => {
@@ -16,10 +16,8 @@ const PostForm = () => {
   const [content, setContent] = useState("");
   const [postImage, setPostImage] = useState();
   const [privateOption, setPrivateOption] = useState(1);
-
-  const isPosting = useSelector((state) => state.postSlice.isPosting);
+  
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const togglePrivate = (option) => {
     setPrivateOption(option);
@@ -28,23 +26,16 @@ const PostForm = () => {
   const postAddSubmit = (e) => {
     e.preventDefault();
 
-    const form = new FormData();
-    form.append("title", title);
-    form.append("image", postImage);
-    form.append("content", content);
-    form.append("privateOption", privateOption);
+    // const form = new FormData();
+    // form.append("title", title);
+    // form.append("image", postImage);
+    // form.append("content", content);
+    // form.append("privateOption", privateOption);
 
-    dispatch(__addPost({ form }));
+    dispatch(__addPost({title, content, privateOption}));
 
     console.log(title, content, postImage, privateOption);
   };
-
-  useEffect(() => {
-    if (!isPosting) return;
-    if (isPosting) {
-      navigate("/");
-    }
-  }, [isPosting]);
 
   return (
     <PostWrapper>
@@ -210,7 +201,7 @@ const AddForm = styled.form`
     textarea {
       font-size: 1.125rem;
       line-height: 1.5;
-      font-style: italic;
+      /* font-style: italic; */
       text-align: top;
       width: 100%;
       height: 530px;
