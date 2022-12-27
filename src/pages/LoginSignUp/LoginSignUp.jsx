@@ -21,7 +21,11 @@ import { IoClose } from "react-icons/io5";
 import kakao from "../../image/kakao.webp";
 import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
-import { loginUser, signUpUser } from "../../redux/modules/loginSlice";
+import {
+  __dupEmail,
+  __loginUser,
+  __signUpUser,
+} from "../../redux/modules/loginSlice";
 
 const LoginSignUp = (props) => {
   const dispatch = useDispatch();
@@ -148,8 +152,8 @@ const LoginSignUp = (props) => {
     ) {
       return alert("회원가입에 필요한 정보를 입력해주세요!");
     }
-    // const blob = dataURItoBlob(profileImg);
-    console.log("왜 안되는거니");
+    // const blob /= dataURItoBlob(profileImg);
+
     let formData = new FormData();
     formData.append("email", inputSignUp.email);
     formData.append("password", inputSignUp.password);
@@ -157,8 +161,7 @@ const LoginSignUp = (props) => {
     // formData.append("profileImage", blob, "img.file");
     // blob.size > 20 && formData.append("image", blob, "img.file");
 
-    dispatch(signUpUser(formData));
-    console.log(formData);
+    dispatch(__signUpUser(formData));
     setInputSignUp({
       email: "",
       username: "",
@@ -166,6 +169,10 @@ const LoginSignUp = (props) => {
       passwordConfirm: "",
       // profileImg: null,
     });
+  };
+
+  const dupEmail = () => {
+    dispatch(__dupEmail({ email: inputSignUp.email }));
   };
 
   const loginHandler = () => {
@@ -176,7 +183,7 @@ const LoginSignUp = (props) => {
       email,
       password,
     };
-    dispatch(loginUser(payload));
+    dispatch(__loginUser(payload));
     setInputSignUp({ email: "", password: "" });
   };
 
@@ -228,7 +235,9 @@ const LoginSignUp = (props) => {
                         onChange={onChangeHandler}
                         placeholder="이메일을 입력하세요."
                       />
-                      <button className="emailBtn">중복 확인</button>
+                      <button className="emailBtn" onClick={dupEmail}>
+                        중복 확인
+                      </button>
                     </div>
                     <div className="underCheck">{emailInput}</div>
                     <h4>비밀번호</h4>
@@ -340,7 +349,7 @@ const LoginSignUp = (props) => {
                     <div className="underCheck">{passwordInput}</div>
                     <button
                       onClick={loginHandler}
-                      disabled={!(isEmail && isPassword)}
+                      disabled={isEmail && isPassword}
                     >
                       로그인
                     </button>
