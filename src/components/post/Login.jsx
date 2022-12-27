@@ -19,7 +19,7 @@ import kakao from "../../image/kakao.webp";
 import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../redux/modules/loginSlice";
+import { __loginUser } from "../../redux/modules/loginSlice";
 
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const Login = (props) => {
       email,
       password,
     };
-    dispatch(loginUser(payload));
+    dispatch(__loginUser(payload));
     setInputSignUp({ email: "", password: "" });
   };
 

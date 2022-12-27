@@ -1,7 +1,47 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 
 const UserInfo = () => {
+  const [tittleBtnToggle, setTittleBtnToggle] = useState(false);
+  const [contentBtnToggle, SetContentBtnToggle] = useState(false);
+
+  //이름 수정
+  const titleBtnHandler = () => {
+    setTittleBtnToggle(!tittleBtnToggle);
+  };
+
+  //닉네임 수정
+  const contentBtnToggleHandler = () => {
+    SetContentBtnToggle(!contentBtnToggle);
+  };
+
+  //이미지 state생성
+  const [editProfileImg, setEditProfileImg] = useState("");
+  const fileInput = useRef(null);
+
+  //이미지 변경
+  const profileImgChangeHandler = (e) => {
+    if (e.target.files[0]) {
+      setEditProfileImg(e.target.files[0]);
+    } else {
+      setEditProfileImg(editProfileImg);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setEditProfileImg(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  //이미지 삭제
+  const deleteImage = () => {
+    URL.revokeObjectURL(editProfileImg);
+    setEditProfileImg("");
+  };
+
   return (
     <>
       <StMainContainer>
@@ -9,26 +49,76 @@ const UserInfo = () => {
           <StHeaderContainer>
             <StImgContainer>
               <img
-                src="http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg"
+                src={
+                  editProfileImg
+                    ? editProfileImg
+                    : "https://addonshop.kr/common/img/default_profile.png"
+                }
                 alt="userImg"
               />
-              <StUploadBtn>이미지 업로드</StUploadBtn>
-              <StDeleteBtn>이미지 제거</StDeleteBtn>
+              <input
+                type="file"
+                style={{ display: "none" }}
+                accept="image/*"
+                name="profileImage"
+                onClick={(e) => {
+                  e.target.value = null;
+                }}
+                onChange={profileImgChangeHandler}
+                ref={fileInput}
+              />
+              <StUploadBtn
+                onClick={() => {
+                  fileInput.current.click();
+                }}
+              >
+                이미지 업로드
+              </StUploadBtn>
+              <StDeleteBtn onClick={() => deleteImage()}>
+                이미지 제거
+              </StDeleteBtn>
             </StImgContainer>
-            <StInfoArea>
-              <h2>개발새발</h2>
-              <h4>항해중입니다.</h4>
-              <button>수정</button>
-            </StInfoArea>
+            {tittleBtnToggle ? (
+              <StInfoArea>
+                <input className="editTitle" placeholder="이름"></input>
+                <input className="editIntro" placeholder="한 줄 소개"></input>
+                <div className="editBtnArea">
+                  <button className="editBtn" onClick={titleBtnHandler}>
+                    저장
+                  </button>
+                </div>
+              </StInfoArea>
+            ) : (
+              <StInfoArea>
+                <h2>항해중</h2>
+                <h4>개발공부</h4>
+                <button onClick={titleBtnHandler}>수정</button>
+              </StInfoArea>
+            )}
           </StHeaderContainer>
           <StBodyContainer>
             <StBodyWrapper>
-              <StBodyContentBox>
-                <h3>벨로그 제목</h3>
+              {contentBtnToggle ? (
+                <StBodyContentBox>
+                  <h3>닉네임</h3>
 
-                <StEditTitle>onBoard.log</StEditTitle>
-                <button>수정</button>
-              </StBodyContentBox>
+                  <input className="editContent" placeholder="닉네임"></input>
+                  <button
+                    className="editContentBtn"
+                    onClick={contentBtnToggleHandler}
+                  >
+                    저장
+                  </button>
+                </StBodyContentBox>
+              ) : (
+                <StBodyContentBox>
+                  <h3>닉네임</h3>
+
+                  <StEditTitle>onBoard.log</StEditTitle>
+                  <button onClick={contentBtnToggleHandler}>수정</button>
+                </StBodyContentBox>
+              )}
+
               <div className="textColor">
                 개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
               </div>
@@ -170,6 +260,50 @@ const StInfoArea = styled.div`
     background: none;
     cursor: pointer;
   }
+  .editTitle {
+    width: 530px;
+    height: 40px;
+    padding: 0.5rem;
+    line-height: 1rem;
+    font-size: 1.5rem;
+    border-radius: 4px;
+    outline: none;
+    color: white;
+    font-weight: 600;
+    border: 1px solid #2a2a2a;
+    background-color: #1e1e1e;
+  }
+  .editIntro {
+    width: 530px;
+    height: 20px;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    color: white;
+    outline: none;
+    border: 1px solid #2a2a2a;
+    background-color: #1e1e1e;
+  }
+  .editBtnArea {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+  .editBtn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    outline: none !important;
+    border: none !important;
+    background: #96f2d7 !important;
+    color: #121212 !important;
+    border-radius: 4px !important;
+    padding: 0px 1.25rem !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
+    text-decoration: none !important;
+  }
 `;
 const StBodyContainer = styled.div`
   width: 768px;
@@ -192,6 +326,35 @@ const StBodyContainer = styled.div`
     color: #acacac;
     font-size: 0.875rem;
     margin-bottom: 10px;
+  }
+  .editContent {
+    width: 500px;
+    height: 15px;
+    padding: 0.5rem;
+    margin-left: 2rem;
+    margin-top: 0.8rem;
+    color: white;
+    outline: none;
+    border: 1px solid #2a2a2a;
+    background-color: #1e1e1e;
+  }
+  .editContentBtn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    outline: none !important;
+    border: none !important;
+    background: #96f2d7 !important;
+    color: #121212 !important;
+    border-radius: 4px !important;
+    padding: 0px 1.25rem !important;
+    margin-left: 1rem !important;
+    margin-top: 0.8rem !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
+    text-decoration: none !important;
   }
 `;
 const StBodyContentBox = styled.div`
