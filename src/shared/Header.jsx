@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  // const isLogin = useSelector((state) => state.isLogin);
   const isLogin = false;
   const navigate = useNavigate();
   const [modal, setModal] = useState(false);
@@ -30,14 +29,27 @@ const Header = () => {
         <div className="header">
           {window.location.pathname.indexOf("/postdetail") === 0 ? (
             <div className="velog">
-              <img className="v-logo" src={velog} alt="logo" onClick={() => navigate("/")} />
-              <div className="nick-logo" onClick={() => window.location.reload()}>
+              <img
+                className="v-logo"
+                src={velog}
+                alt="logo"
+                onClick={() => navigate("/")}
+              />
+              <div
+                className="nick-logo"
+                onClick={() => window.location.reload()}
+              >
                 jhchoi1182.log
               </div>
             </div>
           ) : (
             <div className="velog">
-              <img className="logo" src={logo} alt="logo" onClick={() => navigate("/")} />
+              <img
+                className="logo"
+                src={logo}
+                alt="logo"
+                onClick={() => navigate("/")}
+              />
             </div>
           )}
           {isLogin ? (
@@ -51,7 +63,11 @@ const Header = () => {
               <button className="is-login" onClick={() => navigate("/postadd")}>
                 새 글 작성
               </button>
-              <img className="login-img" src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="" />
+              <img
+                className="login-img"
+                src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
+                alt=""
+              />
               <IoMdArrowDropdown className="toggle" />
             </div>
           ) : (
