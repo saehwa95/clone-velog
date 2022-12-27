@@ -7,18 +7,17 @@ import { IoHeartSharp } from "react-icons/io5";
 import { BsShareFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { __getDetail } from "../redux/modules/postSlice";
-import { __addComment } from "../redux/modules/commentSlice";
+import { __addComment, __getComment } from "../redux/modules/commentSlice";
 
 const PostDetail = () => {
   const [enteredComment, setEnteredComment] = useState("");
-  const isLoding = useSelector((state) => state.postSlice.isLoding);
-  const detail = useSelector((state) => state.postSlice.detail.post);
-  const date = detail?.createdAt.split("T")[0].split("-");
+  const isLoding = useSelector(state => state.postSlice.isLoding)
+  const detail = useSelector(state => state.postSlice.detail.post)
+  const comments = useSelector(state => state.commentSlice.comments)
+  const date = detail?.createdAt.split('T')[0].split('-')
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { id } = useParams();
-
-  console.log(detail);
+  const dispatch = useDispatch()
+  const {id} = useParams()
 
   const onEnteredCommentHandler = (event) => {
     setEnteredComment(event.target.value);
@@ -29,8 +28,9 @@ const PostDetail = () => {
   };
 
   useEffect(() => {
-    dispatch(__getDetail(id));
-  }, [isLoding]);
+    dispatch(__getDetail(id))
+    dispatch(__getComment(id))
+  },[isLoding])
 
   return (
     <Wrap>
@@ -91,7 +91,7 @@ const PostDetail = () => {
             </div>
           </div>
           <div className="comment">
-            <Comment />
+            {comments?.map(comment => <Comment key={comment.commentId} comment={comment} />)}
           </div>
           <div className="copyright">
             <div>

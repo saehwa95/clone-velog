@@ -8,3 +8,7 @@ instance.interceptors.request.use((config) => {
   config.headers.authorization = `Bearer ${localStorage.getItem("token")}`;
   return config;
 });
+
+export const CommentApi = {
+  read: async (id) => await instance.get(`/posts/${id}/comments`)
+}

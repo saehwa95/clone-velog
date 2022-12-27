@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { MdOutlineAddBox } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
-import { __updateComment } from '../redux/modules/commentSlice';
+import { __deleteComment, __updateComment } from '../redux/modules/commentSlice';
 
-
-const Comment = () => {
+const Comment = ({comment}) => {
   const dispatch = useDispatch()
   const [edit, setEdit] = useState(false)
   const [enteredComment, setEnteredComment] = useState("");
@@ -23,7 +22,9 @@ const Comment = () => {
     setEdit(true)
     setEnteredComment()
   }
-    
+
+  const date = comment?.createdAt.split('T')[0].split('-')
+
   return (
     <>
       <CommentBox>
@@ -33,13 +34,13 @@ const Comment = () => {
               <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
             </div>
             <div className='user-comment-info'>
-              <div className='nick'>최지현</div>
-              <label>2022년 12월 26일</label>
+              <div className='nick'>{comment?.user.useName}</div>
+              <label>{date}</label>
             </div>
           </div>
           <div>
             {edit ? null : <label className='update' onClick={startEditHandler}>수정</label>}
-            <label className='delete'>삭제</label>
+            <label className='delete' onClick={() => dispatch(__deleteComment(comment.commentId))} >삭제</label>
           </div>
         </div>
         <ContentBox>
@@ -52,7 +53,7 @@ const Comment = () => {
               <button className='input-btn' onClick={onEditHandler}>댓글 수정</button>
             </div>
           </div> : <div className='content'>
-            좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.
+            {comment?.content}
           </div>}
           <div className='reply'>
             <MdOutlineAddBox className='add-reply' />
