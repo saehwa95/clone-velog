@@ -9,7 +9,7 @@ import { __getPost } from "../redux/modules/postSlice";
 
 const Main = () => {
   const [toggle, setToggle] = useState("trending")
-  const posts = useSelector((state => state.posts))
+  const {posts} = useSelector((state => state.postSlice.posts))
   const dispatch = useDispatch()
 
   // const onTrendingHandler = () => {
@@ -54,16 +54,9 @@ const Main = () => {
         </div>
       </Top>
       <CardBox>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {posts?.map(post => {
+          return <Card key={post.postId} post={post} />
+        })}
       </CardBox>
     </Wrap>
   );

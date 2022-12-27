@@ -8,14 +8,10 @@ import { IoMdMoon } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
   const [modal, setModal] = useState(false);
-  const isLoding = useSelector(state => state)
-
-  console.log(isLoding)
 
   if (window.location.pathname === "/postadd") return null;
   if (window.location.pathname === "/postupdate") return null;
@@ -31,28 +27,13 @@ const Header = () => {
         <div className="header">
           {window.location.pathname.indexOf("/postdetail") === 0 && (
             <div className="velog">
-              <img
-                className="v-logo"
-                src={velog}
-                alt="logo"
-                onClick={() => navigate("/")}
-              />
-              <div
-                className="nick-logo"
-                onClick={() => window.location.reload()}
-              >
-                jhchoi1182.log
-              </div>
+              <img className="v-logo" src={velog} alt="logo" onClick={() => navigate("/")} />
+              <div className="nick-logo" onClick={() => window.location.reload()}>jhchoi1182.log</div>
             </div>
           )}
           {window.location.pathname.indexOf("/postdetail") === -1 && (
             <div className="velog">
-              <img
-                className="logo"
-                src={logo}
-                alt="logo"
-                onClick={() => navigate("/")}
-              />
+              <img className="logo" src={logo} alt="logo" onClick={() => navigate("/")} />
             </div>
           )}
           {localStorage.getItem('token') && (
@@ -63,14 +44,8 @@ const Header = () => {
               <div>
                 <CiSearch className="search" />
               </div>
-              <button className="is-login" onClick={() => navigate("/postadd")}>
-                새 글 작성
-              </button>
-              <img
-                className="login-img"
-                src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
-                alt=""
-              />
+              <button className="is-login" onClick={() => navigate("/postadd")}>새 글 작성</button>
+              <img className="login-img" src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="" />
               <IoMdArrowDropdown className="toggle" />
             </div>
           )}
@@ -82,9 +57,7 @@ const Header = () => {
               <div>
                 <CiSearch className="search" />
               </div>
-              <button className="login" onClick={toggleModal}>
-                로그인
-              </button>
+              <button className="login" onClick={toggleModal}>로그인</button>
             </div>
           )}
         </div>
