@@ -8,8 +8,8 @@ import PostUpdate from "../pages/PostUpdate";
 import LoginSignUp from "../pages/LoginSignUp/LoginSignUp";
 import Header from "./Header";
 import UserInfo from "../pages/Userinfo/UserInfo";
-import SignUp from "../pages/LoginSignUp/SignUp";
-import Login from "../pages/LoginSignUp/Login";
+import SignUp from "../components/post/SignUp";
+import Login from "../components/post/Login";
 
 const Router = () => {
   return (

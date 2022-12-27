@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useRef } from "react";
+import signUpUser from "../../redux/modules/loginSlice";
 import {
   StModalContainer,
   StBackground,
@@ -13,15 +14,15 @@ import {
   STinputWrapper,
   StIconContainer,
   StLink,
-  StLoginLink,
   StToggleButton,
-} from "./style";
+} from "../../pages/LoginSignUp/style";
 import { IoClose } from "react-icons/io5";
 import kakao from "../../image/kakao.webp";
 import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
 
-const SignUp = () => {
+const SignUp = (props) => {
+  //회원가입inputSignUp state 생성
   const [inputSignUp, setInputSignUp] = useState({
     email: "",
     userName: "",
@@ -29,8 +30,45 @@ const SignUp = () => {
     passwordConfirm: "",
   });
 
+  //이미지 state생성
+  const [profileImg, setProfileImg] = useState("");
+  const fileInput = useRef(null);
+
+  // dataURL을 Blob으로 변환
+  const dataURItoBlob = (dataURI) => {
+    const splitDataURI = dataURI.split(",");
+    const byteString =
+      splitDataURI[0].indexOf("base64") >= 0
+        ? atob(splitDataURI[1])
+        : decodeURI(splitDataURI[1]);
+    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++)
+      ia[i] = byteString.charCodeAt(i);
+    return new Blob([ia], { type: mimeString });
+  };
+
+  //이미지 변경
+  const profileImgChangeHandler = (e) => {
+    if (e.target.files[0]) {
+      setProfileImg(e.target.files[0]);
+    } else {
+      setProfileImg(profileImg);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setProfileImg(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  //회원가입inputSignUp 스테이트 구조분해 할당(for 각 상태관리, 유효성검사)
   const { userName, email, password, passwordConfirm } = inputSignUp;
 
+  //회원가입input창 상태관리 위해 초기값 세팅
   const [userNameInput, setUserNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -40,6 +78,12 @@ const SignUp = () => {
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+
+  //모달 토글
+  const [toggleOn, setToggleOn] = useState(false);
+  const toggleHandler = () => {
+    setToggleOn(!toggleOn);
+  };
 
   //정규식
 
@@ -93,13 +137,36 @@ const SignUp = () => {
     }
   };
 
+  const signUpHandler = () => {
+    if (
+      email.trim() === "" ||
+      userName.trim() === "" ||
+      password.trim() === "" ||
+      passwordConfirm.trim() === ""
+    ) {
+      return alert("회원가입에 필요한 정보를 입력해주세요!");
+    }
+    const payload = {
+      email,
+      userName,
+      password,
+    };
+    dispatchEvent(signUpUser(payload));
+    setInputSignUp({
+      email: "",
+      username: "",
+      password: "",
+      passwordConfirm: "",
+    });
+  };
+
   return (
     <StModalContainer>
       <StBackground>
         <StModalBlockContainer>
           <StModalBlock>
             <StImgContainer>
-              {/* <StImg
+              <StImg
                 style={{ cursor: "pointer" }}
                 src={
                   profileImg
@@ -109,23 +176,23 @@ const SignUp = () => {
                 onClick={() => {
                   fileInput.current.click();
                 }}
-              /> */}
-              {/* <input
+              />
+              <input
                 type="file"
                 style={{ display: "none" }}
                 accept="image/*"
                 name="profileImage"
                 onChange={profileImgChangeHandler}
                 ref={fileInput}
-              /> */}
+              />
               <StWelcome>환영합니다!</StWelcome>
             </StImgContainer>
             <StInputContainer>
               <StClose>
-                {/* <IoClose
+                <IoClose
                   style={{ fontSize: "20px" }}
                   onClick={props.toggleModal}
-                /> */}
+                />
               </StClose>
               <h2>회원가입</h2>
               <h4>이메일로 회원가입</h4>
@@ -176,6 +243,7 @@ const SignUp = () => {
                 </div>
                 <div className="underCheck">{userNameInput}</div>
                 <button
+                  onClick={signUpHandler}
                   disabled={
                     !(isEmail && isPassword && isPasswordConfirm && isUserName)
                   }
@@ -193,7 +261,7 @@ const SignUp = () => {
                     계정이 이미 있으신가요?
                     <StToggleButton
                       className="footerBtn"
-                      // onClick={toggleHandler}
+                      onClick={toggleHandler}
                     >
                       로그인
                     </StToggleButton>

@@ -37,7 +37,7 @@ const StModalBlock = styled.div`
   top: 7rem;
   background-color: white;
   display: flex;
-  animation: modal-show 0.7s;
+  animation: modal-show 0.4s;
   @keyframes modal-show {
     from {
       opacity: 0;

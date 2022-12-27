@@ -1,85 +1,85 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
-import { HiMail } from 'react-icons/hi';
-import Comment from '../elements/Comment';
-import { IoHeartSharp } from 'react-icons/io5';
-import { BsShareFill } from 'react-icons/bs';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { HiMail } from "react-icons/hi";
+import Comment from "../elements/Comment";
+import { IoHeartSharp } from "react-icons/io5";
+import { BsShareFill } from "react-icons/bs";
 
 const PostDetail = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Wrap>
-      <div className='center-div'>
+      <div className="center-div">
         <ContentsBox>
           <h1>125</h1>
-          <div className='writing-info'>
+          <div className="writing-info">
             <div>
-              <span className='top-nick'>jhchoi1182</span> · <label>3일 전</label>
+              <span className="top-nick">jhchoi1182</span> ·{" "}
+              <label>3일 전</label>
             </div>
-            <div className='modification'>
+            <div className="modification">
               <label>통계 </label>
-              <label onClick={() => navigate('/postupdate')}>수정 </label>
+              <label onClick={() => navigate("/postupdate")}>수정 </label>
               <label>삭제 </label>
             </div>
           </div>
-          <div className='content'>
-            125
-          </div>
+          <div className="content">125</div>
         </ContentsBox>
         <UserBox>
           <div>
-            <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
+            <img
+              src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
+              alt="프로필 사진"
+            />
           </div>
-          <div className='user-info'>
-            <div className='bottom-nick'>최지현</div>
-            <div className='intro'>안녕하세요</div>
+          <div className="user-info">
+            <div className="bottom-nick">최지현</div>
+            <div className="intro">안녕하세요</div>
           </div>
         </UserBox>
         <CommentsBox>
-          <div className='contact'>
-            <HiMail className='email'/>
+          <div className="contact">
+            <HiMail className="email" />
           </div>
-          <div className='comment-input'>
+          <div className="comment-input">
             <div>
               <h3>7개의 댓글</h3>
             </div>
             <div>
-              <textarea placeholder='댓글을 작성하세요'></textarea> 
+              <textarea placeholder="댓글을 작성하세요"></textarea>
             </div>
             <div>
-              <button>댓글 작성</button> 
+              <button>댓글 작성</button>
             </div>
           </div>
-          <div className='comment'>
+          <div className="comment">
             <Comment />
             <Comment />
             <Comment />
           </div>
-          <div className='copyright'>
+          <div className="copyright">
             <div>
-              <a href='https://stellate.co/?ref=powered-by'>
-                <img src="https://graphcdn.io/badge-light.svg" alt='저작권' />
+              <a href="https://stellate.co/?ref=powered-by">
+                <img src="https://graphcdn.io/badge-light.svg" alt="저작권" />
               </a>
             </div>
           </div>
         </CommentsBox>
       </div>
       <FixDiv>
-        <div className='hart-box'>
-          <IoHeartSharp className='heart' />
+        <div className="hart-box">
+          <IoHeartSharp className="heart" />
         </div>
-        <div className='likes-number'>
-          77
-        </div>
-        <div className='share-box'>
-          <BsShareFill className='share' />
+        <div className="likes-number">77</div>
+        <div className="share-box">
+          <BsShareFill className="share" />
         </div>
       </FixDiv>
     </Wrap>
-  )
-}
+  );
+};
 
 const Wrap = styled.section`
   width: 100%;
@@ -93,9 +93,8 @@ const Wrap = styled.section`
   .copyright {
     margin-bottom: 1.5rem;
     text-align: center;
-
   }
-`
+`;
 
 const ContentsBox = styled.div`
   h1 {
@@ -106,7 +105,7 @@ const ContentsBox = styled.div`
     justify-content: space-between;
   }
   .writing-info > label {
-    color: #ACACAC;
+    color: #acacac;
   }
   .top-nick {
     font-weight: 1000;
@@ -119,7 +118,7 @@ const ContentsBox = styled.div`
     margin-right: 1rem;
   }
   .modification > label {
-    color: #ACACAC;
+    color: #acacac;
     cursor: pointer;
     :hover {
       color: #d9d9d9;
@@ -129,7 +128,7 @@ const ContentsBox = styled.div`
     margin-top: 6.3rem;
     font-size: 1.1rem;
   }
-`
+`;
 
 const UserBox = styled.div`
   margin-top: 14rem;
@@ -157,12 +156,12 @@ const UserBox = styled.div`
     height: 1.5rem;
     overflow: hidden;
     display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     word-wrap: break-word;
   }
-`
+`;
 
 const CommentsBox = styled.div`
   margin-top: 1.4rem;
@@ -171,10 +170,10 @@ const CommentsBox = styled.div`
   }
   .email {
     font-size: 2.3rem;
-    color: #ACACAC;
+    color: #acacac;
     cursor: pointer;
     :hover {
-      color: #ECECEC;
+      color: #ececec;
     }
   }
   .comment-input {
@@ -188,15 +187,15 @@ const CommentsBox = styled.div`
     line-height: 1.75;
     margin-bottom: 1.5rem;
     border-radius: 4px;
-    background-color: #1E1E1E;
-    border: 1px solid #2A2A2A;
-    color: #ECECEC;
+    background-color: #1e1e1e;
+    border: 1px solid #2a2a2a;
+    color: #ececec;
     outline: none;
   }
   button {
     float: right;
     border: none;
-    background-color: #96F2D7;
+    background-color: #96f2d7;
     color: #121212;
     border-radius: 4px;
     height: 2rem;
@@ -205,18 +204,18 @@ const CommentsBox = styled.div`
     font-weight: 700;
     cursor: pointer;
     :hover {
-      background-color: #63E6BE;
+      background-color: #63e6be;
     }
   }
   .comment {
     margin-top: 7rem;
     margin-bottom: 7rem;
   }
-`
+`;
 
 const FixDiv = styled.div`
-  background-color: #1E1E1E;
-  border: 1px solid #2A2A2A;
+  background-color: #1e1e1e;
+  border: 1px solid #2a2a2a;
   border-radius: 2rem;
   width: 3rem;
   padding: 0.5rem;
@@ -232,10 +231,10 @@ const FixDiv = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #1E1E1E;
-    border: 1px solid #4D4D4D;
+    background: #1e1e1e;
+    border: 1px solid #4d4d4d;
     border-radius: 1.5rem;
-    color: #ACACAC;
+    color: #acacac;
     cursor: pointer;
     :hover {
       border: 1px solid whitesmoke;
@@ -246,7 +245,7 @@ const FixDiv = styled.div`
   }
   .likes-number {
     margin-top: 0.5rem;
-    color: #D9D9D9;
+    color: #d9d9d9;
     line-height: 1;
     font-size: 0.75rem;
     margin-bottom: 1rem;
@@ -260,10 +259,10 @@ const FixDiv = styled.div`
     align-items: center;
     -webkit-box-pack: center;
     justify-content: center;
-    background: #1E1E1E;
-    border: 1px solid #4D4D4D;
+    background: #1e1e1e;
+    border: 1px solid #4d4d4d;
     border-radius: 1.5rem;
-    color: #ACACAC;
+    color: #acacac;
     cursor: pointer;
     :hover {
       border: 1px solid whitesmoke;
@@ -272,6 +271,6 @@ const FixDiv = styled.div`
   .share {
     font-size: 1.5rem;
   }
-`
+`;
 
-export default PostDetail
+export default PostDetail;

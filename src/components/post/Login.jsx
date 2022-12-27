@@ -13,14 +13,15 @@ import {
   StIconContainer,
   StLoginLink,
   StToggleButton,
-} from "./style";
+} from "../../pages/LoginSignUp/style";
 import { IoClose } from "react-icons/io5";
 import kakao from "../../image/kakao.webp";
 import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
 import { useDispatch } from "react-redux";
+import { loginUser } from "../../redux/modules/loginSlice";
 
-const Login = () => {
+const Login = (props) => {
   const dispatch = useDispatch();
 
   const [inputSignUp, setInputSignUp] = useState({
@@ -68,17 +69,16 @@ const Login = () => {
     }
   };
 
-  const signInHandler = () => {
-    // if (email.trim() === "" || password.trim() === "") {
-    //   return alert("아이디랑 비밀번호를 입력해주세요!");
-    // }
+  const loginHandler = () => {
+    if (email.trim() === "" || password.trim() === "") {
+      return alert("아이디랑 비밀번호를 입력해주세요!");
+    }
     const payload = {
       email,
       password,
     };
-    //토큰 생성하는건가
-    // dispatch(signInUser(payload));
-    setInputSignUp({ username: "", password: "" });
+    dispatch(loginUser(payload));
+    setInputSignUp({ email: "", password: "" });
   };
 
   return (
@@ -97,7 +97,7 @@ const Login = () => {
               <StClose>
                 <IoClose
                   style={{ fontSize: "20px" }}
-                  // onClick={props.toggleModal}
+                  onClick={props.toggleModal}
                 />
               </StClose>
               <h2>로그인</h2>
@@ -125,7 +125,7 @@ const Login = () => {
                 </div>
                 <div className="underCheck">{passwordInput}</div>
                 <button
-                  onClick={signInHandler}
+                  onClick={loginHandler}
                   disabled={!(isEmail && isPassword)}
                 >
                   로그인
