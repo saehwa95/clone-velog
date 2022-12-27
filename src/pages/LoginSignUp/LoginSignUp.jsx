@@ -110,7 +110,7 @@ const LoginSignUp = (props) => {
 
     if (name === "userName") {
       if (!regUserName.test(value)) {
-        setUserNameInput("닉네임은 20글자 이내입니다");
+        setUserNameInput("");
         setIsUserName(false);
       } else {
         setUserNameInput("");
@@ -148,7 +148,8 @@ const LoginSignUp = (props) => {
     ) {
       return alert("회원가입에 필요한 정보를 입력해주세요!");
     }
-    const blob = dataURItoBlob(profileImg);
+    // const blob = dataURItoBlob(profileImg);
+    console.log("왜 안되는거니");
     let formData = new FormData();
     formData.append("email", inputSignUp.email);
     formData.append("password", inputSignUp.password);
@@ -266,12 +267,7 @@ const LoginSignUp = (props) => {
                     <button
                       onClick={signUpHandler}
                       disabled={
-                        !(
-                          isEmail &&
-                          isPassword &&
-                          isPasswordConfirm &&
-                          isUserName
-                        )
+                        isEmail && isPassword && isPasswordConfirm && isUserName
                       }
                     >
                       회원가입
