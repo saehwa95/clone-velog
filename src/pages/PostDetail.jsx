@@ -35,6 +35,7 @@ const PostDetail = () => {
           <div className="writing-info">
             <div>
               <span className="top-nick">jhchoi1182</span> · <label>3일 전</label>
+
             </div>
             <div className="modification">
               <label>통계 </label>
