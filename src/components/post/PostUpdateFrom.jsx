@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FontEdit from "./FontEdit";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { __updatePost } from "../../redux/modules/postSlice";
 import { RiLock2Fill } from "react-icons/ri";
 import { IoEarth } from "react-icons/io5";
@@ -13,9 +13,7 @@ const PostUpdateFrom = () => {
   const [content, setContent] = useState("");
   const [privateOption, setPrivateOption] = useState(1);
 
-  const isPosting = useSelector((state) => state.postSlice.isPosting);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const postAddSubmit = (e) => {
     e.preventDefault();
@@ -25,13 +23,6 @@ const PostUpdateFrom = () => {
   const togglePrivate = (option) => {
     setPrivateOption(option);
   };
-
-  useEffect(() => {
-    if (!isPosting) return;
-    if (isPosting) {
-      navigate("/");
-    }
-  }, [isPosting]);
 
   return (
     <UpdateWrapper>
