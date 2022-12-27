@@ -14,6 +14,7 @@ const Header = () => {
   const isLogin = false;
   const navigate = useNavigate();
   const [modal, setModal] = useState(false);
+  const [loginState, setLoginState] = useState(false)
 
   if (window.location.pathname === "/postadd") return null;
   if (window.location.pathname === "/postupdate") return null;
@@ -52,7 +53,7 @@ const Header = () => {
               />
             </div>
           )}
-          {isLogin ? (
+          {localStorage.getItem('token') ? (
             <div className="menu">
               <div>
                 <IoMdMoon className="darkMode" />
