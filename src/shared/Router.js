@@ -21,6 +21,7 @@ const Router = () => {
         <Route path="/postadd" element={<PostAdd />} />
         <Route path="/postdetail" element={<PostDetail />} />
         <Route path="/postupdate/:id" element={<PostUpdate />} />
+        <Route path="/postdetail/:id" element={<PostDetail />} />
         <Route path="/userinfo" element={<UserInfo />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
