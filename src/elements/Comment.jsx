@@ -1,12 +1,29 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { MdOutlineAddBox } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { __updateComment } from '../redux/modules/commentSlice';
 
 
 const Comment = () => {
+  const dispatch = useDispatch()
   const [edit, setEdit] = useState(false)
   const [enteredComment, setEnteredComment] = useState("");
 
+  const onEnteredCommentHandler = (event) => {
+    setEnteredComment(event.target.value);
+  };
+
+  const onEditHandler = () => {
+    dispatch(__updateComment(enteredComment))
+    setEdit(false)
+  }
+
+  const startEditHandler = () => {
+    setEdit(true)
+    setEnteredComment()
+  }
+    
   return (
     <>
       <CommentBox>
@@ -21,14 +38,22 @@ const Comment = () => {
             </div>
           </div>
           <div>
-            {edit ? null : <label className='update' onClick={() => setEdit(true)}>수정</label>}
+            {edit ? null : <label className='update' onClick={startEditHandler}>수정</label>}
             <label className='delete'>삭제</label>
           </div>
         </div>
         <ContentBox>
-          <div>
-            <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
-          </div>
+          {edit ? <div>
+            <div>
+              <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
+            </div>
+            <div className='update-area'>
+              <button className='cancel' onClick={() => setEdit(false)}>취소</button>
+              <button className='input-btn' onClick={onEditHandler}>댓글 수정</button>
+            </div>
+          </div> : <div className='content'>
+            좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.
+          </div>}
           <div className='reply'>
             <MdOutlineAddBox className='add-reply' />
             <span>답글 달기</span>
@@ -109,6 +134,38 @@ const ContentBox = styled.div`
   }
   .add-reply {
     font-size: 1rem;
+  }
+  .update-area {
+    display: flex;
+    float: right;
+  }
+  .cancel {
+    width: 5rem;
+    color: #96f2d7;
+    background-color: transparent;
+    border: none;
+    height: 2rem;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-right: 1rem;
+    border-radius: 4px;
+    :hover {
+      background-color: #2A2A2A;
+    }
+  }
+  .input-btn {
+    border: none;
+    background-color: #96f2d7;
+    color: #121212;
+    border-radius: 4px;
+    height: 2rem;
+    padding: 0px 1.25rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    :hover {
+      background-color: #63e6be;
+    }
   }
 `
 
