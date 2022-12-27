@@ -67,11 +67,11 @@ export const __addPost = createAsyncThunk(
   "post/addPost",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.post("http://localhost:3001/posts", payload);
-      window.alert("게시글 작성에 성공했습니다.")
+      const res = await instance.post(`/posts`, payload);
+      window.alert("게시글 작성에 성공했습니다.");
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
-      window.alert("게시글 작성에 실패했습니다.")
+      window.alert("게시글 작성에 실패했습니다.");
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -81,14 +81,17 @@ export const __updatePost = createAsyncThunk(
   "post/updatePost",
   async (payload, thunkAPI) => {
     try {
-      const res = await axios.patch("http://localhost:3001/posts/${payload.postId}", payload)
+      const res = await instance.patch(
+        `/posts/${payload.postId}`,
+        payload
+      );
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
-      window.alert("게시글 작성에 실패했습니다.")
+      window.alert("게시글 작성에 실패했습니다.");
       return thunkAPI.rejectWithValue(error);
     }
   }
-)
+);
 //게시글 삭제
 export const __deletePost = createAsyncThunk(
   "post/deletePost",
@@ -134,31 +137,31 @@ export const postSlice = createSlice({
         state.error = action.payload;
       })
       //게시글 작성
-      // [__addPost.pending]: (state) => {
-      //   state.isLoding = true;
-      // },
-      // [__addPost.fulfilled]: (state, action) => {
-      //   state.isLoding = false;
-      //   state.isPosting = true;
-      //   state.posts = action.payload
-      // },
-      // [__addPost.pending]: (state, action) => {
-      //   state.isLoding = false;
-      //   state.error = action.payload;
-      // },
-      //     //게시글 수정
-      // [__updatePost.pending]: (state) => {
-      //   state.isLoding = true;
-      // },
-      // [__updatePost.fulfilled]: (state, action) => {
-      //   state.isLoding = false;
-      //   state.isPosting = true;
-      //   state.posts = action.payload
-      // },
-      // [__updatePost.pending]: (state, action) => {
-      //   state.isLoding = false;
-      //   state.error = action.payload;
-      // },
+      .addCase(__addPost.pending, (state) => {
+        state.isLoding = true;
+      })
+      .addCase(__addPost.fulfilled, (state, action) => {
+        state.isLoding = false;
+        state.isPosting = true;
+        state.posts = action.payload;
+      })
+      .addCase(__addPost.rejected, (state, action) => {
+        state.isLoding = false;
+        state.error = action.payload;
+      })
+      //게시글 수정
+      .addCase(__updatePost.pending, (state) => {
+        state.isLoding = true;
+      })
+      .addCase(__updatePost.fulfilled, (state, action) => {
+        state.isLoding = false;
+        state.isPosting = true;
+        state.posts = action.payload;
+      })
+      .addCase(__updatePost.rejected, (state, action) => {
+        state.isLoding = false;
+        state.error = action.payload;
+      })
       //게시글 삭제
       .addCase(__deletePost.pending, (state) => {
         state.isLoading = true;
