@@ -20,6 +20,7 @@ const Router = () => {
         <Route path="/loginsignup" element={<LoginSignUp />} />
         <Route path="/postadd" element={<PostAdd />} />
         <Route path="/postdetail" element={<PostDetail />} />
+        <Route path="/postdetail/:id" element={<PostDetail />} />
         <Route path="/postupdate" element={<PostUpdate />} />
         <Route path="/userinfo" element={<UserInfo />} />
         <Route path="/signup" element={<SignUp />} />

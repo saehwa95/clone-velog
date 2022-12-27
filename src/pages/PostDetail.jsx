@@ -1,40 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { HiMail } from "react-icons/hi";
 import Comment from "../elements/Comment";
 import { IoHeartSharp } from "react-icons/io5";
 import { BsShareFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { __getDetail } from "../redux/modules/postSlice";
 import { __addComment } from "../redux/modules/commentSlice";
 
 const PostDetail = () => {
+  
   const [enteredComment, setEnteredComment] = useState("");
+  const isLoding = useSelector(state => state.postSlice.isLoding)
+  const detail = useSelector(state => state.postSlice.detail.post)
+  const date = detail?.createdAt.split('T')[0].split('-')
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  const param =useParams().id
+  const {id} = useParams()
+  
+  console.log(detail);
 
   const onEnteredCommentHandler = (event) => {
     setEnteredComment(event.target.value);
   };
 
   const onSubmitHandler = () => {
-    dispatch(__addComment({param, enteredComment}))
+    dispatch(__addComment({id, enteredComment}))
   };
 
   useEffect(() => {
-    dispatch(__getDetail(param))
-  })
+    dispatch(__getDetail(id))
+  },[isLoding])
 
   return (
     <Wrap>
       <div className="center-div">
         <ContentsBox>
-          <h1>125</h1>
+          <h1>{detail?.title}</h1>
           <div className="writing-info">
             <div>
-              <span className="top-nick">jhchoi1182</span> · <label>3일 전</label>
+              <span className="top-nick">{detail?.user.userName}</span> · <label>{date}</label>
 
             </div>
             <div className="modification">
@@ -43,14 +49,14 @@ const PostDetail = () => {
               <label>삭제 </label>
             </div>
           </div>
-          <div className="content">125</div>
+          <div className="content">{detail?.content}</div>
         </ContentsBox>
         <UserBox>
           <div>
             <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진" />
           </div>
           <div className="user-info">
-            <div className="bottom-nick">최지현</div>
+            <div className="bottom-nick">{detail?.user.userName}</div>
             <div className="intro">안녕하세요</div>
           </div>
         </UserBox>
@@ -60,7 +66,7 @@ const PostDetail = () => {
           </div>
           <div className="comment-input">
             <div>
-              <h3>7개의 댓글</h3>
+              <h3>{detail?._count.comments ? detail?._count.comments : 0}개의 댓글</h3>
             </div>
             <div>
               <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
@@ -70,8 +76,6 @@ const PostDetail = () => {
             </div>
           </div>
           <div className="comment">
-            <Comment />
-            <Comment />
             <Comment />
           </div>
           <div className="copyright">

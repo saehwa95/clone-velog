@@ -1,20 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { IoHeartSharp } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { __getDetail } from '../redux/modules/postSlice';
 
-const Card = () => {
+const Card = ({post}) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch
+
+  const {commentCount, content, createdAt, postId, postImage, privateOption, title, userName} = post
+  const date = createdAt.split('T')[0].split('-')
+
+  const onDetailChange = () => {
+    // dispatch(__getDetail(postId))
+    navigate(`/postdetail/${postId}`)
+  }
 
   return (
-    <VCard onClick={() => navigate('/postdetail')} >
+    <VCard onClick={onDetailChange} >
     <img className='thumbnail' src="https://picok.co.kr/data/file/prayerwoo/m15750122691864/img_m15750122691864_800.jpg" alt="메리크리스마스" />
     <Contents>
-      <h4>제목</h4>
-      <p>동해물과 백두산이 마르고 닳도록 하나님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한 사람 대한으로 길이 보전하세 남산 위에 저 소나무 철갑을 두른 듯 바람서리 불변함은</p>
+      <h4>{title}</h4>
+      <p>{content}</p>
     </Contents>
     <Date>
-      <label>2022년 12월 24일 · 77개의 댓글</label>
+      <label>{`${date[0]}년 ${date[1]}월 ${date[2]}일`} · {commentCount ? commentCount : 0}개의 댓글</label>
     </Date>
     <Bottom>
       <div className='userInfo'>
@@ -22,7 +33,7 @@ const Card = () => {
           <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
         </div>
         <div>
-          <label>by <span>닉네임</span></label>
+          <label>by <span>{userName}</span></label>
         </div>
       </div>
       <div className='likes'>

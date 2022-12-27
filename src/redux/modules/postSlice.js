@@ -130,6 +130,7 @@ export const postSlice = createSlice({
       })
       .addCase(__getDetail.fulfilled, (state, action) => {
         state.isLoading = false;
+        // state.detail = state.posts.filter(post => post.postId === action.payload)
         state.detail = action.payload
       })
       .addCase(__getDetail.rejected, (state, action) => {
