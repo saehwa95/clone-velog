@@ -16,7 +16,7 @@ const PostForm = () => {
   const [content, setContent] = useState("");
   const [postImage, setPostImage] = useState();
   const [privateOption, setPrivateOption] = useState(1);
-  
+
   const dispatch = useDispatch();
 
   const togglePrivate = (option) => {
@@ -32,7 +32,7 @@ const PostForm = () => {
     // form.append("content", content);
     // form.append("privateOption", privateOption);
 
-    dispatch(__addPost({title, content, privateOption}));
+    dispatch(__addPost({ title, content, privateOption }));
 
     console.log(title, content, postImage, privateOption);
   };
@@ -103,6 +103,7 @@ const PostForm = () => {
                   name="postImage"
                   id="postImage"
                   onChange={(e) => setPostImage(e.target.files[0])}
+                  onClick={(e) => (e.target.value = "")}
                 />
               </label>
             </div>

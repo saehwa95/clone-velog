@@ -13,8 +13,9 @@ const Header = () => {
   const navigate = useNavigate();
   const [modal, setModal] = useState(false);
 
+
   if (window.location.pathname === "/postadd") return null;
-  if (window.location.pathname === "/postupdate") return null;
+  if (window.location.pathname.indexOf("/postupdate") === 0) return null;
 
   const toggleModal = () => {
     setModal(!modal);
