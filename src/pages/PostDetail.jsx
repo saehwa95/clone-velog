@@ -66,7 +66,7 @@ const PostDetail = () => {
               <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
             </div>
             <div>
-              <button onClick={onSubmitHandler}>댓글 작성</button>
+              <button className="input-btn" onClick={onSubmitHandler}>댓글 작성</button>
             </div>
           </div>
           <div className="comment">
@@ -207,7 +207,7 @@ const CommentsBox = styled.div`
     color: #ececec;
     outline: none;
   }
-  button {
+  .input-btn {
     float: right;
     border: none;
     background-color: #96f2d7;
