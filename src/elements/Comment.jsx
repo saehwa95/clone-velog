@@ -4,7 +4,8 @@ import { MdOutlineAddBox } from 'react-icons/md';
 
 
 const Comment = () => {
-  const [edit, setEdit] = useState("off")
+  const [edit, setEdit] = useState(false)
+  const [enteredComment, setEnteredComment] = useState("");
 
   return (
     <>
@@ -20,13 +21,13 @@ const Comment = () => {
             </div>
           </div>
           <div>
-            <label className='update' onClick={() => setEdit("on")}>수정</label>
+            {edit ? null : <label className='update' onClick={() => setEdit(true)}>수정</label>}
             <label className='delete'>삭제</label>
           </div>
         </div>
         <ContentBox>
-          <div className='content'>
-            좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.좋은 글 감사합니다.
+          <div>
+            <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
           </div>
           <div className='reply'>
             <MdOutlineAddBox className='add-reply' />
