@@ -11,10 +11,11 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const isLogin = false;
   const navigate = useNavigate();
   const [modal, setModal] = useState(false);
-  const [loginState, setLoginState] = useState(false)
+  const isLoding = useSelector(state => state)
+
+  console.log(isLoding)
 
   if (window.location.pathname === "/postadd") return null;
   if (window.location.pathname === "/postupdate") return null;
@@ -28,7 +29,7 @@ const Header = () => {
       {modal && <LoginSignUp toggleModal={toggleModal} />}
       <Wrap>
         <div className="header">
-          {window.location.pathname.indexOf("/postdetail") === 0 ? (
+          {window.location.pathname.indexOf("/postdetail") === 0 && (
             <div className="velog">
               <img
                 className="v-logo"
@@ -43,7 +44,8 @@ const Header = () => {
                 jhchoi1182.log
               </div>
             </div>
-          ) : (
+          )}
+          {window.location.pathname.indexOf("/postdetail") === -1 && (
             <div className="velog">
               <img
                 className="logo"
@@ -53,7 +55,7 @@ const Header = () => {
               />
             </div>
           )}
-          {localStorage.getItem('token') ? (
+          {localStorage.getItem('token') && (
             <div className="menu">
               <div>
                 <IoMdMoon className="darkMode" />
@@ -71,7 +73,8 @@ const Header = () => {
               />
               <IoMdArrowDropdown className="toggle" />
             </div>
-          ) : (
+          )}
+          {!localStorage.getItem('token') && (
             <div className="menu">
               <div>
                 <IoMdMoon className="darkMode" />

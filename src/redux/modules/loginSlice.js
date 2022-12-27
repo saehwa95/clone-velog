@@ -52,8 +52,8 @@ export const loginUser = createAsyncThunk(
     try {
       const res = await instance.post(`user/login/local`, payload);
 
-      // localStorage.clear();
-      // localStorage.setItem("token",res.)
+      localStorage.clear();
+      localStorage.setItem("token", res.data.token)
       // return thunkAPI.fulfillWithValue(res.)
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
