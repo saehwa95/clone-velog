@@ -17,7 +17,6 @@ const Router = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-
         <Route path="/loginsignup" element={<LoginSignUp />} />
         <Route path="/postadd" element={<PostAdd />} />
         <Route path="/postdetail" element={<PostDetail />} />

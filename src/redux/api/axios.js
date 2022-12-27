@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL: process.env.REACT_APP_MY_API,
+  baseURL: "https://project-i.shop/",
 });
 
 instance.interceptors.request.use((config) => {
-  config.headers.authorization = `Bearer ${localStorage.getItem('token')}`;
+  config.headers.authorization = `Bearer ${localStorage.getItem("token")}`;
   return config;
 });

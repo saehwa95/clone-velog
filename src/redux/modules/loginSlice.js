@@ -1,9 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_MY_API}`,
-});
+import { instance } from "../api/axios";
 
 // export const BlogApi = {
 //   create: async (payload) => await instance.post("api/signup"),
@@ -23,7 +20,7 @@ const initialState = {
       email: "",
       username: "",
       password: "",
-      profileImage: "file",
+      profileImage: "",
     },
   ],
   login: [
@@ -40,7 +37,8 @@ export const signUpUser = createAsyncThunk(
   "SIGNUP_USER",
   async (payload, thunkAPI) => {
     try {
-      const res = await instance.post(`/user/signup`, payload);
+      console.log(payload);
+      const res = await instance.post(`user/signup`, payload);
       // return thunkAPI.fulfillWithValue(res.)
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -52,7 +50,7 @@ export const loginUser = createAsyncThunk(
   "LOGIN_USER",
   async (payload, thunkAPI) => {
     try {
-      const res = await instance.post(`/user/login/local`, payload);
+      const res = await instance.post(`user/login/local`, payload);
 
       // localStorage.clear();
       // localStorage.setItem("token",res.)
