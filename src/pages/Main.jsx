@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "../elements/Card";
 import { BiTrendingUp } from "react-icons/bi";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { HiDotsVertical } from 'react-icons/hi';
+import { useDispatch, useSelector } from "react-redux";
+import { __getPost } from "../redux/modules/postSlice";
 
 const Main = () => {
-  const [toggle, setToggle] = useState("trending") 
+  const [toggle, setToggle] = useState("trending")
+  const posts = useSelector((state => state.posts))
+  const dispatch = useDispatch()
 
   // const onTrendingHandler = () => {
   //   setToggle("trending")
@@ -17,6 +21,10 @@ const Main = () => {
   //   setToggle("new")
   //   dispatch()
   // }
+
+  useEffect(() => {
+    dispatch(__getPost())
+  },[])
 
   return (
     <Wrap>

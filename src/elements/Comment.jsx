@@ -1,19 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { MdOutlineAddBox } from 'react-icons/md';
 
 
 const Comment = () => {
+  const [edit, setEdit] = useState("off")
+
   return (
     <>
       <CommentBox>
         <div className='user-info'>
-          <div>
-            <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
+          <div className='user-info'>
+            <div>
+              <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
+            </div>
+            <div className='user-comment-info'>
+              <div className='nick'>최지현</div>
+              <label>2022년 12월 26일</label>
+            </div>
           </div>
-          <div className='user-comment-info'>
-            <div className='nick'>최지현</div>
-            <label className='data'>2022년 12월 26일</label>
+          <div>
+            <label className='update' onClick={() => setEdit("on")}>수정</label>
+            <label className='delete'>삭제</label>
           </div>
         </div>
         <ContentBox>
@@ -27,7 +35,6 @@ const Comment = () => {
         </ContentBox>
       </CommentBox>    
     </>
-
   )
 }
 
@@ -41,6 +48,7 @@ const CommentBox = styled.div`
     margin-top: 1.4rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
   img {
     width: 3.6rem;
@@ -56,9 +64,22 @@ const CommentBox = styled.div`
       text-decoration: underline;
     }
   }
-  .data {
+  label {
     font-size: 0.9rem;
     color: #ACACAC;
+  }
+  .update {
+    margin-right: 0.5rem;
+    cursor: pointer;
+    :hover {
+      text-decoration: underline;
+    }
+  }
+  .delete {
+    cursor: pointer;
+    :hover {
+      text-decoration: underline;
+    }
   }
 `
 

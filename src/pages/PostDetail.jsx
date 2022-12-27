@@ -1,13 +1,31 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { HiMail } from "react-icons/hi";
 import Comment from "../elements/Comment";
 import { IoHeartSharp } from "react-icons/io5";
 import { BsShareFill } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { __getDetail } from "../redux/modules/postSlice";
+import { __addComment } from "../redux/modules/commentSlice";
 
 const PostDetail = () => {
+  const [enteredComment, setEnteredComment] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const param =useParams().id
+
+  const onEnteredCommentHandler = (event) => {
+    setEnteredComment(event.target.value);
+  };
+
+  const onSubmitHandler = () => {
+    dispatch(__addComment({param, enteredComment}))
+  };
+
+  useEffect(() => {
+    dispatch(__getDetail(param))
+  })
 
   return (
     <Wrap>
@@ -16,8 +34,8 @@ const PostDetail = () => {
           <h1>125</h1>
           <div className="writing-info">
             <div>
-              <span className="top-nick">jhchoi1182</span> ·{" "}
-              <label>3일 전</label>
+              <span className="top-nick">jhchoi1182</span> · <label>3일 전</label>
+
             </div>
             <div className="modification">
               <label>통계 </label>
@@ -29,10 +47,7 @@ const PostDetail = () => {
         </ContentsBox>
         <UserBox>
           <div>
-            <img
-              src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
-              alt="프로필 사진"
-            />
+            <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진" />
           </div>
           <div className="user-info">
             <div className="bottom-nick">최지현</div>
@@ -48,10 +63,10 @@ const PostDetail = () => {
               <h3>7개의 댓글</h3>
             </div>
             <div>
-              <textarea placeholder="댓글을 작성하세요"></textarea>
+              <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
             </div>
             <div>
-              <button>댓글 작성</button>
+              <button onClick={onSubmitHandler}>댓글 작성</button>
             </div>
           </div>
           <div className="comment">
