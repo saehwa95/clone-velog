@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { instance } from "../api/axios";
+import { CommentApi, instance } from "../api/axios";
 
 const initialState = {
   comments: [
@@ -20,53 +20,57 @@ const initialState = {
 
 export const __getComment = createAsyncThunk(
   "comment/getComment",
-  async (id, thunkApi) => {
+  async (id, thunkAPI) => {
     try {
       const response = await instance.get(`/posts/${id}/comments`)
-      return thunkApi.fulfillWithValue(response.data)
+      return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
-      return thunkApi.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error)
     }
   }
 )
 
 export const __addComment = createAsyncThunk(
   "comment/addComment",
-  async (comment, thunkApi) => {
+  async (comment, thunkAPI) => {
     console.log(comment);
     try {
       await instance.post(`/posts/${comment.id}/comments`, {
-        content: comment.content
-      })
-      return thunkApi.fulfillWithValue(comment)
+        content: comment.enteredComment
+      }
+      )
+      const result = await instance.get(`/posts/${comment.id}/comments`);
+
+      return thunkAPI.fulfillWithValue(result.data)
     } catch (error) {
-      return thunkApi.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error)
     }
   }
 )
 
 export const __updateComment = createAsyncThunk(
   "comment/updateComment",
-  async (comment, thunkApi) => {
+  async (comment, thunkAPI) => {
     try {
       await instance.post(`/comments/${comment.id}`, {
         content: comment.content
       })
-      return thunkApi.fulfillWithValue(comment)
+      return thunkAPI.fulfillWithValue(comment)
     } catch (error) {
-      return thunkApi.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error)
     }
   }
 )
 
 export const __deleteComment = createAsyncThunk(
   "comment/deleteComment",
-  async (id, thunkApi) => {
+  async (id, thunkAPI) => {
+    console.log(id);
     try {
-      await instance.delete(`/todos/${id}`)
-      return thunkApi.fulfillWithValue(id)
+      await instance.delete(`/comments/${id}`)
+      return thunkAPI.fulfillWithValue(id)
     } catch (error) {
-      return thunkApi.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error)
     }
   }
 )
@@ -94,7 +98,7 @@ const commentSlice = createSlice({
       })
       .addCase(__addComment.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.comments = [...state.comment, action.payload]
+        state.comments = action.payload
       })
       .addCase(__addComment.rejected, (state, action) => {
         state.isLoading = false;
@@ -118,7 +122,7 @@ const commentSlice = createSlice({
       })
       .addCase(__deleteComment.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.comments = state.comments.filter((comment) => comment.id !== action.payload);
+        state.comments = state.comments.filter((comment) => comment.commentId !== action.payload);
       })
       .addCase(__deleteComment.rejected, (state, action) => {
         state.isLoading = false;
