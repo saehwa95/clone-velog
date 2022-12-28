@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { BsTypeBold, BsTypeItalic, BsImage } from "react-icons/bs";
 import { CgFormatStrike, CgCode } from "react-icons/cg";
@@ -26,15 +26,13 @@ const PostForm = () => {
   const postAddSubmit = (e) => {
     e.preventDefault();
 
-    // const form = new FormData();
-    // form.append("title", title);
-    // form.append("image", postImage);
-    // form.append("content", content);
-    // form.append("privateOption", privateOption);
+    const form = new FormData();
+    form.append("title", title);
+    form.append("postImage", postImage)
+    form.append("content", content);
+    form.append("privateOption", privateOption);
 
-    dispatch(__addPost({ title, content, privateOption }));
-
-    console.log(title, content, postImage, privateOption);
+    dispatch(__addPost(form));
   };
 
   return (
@@ -130,6 +128,7 @@ const PostForm = () => {
                 togglePrivate(1);
               }}
               type="button"
+              className="open"
             >
               <IoEarth style={{ marginRight: "25px" }} />
               전체공개
@@ -202,7 +201,6 @@ const AddForm = styled.form`
     textarea {
       font-size: 1.125rem;
       line-height: 1.5;
-      /* font-style: italic; */
       text-align: top;
       width: 100%;
       height: 530px;

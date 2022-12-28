@@ -349,7 +349,7 @@ const LoginSignUp = (props) => {
                     <div className="underCheck">{passwordInput}</div>
                     <button
                       onClick={loginHandler}
-                      disabled={isEmail && isPassword}
+                      disabled={!(isEmail && isPassword)}
                     >
                       로그인
                     </button>

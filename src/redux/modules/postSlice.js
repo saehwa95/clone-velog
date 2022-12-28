@@ -58,6 +58,7 @@ export const __addPost = createAsyncThunk(
   "post/addPost",
   async (payload, thunkAPI) => {
     try {
+      console.log(payload)
       const res = await instance.post(`/posts`, payload);
       window.alert("게시글 작성에 성공했습니다.");
       window.location.replace("/");
@@ -74,6 +75,7 @@ export const __updatePost = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await instance.patch(`/posts/${payload.postId}`, {title:payload.title, content:payload.content, privateOption:payload.privateOption});
+      window.alert("게시글 수정에 성공했습니다.");
       window.location.replace("/");
       return thunkAPI.fulfillWithValue(res);
     } catch (error) {
