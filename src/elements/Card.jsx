@@ -1,31 +1,31 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { IoHeartSharp } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { __getDetail } from '../redux/modules/postSlice';
 
 const Card = ({post}) => {
   const navigate = useNavigate()
-  const dispatch = useDispatch
 
   const {content, createdAt, postId, title, postImage} = post
   const date = createdAt.split('T')[0].split('-')
 
   const onDetailChange = () => {
-    // dispatch(__getDetail(postId))
     navigate(`/postdetail/${postId}`)
   }
-  
-  console.log(post)
 
   return (
     <VCard onClick={onDetailChange} >
-    <img className='thumbnail' src={postImage} alt="메리크리스마스" />
-    <Contents>
-      <h4>{title}</h4>
-      <p>{content}</p>
-    </Contents>
+      {postImage === null && <NullContents>
+          <h4>{title}</h4>
+          <p>{content}</p>
+        </NullContents>}
+      {postImage !== null && <div>
+        <img className='thumbnail' src={postImage} alt="메리크리스마스" />
+        <Contents>
+          <h4>{title}</h4>
+          <p>{content}</p>
+        </Contents>
+      </div>}
     <Date>
       <label>{`${date[0]}년 ${date[1]}월 ${date[2]}일`} · {post._count.comments ? post._count.comments : 0}개의 댓글</label>
     </Date>
@@ -53,6 +53,7 @@ const Card = ({post}) => {
 
 const VCard = styled.div`
   width: 19.409rem;
+  height: 23.8rem;
   border-radius: 4px;
   background-color: #1E1E1E;
   margin: 1rem;
@@ -83,6 +84,29 @@ const Contents = styled.div`
   overflow: hidden;
   display: -webkit-box;
       -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  h4 {
+    margin-top: -0.4rem;
+    margin-bottom: -0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  p {
+    font-size: 0.875rem;
+    color: #D9D9D9;
+    line-height: 1.5;
+  }
+`
+
+const NullContents = styled.div`
+  padding: 1rem;
+  height: 15rem;
+  overflow: hidden;
+  display: -webkit-box;
+      -webkit-line-clamp: 6;
       -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   word-wrap: break-word;

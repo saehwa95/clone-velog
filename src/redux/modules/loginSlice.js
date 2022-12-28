@@ -42,7 +42,7 @@ export const __signUpUser = createAsyncThunk(
       const res = await instance.post(`user/signup`, payload);
       return thunkAPI.fulfillWithValue(res.data.message);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -57,7 +57,7 @@ export const __dupEmail = createAsyncThunk(
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       window.alert("중복된 이메일이 있습니다");
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -71,7 +71,7 @@ export const __loginUser = createAsyncThunk(
       localStorage.setItem("token", res.data.token);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

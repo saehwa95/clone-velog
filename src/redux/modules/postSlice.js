@@ -36,7 +36,7 @@ export const __getPost = createAsyncThunk(
       const response = await instance.get("/posts");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -48,7 +48,7 @@ export const __getDetail = createAsyncThunk(
       const response = await instance.get(`/posts/${id}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -65,7 +65,7 @@ export const __addPost = createAsyncThunk(
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.");
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -74,13 +74,13 @@ export const __updatePost = createAsyncThunk(
   "post/updatePost",
   async (payload, thunkAPI) => {
     try {
-      const res = await instance.patch(`/posts/${payload.postId}`, {title:payload.title, content:payload.content, privateOption:payload.privateOption});
+      const res = await instance.patch(`/posts/${payload.postId}`, { title: payload.title, content: payload.content, privateOption: payload.privateOption });
       window.alert("게시글 수정에 성공했습니다.");
       window.location.replace("/");
       return thunkAPI.fulfillWithValue(res);
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.");
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -90,9 +90,10 @@ export const __deletePost = createAsyncThunk(
   async (id, thunkApi) => {
     try {
       await instance.delete(`/posts/${id}`);
-      return thunkApi.fulfillWithValue(id);
+      const data = await instance.get("/posts");
+      return thunkApi.fulfillWithValue(data.data);
     } catch (error) {
-      return thunkApi.rejectWithValue(error);
+      return thunkApi.rejectWithValue(error.message);
     }
   }
 );
@@ -158,7 +159,7 @@ export const postSlice = createSlice({
       })
       .addCase(__deletePost.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.posts = state.posts.filter((post) => post.id !== action.payload);
+        state.posts = action.payload;
       })
       .addCase(__deletePost.rejected, (state, action) => {
         state.isLoading = false;

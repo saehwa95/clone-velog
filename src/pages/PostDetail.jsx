@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { HiMail } from "react-icons/hi";
@@ -11,6 +11,7 @@ import { __addComment, __getComment } from "../redux/modules/commentSlice";
 
 const PostDetail = () => {
   const [enteredComment, setEnteredComment] = useState("");
+  const [delBox, setDelBox] = useState(false)
   const isLoding = useSelector(state => state.postSlice.isLoding)
   const detail = useSelector(state => state.postSlice.detail.post)
   const comments = useSelector(state => state.commentSlice.comments)
@@ -29,13 +30,22 @@ const PostDetail = () => {
     setEnteredComment('')
   };
 
+  const onDeleteHandler = () => {
+    dispatch(__deletePost(id))
+    setDelBox(false)
+    navigate('/')
+  }
+
   useEffect(() => {
     dispatch(__getDetail(id))
     dispatch(__getComment(id))
-  },[isLoding])
-
+    if (delBox) document.body.style= `overflow: hidden`;
+    return () => document.body.style = `overflow: auto`
+  }, [isLoding, delBox])
+  
   return (
-    <Wrap>
+    <>
+      <Wrap>
       <div className="center-div">
         <ContentsBox>
           <h1>{detail?.title}</h1>
@@ -49,7 +59,7 @@ const PostDetail = () => {
               <label onClick={() => navigate(`/postupdate/${id}`)}>
                 수정{" "}
               </label>
-              <label onClick={() => dispatch(__deletePost(id))} >삭제 </label>
+              <label onClick={() => setDelBox(true)} >삭제 </label>
             </div>
           </div>
           <div className="content">{detail?.content}</div>
@@ -114,6 +124,18 @@ const PostDetail = () => {
         </div>
       </FixDiv>
     </Wrap>
+    {delBox && <Backdrop />}
+    {delBox && <DeleteBox>
+      <div>
+        <h1>포스트 삭제</h1>
+        <p>정말로 삭제하시겠습니까?</p>
+      </div>
+      <div className="select-box">
+        <button className="cancel" onClick={() => setDelBox(false)}>취소</button>
+        <button className="confirm" onClick={onDeleteHandler}>확인</button>
+      </div>
+    </DeleteBox>}
+    </>
   );
 };
 
@@ -260,7 +282,7 @@ const FixDiv = styled.div`
   position: fixed;
   align-items: center;
   top: 30%;
-  left: 23%;
+  left: calc(50% - 32.1rem);
   .hart-box {
     height: 3rem;
     width: 3rem;
@@ -308,5 +330,62 @@ const FixDiv = styled.div`
     font-size: 1.5rem;
   }
 `;
+
+const Backdrop = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  background-color: rgba( 3, 3, 3, 0.3);
+`
+
+const DeleteBox = styled.div`
+  width: 22rem;
+  height: 9rem;
+  background-color: #1E1E1E;
+  border-radius: 4px;
+  padding: 2rem 1.5rem;
+  box-shadow: rgb(0 0 0 / 9%) 0px 2px 12px 0px;
+  position: fixed;
+  top: 39%;
+  left: 40%;
+  z-index: 10;
+  animation: 0.4s ease-in-out 0s 1 normal forwards running cptskd;
+  h1 {
+    margin: 0px;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    font-weight: bold;
+  }
+  .select-box {
+    float: right;
+  }
+  .select-box > button {
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    padding: 0px 1.25rem;
+    height: 2rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+  .cancel {
+    color: #96F2D7;
+    outline: none;
+    border: none;
+    background: none;
+    margin-right: 0.5rem;
+  }
+  .confirm {
+    color: #121212;
+    background-color: #96F2D7;
+  }
+`
 
 export default PostDetail;
