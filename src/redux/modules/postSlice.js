@@ -73,7 +73,7 @@ export const __updatePost = createAsyncThunk(
   "post/updatePost",
   async (payload, thunkAPI) => {
     try {
-      const res = await instance.patch(`/posts/${payload.postId}`, {title:payload.title, content:payload.content, privateOption:payload.privateOption});
+      const res = await instance.patch(`/posts/${payload.postId}`, { title: payload.title, content: payload.content, privateOption: payload.privateOption });
       window.location.replace("/");
       return thunkAPI.fulfillWithValue(res);
     } catch (error) {
@@ -87,7 +87,7 @@ export const __deletePost = createAsyncThunk(
   "post/deletePost",
   async (id, thunkApi) => {
     try {
-      await instance.delete(`/todos/${id}`);
+      await instance.delete(`/posts/${id}`);
       return thunkApi.fulfillWithValue(id);
     } catch (error) {
       return thunkApi.rejectWithValue(error);
@@ -143,7 +143,6 @@ export const postSlice = createSlice({
         state.isLoding = true;
       })
       .addCase(__updatePost.fulfilled, (state, action) => {
-        console.log(action)
         state.isLoding = false;
         state.posts = action.payload;
       })

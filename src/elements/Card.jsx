@@ -9,7 +9,7 @@ const Card = ({post}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch
 
-  const {commentCount, content, createdAt, postId, postImage, privateOption, title, userName} = post
+  const {content, createdAt, postId, title} = post
   const date = createdAt.split('T')[0].split('-')
 
   const onDetailChange = () => {
@@ -25,7 +25,7 @@ const Card = ({post}) => {
       <p>{content}</p>
     </Contents>
     <Date>
-      <label>{`${date[0]}년 ${date[1]}월 ${date[2]}일`} · {commentCount ? commentCount : 0}개의 댓글</label>
+      <label>{`${date[0]}년 ${date[1]}월 ${date[2]}일`} · {post._count.comments ? post._count.comments : 0}개의 댓글</label>
     </Date>
     <Bottom>
       <div className='userInfo'>
@@ -33,7 +33,7 @@ const Card = ({post}) => {
           <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
         </div>
         <div>
-          <label>by <span>{userName}</span></label>
+          <label>by <span>{post.user.userName}</span></label>
         </div>
       </div>
       <div className='likes'>

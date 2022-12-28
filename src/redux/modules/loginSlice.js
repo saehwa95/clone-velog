@@ -32,6 +32,7 @@ const initialState = {
   isLoading: false,
   error: null,
   dupCheck: false,
+  userId: ""
 };
 
 export const __signUpUser = createAsyncThunk(
@@ -111,12 +112,13 @@ const loginSlice = createSlice({
       state.isLoading = true;
     },
     [__loginUser.fulfilled]: (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
+      state.userId = action.payload.userId
       alert("로그인이 확인되었습니다!");
-      window.location.replace("http://localhost:3000");
+      // window.location.replace("http://localhost:3000");
     },
     [__loginUser.rejected]: (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
       alert("로그인 정보가 일치하지 않습니다!");
     },

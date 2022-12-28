@@ -33,7 +33,6 @@ export const __getComment = createAsyncThunk(
 export const __addComment = createAsyncThunk(
   "comment/addComment",
   async (comment, thunkAPI) => {
-    console.log(comment);
     try {
       await instance.post(`/posts/${comment.id}/comments`, {
         content: comment.enteredComment
@@ -52,7 +51,7 @@ export const __updateComment = createAsyncThunk(
   "comment/updateComment",
   async (comment, thunkAPI) => {
     try {
-      await instance.post(`/comments/${comment.id}`, {
+      await instance.patch(`/comments/${comment.id}`, {
         content: comment.content
       })
       return thunkAPI.fulfillWithValue(comment)
@@ -65,7 +64,6 @@ export const __updateComment = createAsyncThunk(
 export const __deleteComment = createAsyncThunk(
   "comment/deleteComment",
   async (id, thunkAPI) => {
-    console.log(id);
     try {
       await instance.delete(`/comments/${id}`)
       return thunkAPI.fulfillWithValue(id)
@@ -110,7 +108,7 @@ const commentSlice = createSlice({
       })
       .addCase(__updateComment.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.comments = state.comments.map((comment) => (comment.id === action.payload.id ? { ...comment, content: action.payload.content } : comment));
+        state.comments = state.comments.map((comment) => (comment.commentId === action.payload.id ? { ...comment, content: action.payload.content } : comment));
       })
       .addCase(__updateComment.rejected, (state, action) => {
         state.isLoading = false;
