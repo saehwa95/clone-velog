@@ -25,7 +25,7 @@ export const __getComment = createAsyncThunk(
       const response = await instance.get(`/posts/${id}/comments`)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
 )
@@ -38,11 +38,16 @@ export const __addComment = createAsyncThunk(
         content: comment.enteredComment
       }
       )
+      
+      // 디스패치 두개 보내기
+      // 디스패치 보낼 때 .then
+      // const data = thunkAPI.dispatch(__getComment)
       const result = await instance.get(`/posts/${comment.id}/comments`);
+      // CommentApi.read(comment.id)
 
       return thunkAPI.fulfillWithValue(result.data)
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
 )
@@ -56,7 +61,7 @@ export const __updateComment = createAsyncThunk(
       })
       return thunkAPI.fulfillWithValue(comment)
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
 )
@@ -68,7 +73,7 @@ export const __deleteComment = createAsyncThunk(
       await instance.delete(`/comments/${id}`)
       return thunkAPI.fulfillWithValue(id)
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
 )

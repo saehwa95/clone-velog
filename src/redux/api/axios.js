@@ -13,3 +13,7 @@ instance.interceptors.request.use((config) => {
 export const CommentApi = {
   read: async (id) => await instance.get(`/posts/${id}/comments`),
 };
+
+export const PostApi = {
+  read: async (id) => await instance.get("/posts")
+}

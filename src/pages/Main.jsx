@@ -12,16 +12,6 @@ const Main = () => {
   const {posts} = useSelector((state => state.postSlice.posts))
   const dispatch = useDispatch()
 
-  // const onTrendingHandler = () => {
-  //   setToggle("trending")
-  //   dispatch()
-  // }
-
-  // const onNewHandler = () => {
-  //   setToggle("new")
-  //   dispatch()
-  // }
-
   useEffect(() => {
     dispatch(__getPost())
   },[])
@@ -117,11 +107,6 @@ const Top = styled.div`
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-  :hover {
-    color: #ececec;
-    font-weight: 700;
-    border: 2px;
-    }
   :focus {
     color: #ececec;
     font-weight: 700;
@@ -132,7 +117,6 @@ const Top = styled.div`
   .selected-btn {
     color: #ececec;
     font-weight: 700;
-    border: transparent;
     border-bottom: 2px solid #ececec;
   }
   .etc {
