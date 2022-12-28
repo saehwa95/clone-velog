@@ -9,13 +9,15 @@ const Card = ({post}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch
 
-  const {content, createdAt, postId, title} = post
+  const {content, createdAt, postId, title, postImage} = post
   const date = createdAt.split('T')[0].split('-')
 
   const onDetailChange = () => {
     // dispatch(__getDetail(postId))
     navigate(`/postdetail/${postId}`)
   }
+  
+  console.log(post)
 
   return (
     <VCard onClick={onDetailChange} >
