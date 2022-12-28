@@ -19,7 +19,7 @@ const Card = ({post}) => {
 
   return (
     <VCard onClick={onDetailChange} >
-    <img className='thumbnail' src="https://picok.co.kr/data/file/prayerwoo/m15750122691864/img_m15750122691864_800.jpg" alt="메리크리스마스" />
+    <img className='thumbnail' src={postImage} alt="메리크리스마스" />
     <Contents>
       <h4>{title}</h4>
       <p>{content}</p>
