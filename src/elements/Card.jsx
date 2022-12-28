@@ -17,8 +17,6 @@ const Card = ({post}) => {
     navigate(`/postdetail/${postId}`)
   }
   
-  console.log(post)
-
   return (
     <VCard onClick={onDetailChange} >
     <img className='thumbnail' src={postImage} alt="메리크리스마스" />
