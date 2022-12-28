@@ -21,6 +21,8 @@ import { IoClose } from "react-icons/io5";
 import kakao from "../../image/kakao.webp";
 import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
+import defaultProfile from "../../image/defaultProfile.webp";
+
 import {
   __dupEmail,
   __loginUser,
@@ -152,13 +154,13 @@ const LoginSignUp = (props) => {
     ) {
       return alert("회원가입에 필요한 정보를 입력해주세요!");
     }
-    // const blob /= dataURItoBlob(profileImg);
+    const blob = dataURItoBlob(profileImg);
 
     let formData = new FormData();
     formData.append("email", inputSignUp.email);
     formData.append("password", inputSignUp.password);
     formData.append("userName", inputSignUp.userName);
-    // formData.append("profileImage", blob, "img.file");
+    formData.append("profileImage", blob, "img.file");
     // blob.size > 20 && formData.append("image", blob, "img.file");
 
     dispatch(__signUpUser(formData));
@@ -167,8 +169,8 @@ const LoginSignUp = (props) => {
       username: "",
       password: "",
       passwordConfirm: "",
-      // profileImg: null,
     });
+    setProfileImg("");
   };
 
   const dupEmail = () => {
@@ -197,11 +199,7 @@ const LoginSignUp = (props) => {
                 <StImgContainer>
                   <StImg
                     style={{ cursor: "pointer" }}
-                    src={
-                      profileImg
-                        ? profileImg
-                        : "https://addonshop.kr/common/img/default_profile.png"
-                    }
+                    src={profileImg ? profileImg : defaultProfile}
                     onClick={() => {
                       fileInput.current.click();
                     }}
@@ -349,7 +347,7 @@ const LoginSignUp = (props) => {
                     <div className="underCheck">{passwordInput}</div>
                     <button
                       onClick={loginHandler}
-                      disabled={isEmail && isPassword}
+                      disabled={!(isEmail && isPassword)}
                     >
                       로그인
                     </button>
