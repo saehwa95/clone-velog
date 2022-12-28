@@ -1,6 +1,5 @@
-import React from "react";
-import { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   StModalContainer,
   StBackground,
@@ -22,6 +21,7 @@ import kakao from "../../image/kakao.webp";
 import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
 import defaultProfile from "../../image/defaultProfile.webp";
+import { useNavigate } from "react-router-dom";
 
 import {
   __dupEmail,
@@ -31,6 +31,7 @@ import {
 
 const LoginSignUp = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [inputSignUp, setInputSignUp] = useState({
     email: "",
@@ -154,6 +155,7 @@ const LoginSignUp = (props) => {
     ) {
       return alert("회원가입에 필요한 정보를 입력해주세요!");
     }
+
     const blob = dataURItoBlob(profileImg);
 
     let formData = new FormData();
@@ -166,7 +168,7 @@ const LoginSignUp = (props) => {
     dispatch(__signUpUser(formData));
     setInputSignUp({
       email: "",
-      username: "",
+      userName: "",
       password: "",
       passwordConfirm: "",
     });
@@ -189,6 +191,25 @@ const LoginSignUp = (props) => {
     setInputSignUp({ email: "", password: "" });
   };
 
+  const isSignUp = useSelector((state) => state.loginSlice.isSignUp);
+  const isLogin = useSelector((state) => state.loginSlice.isLogin);
+
+  useEffect(() => {
+    if (!isSignUp) return;
+    if (isSignUp) {
+      setToggleOn(!toggleOn);
+    }
+  }, [isSignUp]);
+
+  useEffect(() => {
+    if (!isLogin) return;
+    if (isLogin) {
+      alert("로그인 성공했습니다");
+      props.toggleModal(false);
+      navigate("/");
+    }
+  }, [isLogin]);
+
   return (
     <>
       {toggleOn ? (
@@ -209,6 +230,9 @@ const LoginSignUp = (props) => {
                     style={{ display: "none" }}
                     accept="image/*"
                     name="profileImage"
+                    onClick={(e) => {
+                      e.target.value = null;
+                    }}
                     onChange={profileImgChangeHandler}
                     ref={fileInput}
                   />
@@ -229,7 +253,7 @@ const LoginSignUp = (props) => {
                         className="emailInput"
                         type="text"
                         name="email"
-                        value={inputSignUp.email}
+                        value={inputSignUp.email || ""}
                         onChange={onChangeHandler}
                         placeholder="이메일을 입력하세요."
                       />
@@ -243,7 +267,7 @@ const LoginSignUp = (props) => {
                       <input
                         type="password"
                         name="password"
-                        value={inputSignUp.password}
+                        value={inputSignUp.password || ""}
                         onChange={onChangeHandler}
                         placeholder="비밀번호를 입력하세요."
                       />
@@ -254,7 +278,7 @@ const LoginSignUp = (props) => {
                       <input
                         type="password"
                         name="passwordConfirm"
-                        value={inputSignUp.passwordConfirm}
+                        value={inputSignUp.passwordConfirm || ""}
                         onChange={onChangeHandler}
                         placeholder="비밀번호를 확인하세요."
                       />
@@ -265,7 +289,7 @@ const LoginSignUp = (props) => {
                       <input
                         type="text"
                         name="userName"
-                        value={inputSignUp.userName}
+                        value={inputSignUp.userName || ""}
                         onChange={onChangeHandler}
                         placeholder="닉네임을 입력하세요."
                       />
@@ -274,7 +298,12 @@ const LoginSignUp = (props) => {
                     <button
                       onClick={signUpHandler}
                       disabled={
-                        isEmail && isPassword && isPasswordConfirm && isUserName
+                        !(
+                          isEmail ||
+                          isPassword ||
+                          isPasswordConfirm ||
+                          isUserName
+                        )
                       }
                     >
                       회원가입
@@ -379,4 +408,4 @@ const LoginSignUp = (props) => {
   );
 };
 
-export default LoginSignUp;
+export default React.memo(LoginSignUp);

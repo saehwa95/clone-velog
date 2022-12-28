@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { MdOutlineAddBox } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
-import { __deleteComment, __updateComment } from '../redux/modules/commentSlice';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { MdOutlineAddBox } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  __deleteComment,
+  __updateComment,
+} from "../redux/modules/commentSlice";
 
-const Comment = ({comment}) => {
-  const loginUserId = useSelector(state => state.loginSlice.userId)
-  const dispatch = useDispatch()
-  const [edit, setEdit] = useState(false)
+const Comment = ({ comment }) => {
+  const loginUserId = useSelector((state) => state.loginSlice.userId);
+  const dispatch = useDispatch();
+  const [edit, setEdit] = useState(false);
   const [enteredComment, setEnteredComment] = useState("");
 
   const onEnteredCommentHandler = (event) => {
@@ -15,58 +18,87 @@ const Comment = ({comment}) => {
   };
 
   const onEditHandler = () => {
-    dispatch(__updateComment({id: comment.commentId, content: enteredComment}))
-    setEdit(false)
-  }
+    dispatch(
+      __updateComment({ id: comment.commentId, content: enteredComment })
+    );
+    setEdit(false);
+  };
 
   const startEditHandler = () => {
-    setEdit(true)
-    setEnteredComment()
-  }
+    setEdit(true);
+    setEnteredComment();
+  };
 
-  const date = comment?.createdAt.split('T')[0].split('-')
+  const date = comment?.createdAt.split("T")[0].split("-");
   // console.log(comment.user.userId);
   // console.log(loginUserId);
   return (
     <>
       <CommentBox>
-        <div className='user-info'>
-          <div className='user-info'>
+        <div className="user-info">
+          <div className="user-info">
             <div>
-              <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
+              <img
+                src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
+                alt="프로필 사진"
+              />
             </div>
-            <div className='user-comment-info'>
-              <div className='nick'>{comment?.user.userName}</div>
+            <div className="user-comment-info">
+              <div className="nick">{comment?.user.userName}</div>
               <label>{date}</label>
             </div>
           </div>
-          {comment.user.userId === loginUserId && <div>
-            {edit ? null : <label className='update' onClick={startEditHandler}>수정</label>}
-            <label className='delete' onClick={() => dispatch(__deleteComment(comment.commentId))} >삭제</label>
-          </div>}
+          {comment.user.userId === loginUserId && (
+            <div>
+              {edit ? null : (
+                <label className="update" onClick={startEditHandler}>
+                  수정
+                </label>
+              )}
+              <label
+                className="delete"
+                onClick={() => dispatch(__deleteComment(comment.commentId))}
+              >
+                삭제
+              </label>
+            </div>
+          )}
           {comment.user.userId !== loginUserId && null}
         </div>
         <ContentBox>
-          {edit ? <div>
+          {edit ? (
             <div>
-              <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
+              <div>
+                <textarea
+                  placeholder="댓글을 작성하세요"
+                  type="text"
+                  name="contents"
+                  value={enteredComment}
+                  onChange={onEnteredCommentHandler}
+                  required
+                ></textarea>
+              </div>
+              <div className="update-area">
+                <button className="cancel" onClick={() => setEdit(false)}>
+                  취소
+                </button>
+                <button className="input-btn" onClick={onEditHandler}>
+                  댓글 수정
+                </button>
+              </div>
             </div>
-            <div className='update-area'>
-              <button className='cancel' onClick={() => setEdit(false)}>취소</button>
-              <button className='input-btn' onClick={onEditHandler}>댓글 수정</button>
-            </div>
-          </div> : <div className='content'>
-            {comment?.content}
-          </div>}
-          <div className='reply'>
-            <MdOutlineAddBox className='add-reply' />
+          ) : (
+            <div className="content">{comment?.content}</div>
+          )}
+          <div className="reply">
+            <MdOutlineAddBox className="add-reply" />
             <span>답글 달기</span>
           </div>
         </ContentBox>
       </CommentBox>
     </>
-  )
-}
+  );
+};
 
 const CommentBox = styled.div`
   border: transparent;
@@ -96,7 +128,7 @@ const CommentBox = styled.div`
   }
   label {
     font-size: 0.9rem;
-    color: #ACACAC;
+    color: #acacac;
   }
   .update {
     margin-right: 0.5rem;
@@ -111,7 +143,7 @@ const CommentBox = styled.div`
       text-decoration: underline;
     }
   }
-`
+`;
 
 const ContentBox = styled.div`
   margin-top: 1.5rem;
@@ -126,11 +158,11 @@ const ContentBox = styled.div`
     margin-top: 2.3rem;
     display: flex;
     align-items: center;
-    color: #96F2D7;
+    color: #96f2d7;
     gap: 0.3rem;
     cursor: pointer;
     :hover {
-      color: #63E6BE;
+      color: #63e6be;
     }
   }
   span {
@@ -154,7 +186,7 @@ const ContentBox = styled.div`
     margin-right: 1rem;
     border-radius: 4px;
     :hover {
-      background-color: #2A2A2A;
+      background-color: #2a2a2a;
     }
   }
   .input-btn {
@@ -171,6 +203,6 @@ const ContentBox = styled.div`
       background-color: #63e6be;
     }
   }
-`
+`;
 
-export default Comment
+export default Comment;
