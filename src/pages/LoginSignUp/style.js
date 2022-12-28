@@ -171,10 +171,15 @@ const StLoginLink = styled.div`
   }
 `;
 const StToggleButton = styled.button`
-  border: none;
-  font-size: 1rem;
+  outline: none !important;
+  padding: 0px !important;
+  border: none !important;
+  display: inline !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
   color: #96f2d7 !important;
-  background-color: black !important;
+  background: none !important;
+  cursor: pointer !important;
 `;
 
 export {

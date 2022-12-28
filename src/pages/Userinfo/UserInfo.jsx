@@ -1,9 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import __editUserDetail from "../../redux/modules/loginSlice";
 
 const UserInfo = () => {
+  const dispatch = useDispatch();
   const [tittleBtnToggle, setTittleBtnToggle] = useState(false);
   const [contentBtnToggle, SetContentBtnToggle] = useState(false);
+
+  const userId = useSelector((state) => state.loginSlice.userId);
 
   //이름 수정
   const titleBtnHandler = () => {
