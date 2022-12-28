@@ -36,10 +36,11 @@ export const __getPost = createAsyncThunk(
       const response = await instance.get("/posts");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
+
 //게시글 상세 조회
 export const __getDetail = createAsyncThunk(
   "post/getDetail",
@@ -48,7 +49,7 @@ export const __getDetail = createAsyncThunk(
       const response = await instance.get(`/posts/${id}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -58,41 +59,60 @@ export const __addPost = createAsyncThunk(
   "post/addPost",
   async (payload, thunkAPI) => {
     try {
-      console.log(payload)
       const res = await instance.post(`/posts`, payload);
-      window.alert("게시글 작성에 성공했습니다.");
-      window.location.replace("/");
-      return thunkAPI.fulfillWithValue(res.data);
+      if (res.status === 201) {
+        const { data } = await instance.get("/posts");
+        return thunkAPI.fulfillWithValue(data);
+      }
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.");
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+//게시글 수정 조회
+export const __getUpdatePost = createAsyncThunk(
+  "post" / "getUpdatePost",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await instance.get(`/posts/update/${payload.postId}`);
+      console.log(res);
+      return thunkAPI.fulfillWithValue(res.data);
+    } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
+
 //게시글 수정
 export const __updatePost = createAsyncThunk(
   "post/updatePost",
   async (payload, thunkAPI) => {
     try {
-      const res = await instance.patch(`/posts/${payload.postId}`, {title:payload.title, content:payload.content, privateOption:payload.privateOption});
-      window.alert("게시글 수정에 성공했습니다.");
-      window.location.replace("/");
+      const res = await instance.patch(`/posts/${payload.postId}`, {
+        title: payload.title,
+        content: payload.content,
+        privateOption: payload.privateOption,
+      });
       return thunkAPI.fulfillWithValue(res);
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.");
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
+
 //게시글 삭제
 export const __deletePost = createAsyncThunk(
   "post/deletePost",
   async (id, thunkApi) => {
     try {
       await instance.delete(`/posts/${id}`);
-      return thunkApi.fulfillWithValue(id);
+      const data = await instance.get("/posts");
+      return thunkApi.fulfillWithValue(data.data);
     } catch (error) {
-      return thunkApi.rejectWithValue(error);
+      return thunkApi.rejectWithValue(error.message);
     }
   }
 );
@@ -140,6 +160,18 @@ export const postSlice = createSlice({
         state.isLoding = false;
         state.error = action.payload;
       })
+      //게시글 수정 조회
+      .addCase(__getUpdatePost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(__getUpdatePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts = action.payload;
+      })
+      .addCase(__getUpdatePost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
       //게시글 수정
       .addCase(__updatePost.pending, (state) => {
         state.isLoding = true;
@@ -158,7 +190,7 @@ export const postSlice = createSlice({
       })
       .addCase(__deletePost.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.posts = state.posts.filter((post) => post.id !== action.payload);
+        state.posts = action.payload;
       })
       .addCase(__deletePost.rejected, (state, action) => {
         state.isLoading = false;

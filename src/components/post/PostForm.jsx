@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BsTypeBold, BsTypeItalic, BsImage } from "react-icons/bs";
 import { CgFormatStrike, CgCode } from "react-icons/cg";
@@ -7,8 +7,8 @@ import { FiLink2 } from "react-icons/fi";
 import { FiArrowLeft } from "react-icons/fi";
 import { IoEarth } from "react-icons/io5";
 import { RiLock2Fill } from "react-icons/ri";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { __addPost } from "../../redux/modules/postSlice";
 
 const PostForm = () => {
@@ -18,6 +18,8 @@ const PostForm = () => {
   const [privateOption, setPrivateOption] = useState(1);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const isLoding = useSelector((state)=>state.postSlice.isLoding)
 
   const togglePrivate = (option) => {
     setPrivateOption(option);
@@ -25,15 +27,21 @@ const PostForm = () => {
 
   const postAddSubmit = (e) => {
     e.preventDefault();
-
     const form = new FormData();
     form.append("title", title);
-    form.append("postImage", postImage)
+    form.append("postImage", postImage);
     form.append("content", content);
     form.append("privateOption", privateOption);
-
     dispatch(__addPost(form));
   };
+
+  useEffect(()=>{
+    if (!isLoding) return
+    if(isLoding){
+      alert("게시글 작성 완료!")
+      navigate(`/`)
+    }
+  },[isLoding])
 
   return (
     <PostWrapper>
@@ -128,7 +136,7 @@ const PostForm = () => {
                 togglePrivate(1);
               }}
               type="button"
-              className="open"
+              className={privateOption === 0 ? "" : "open"}
             >
               <IoEarth style={{ marginRight: "25px" }} />
               전체공개
@@ -138,6 +146,7 @@ const PostForm = () => {
                 togglePrivate(0);
               }}
               type="button"
+              className={privateOption === 0 ? "open" : ""}
             >
               <RiLock2Fill style={{ marginRight: "25px" }} />
               비공개
@@ -221,6 +230,10 @@ const AddForm = styled.form`
     height: 3rem;
     gap: 20px;
     margin-bottom: 8px;
+    .open {
+      color: #63e6be;
+      border: 1px solid;
+    }
     button {
       width: 165px;
       height: 50px;

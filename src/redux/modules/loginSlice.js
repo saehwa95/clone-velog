@@ -44,7 +44,7 @@ export const __signUpUser = createAsyncThunk(
       const res = await instance.post(`/user/signup`, payload);
       return thunkAPI.fulfillWithValue(res.data.message);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -73,7 +73,7 @@ export const __loginUser = createAsyncThunk(
       localStorage.setItem("userId", res.data.userId);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );

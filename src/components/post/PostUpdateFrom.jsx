@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import FontEdit from "./FontEdit";
-import { Link, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { __updatePost } from "../../redux/modules/postSlice";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { __getUpdatePost, __updatePost } from "../../redux/modules/postSlice";
 import { RiLock2Fill } from "react-icons/ri";
 import { IoEarth } from "react-icons/io5";
 import { FiArrowLeft } from "react-icons/fi";
@@ -12,19 +12,34 @@ const PostUpdateFrom = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [privateOption, setPrivateOption] = useState(1);
-  const {id} = useParams()
-  console.log(id)
-
+  const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const isLoding = useSelector((state)=>state.postSlice.isLoding)
+
+  useEffect(() => {
+    dispatch(__getUpdatePost({postId:id})).then((res)=>{
+      setTitle(res.payload.post.title)
+      setContent(res.payload.post.content)
+    })
+  }, [])
 
   const postUpdateSubmit = (e) => {
     e.preventDefault();
-    dispatch(__updatePost({ title, content, privateOption, "postId":id }));
+    dispatch(__updatePost({ title, content, privateOption, postId: id }));
   };
 
   const togglePrivate = (option) => {
     setPrivateOption(option);
   };
+
+  useEffect(()=>{
+    if (!isLoding) return
+    if(isLoding){
+      alert("게시글 수정 완료!")
+      navigate(`/postdetail/${id}`)
+    }
+  },[isLoding])
 
   return (
     <UpdateWrapper>
@@ -64,6 +79,7 @@ const PostUpdateFrom = () => {
                 togglePrivate(1);
               }}
               type="button"
+              className={privateOption === 0 ? "" : "open"}
             >
               <IoEarth style={{ marginRight: "25px" }} />
               전체공개
@@ -73,6 +89,7 @@ const PostUpdateFrom = () => {
                 togglePrivate(0);
               }}
               type="button"
+              className={privateOption === 0 ? "open" : ""}
             >
               <RiLock2Fill style={{ marginRight: "25px" }} />
               비공개
@@ -156,6 +173,10 @@ const AddForm = styled.form`
     height: 3rem;
     gap: 20px;
     margin-bottom: 8px;
+    .open {
+      color: #63e6be;
+      border: 1px solid;
+    }
     button {
       width: 165px;
       height: 50px;
