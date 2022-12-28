@@ -80,7 +80,7 @@ const UserInfo = () => {
             </StImgContainer>
             {tittleBtnToggle ? (
               <StInfoArea>
-                <input className="editTitle" placeholder="이름"></input>
+                <h2>닉네임</h2>
                 <input className="editIntro" placeholder="한 줄 소개"></input>
                 <div className="editBtnArea">
                   <button className="editBtn" onClick={titleBtnHandler}>
@@ -90,7 +90,7 @@ const UserInfo = () => {
               </StInfoArea>
             ) : (
               <StInfoArea>
-                <h2>항해중</h2>
+                <h2>닉네임</h2>
                 <h4>개발공부</h4>
                 <button onClick={titleBtnHandler}>수정</button>
               </StInfoArea>
@@ -100,9 +100,12 @@ const UserInfo = () => {
             <StBodyWrapper>
               {contentBtnToggle ? (
                 <StBodyContentBox>
-                  <h3>닉네임</h3>
+                  <h3>벨로그 제목</h3>
 
-                  <input className="editContent" placeholder="닉네임"></input>
+                  <input
+                    className="editContent"
+                    placeholder="벨로그 제목"
+                  ></input>
                   <button
                     className="editContentBtn"
                     onClick={contentBtnToggleHandler}
@@ -260,7 +263,7 @@ const StInfoArea = styled.div`
     background: none;
     cursor: pointer;
   }
-  .editTitle {
+  /* .editTitle {
     width: 530px;
     height: 40px;
     padding: 0.5rem;
@@ -272,7 +275,7 @@ const StInfoArea = styled.div`
     font-weight: 600;
     border: 1px solid #2a2a2a;
     background-color: #1e1e1e;
-  }
+  } */
   .editIntro {
     width: 530px;
     height: 20px;

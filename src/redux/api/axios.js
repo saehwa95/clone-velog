@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL: process.env.REACT_APP_MY_API,
+  baseURL: "https://project-i.shop/",
+  // baseURL: `${process.env.REACT_APP_MY_API}`,
 });
 
 instance.interceptors.request.use((config) => {
@@ -10,5 +11,5 @@ instance.interceptors.request.use((config) => {
 });
 
 export const CommentApi = {
-  read: async (id) => await instance.get(`/posts/${id}/comments`)
-}
+  read: async (id) => await instance.get(`/posts/${id}/comments`),
+};
