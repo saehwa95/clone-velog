@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { MdOutlineAddBox } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { __deleteComment, __updateComment } from '../redux/modules/commentSlice';
 
 const Comment = ({comment}) => {
+  const loginUserId = useSelector(state => state.loginSlice.userId)
   const dispatch = useDispatch()
   const [edit, setEdit] = useState(false)
   const [enteredComment, setEnteredComment] = useState("");
@@ -14,7 +15,7 @@ const Comment = ({comment}) => {
   };
 
   const onEditHandler = () => {
-    dispatch(__updateComment(enteredComment))
+    dispatch(__updateComment({id: comment.commentId, content: enteredComment}))
     setEdit(false)
   }
 
@@ -24,7 +25,8 @@ const Comment = ({comment}) => {
   }
 
   const date = comment?.createdAt.split('T')[0].split('-')
-
+  // console.log(comment.user.userId);
+  // console.log(loginUserId);
   return (
     <>
       <CommentBox>
@@ -34,14 +36,15 @@ const Comment = ({comment}) => {
               <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
             </div>
             <div className='user-comment-info'>
-              <div className='nick'>{comment?.user.useName}</div>
+              <div className='nick'>{comment?.user.userName}</div>
               <label>{date}</label>
             </div>
           </div>
-          <div>
+          {comment.user.userId === loginUserId && <div>
             {edit ? null : <label className='update' onClick={startEditHandler}>수정</label>}
             <label className='delete' onClick={() => dispatch(__deleteComment(comment.commentId))} >삭제</label>
-          </div>
+          </div>}
+          {comment.user.userId !== loginUserId && null}
         </div>
         <ContentBox>
           {edit ? <div>
@@ -60,7 +63,7 @@ const Comment = ({comment}) => {
             <span>답글 달기</span>
           </div>
         </ContentBox>
-      </CommentBox>    
+      </CommentBox>
     </>
   )
 }

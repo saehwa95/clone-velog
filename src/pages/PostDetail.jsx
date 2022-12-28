@@ -6,7 +6,7 @@ import Comment from "../elements/Comment";
 import { IoHeartSharp } from "react-icons/io5";
 import { BsShareFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { __getDetail } from "../redux/modules/postSlice";
+import { __deletePost, __getDetail } from "../redux/modules/postSlice";
 import { __addComment, __getComment } from "../redux/modules/commentSlice";
 
 const PostDetail = () => {
@@ -18,6 +18,7 @@ const PostDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const {id} = useParams()
+  // const [commenCount, setCommentCount] = useState()
 
   const onEnteredCommentHandler = (event) => {
     setEnteredComment(event.target.value);
@@ -25,6 +26,7 @@ const PostDetail = () => {
 
   const onSubmitHandler = () => {
     dispatch(__addComment({ id, enteredComment }));
+    setEnteredComment('')
   };
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const PostDetail = () => {
               <label onClick={() => navigate(`/postupdate/${id}`)}>
                 수정{" "}
               </label>
-              <label>삭제 </label>
+              <label onClick={() => dispatch(__deletePost(id))} >삭제 </label>
             </div>
           </div>
           <div className="content">{detail?.content}</div>
