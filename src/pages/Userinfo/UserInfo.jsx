@@ -75,7 +75,8 @@ const UserInfo = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const onEditProfileImg = () => {
+  const onEditProfileImg = (e) => {
+    e.preventDefault();
     const form = new FormData();
     form.append("userId", Number(userId));
     form.append("imageUrl", profileImage);
@@ -99,9 +100,7 @@ const UserInfo = () => {
                 style={{ display: "none" }}
                 accept="image/*"
                 name="profileImage"
-                onClick={(e) => {
-                  e.target.value = null;
-                }}
+                onClick={(e) => (e.target.value = "")}
                 onChange={profileImgChangeHandler}
                 ref={fileInput}
               />

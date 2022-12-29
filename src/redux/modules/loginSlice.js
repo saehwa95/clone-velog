@@ -105,12 +105,13 @@ export const __updateUserImg = createAsyncThunk(
   "UPDATE_USER_IMG",
   async (payload, thunkAPI) => {
     try {
-      console.log(payload);
-      const res = await instance.patch(`/user/detail/profileImage`, {
-        userId: payload.userId,
-        imageUrl: payload.profileImage,
-        profileImage: payload.editProfileImg,
-      });
+      const res = await instance.patch(`/user/detail/profileImage`, payload
+      // {
+      //   userId: Number(payload.userId),
+      //   imageUrl: payload.profileImage,
+      //   profileImage: payload.editProfileImg,
+      // }
+      );
 
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
@@ -196,7 +197,6 @@ const loginSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(__updateUserImg.fulfilled, (state, action) => {
-        console.log(action);
         state.isLoading = false;
         state.detail = action.payload;
       })
