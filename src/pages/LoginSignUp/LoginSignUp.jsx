@@ -113,7 +113,7 @@ const LoginSignUp = (props) => {
 
     if (name === "password") {
       if (!regPassword.test(value)) {
-        setPasswordInput("영문,숫자 포함 16글자 이내입니다");
+        setPasswordInput("16글자 이내입니다");
         setIsPassword(false);
       } else {
         setPasswordInput("");
@@ -193,6 +193,9 @@ const LoginSignUp = (props) => {
       navigate("/");
     }
   }, [isLogin]);
+
+  const check = inputSignUp.email
+  const Length = inputSignUp.password.length;
 
   return (
     <>
@@ -282,7 +285,7 @@ const LoginSignUp = (props) => {
                     <button
                       onClick={signUpHandler}
                       disabled={
-                        isEmail && isPassword && isPasswordConfirm && isUserName
+                        Length > 16 && inputSignUp.password !== inputSignUp.passwordConfirm && check.indexOf('@') === -1 ? false : true
                       }
                     >
                       회원가입
