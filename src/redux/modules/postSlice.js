@@ -27,6 +27,7 @@ export const initialState = {
   isLoding: false,
   error: false,
   isPosting: false,
+  userName: '',
   isUpdating: false,
 };
 
@@ -177,6 +178,7 @@ export const postSlice = createSlice({
       })
       .addCase(__getDetail.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.userName = action.payload.post.user.userName
         state.detail = action.payload;
       })
       .addCase(__getDetail.rejected, (state, action) => {
