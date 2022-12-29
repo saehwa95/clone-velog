@@ -42,6 +42,8 @@ export const __getPost = createAsyncThunk(
     }
   }
 );
+
+//게시글 트렌딩 조회
 export const __getTrendingPost = createAsyncThunk(
   "post/getTrendingPost",
   async (payload, thunkAPI) => {
