@@ -196,7 +196,6 @@ const loginSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(__updateUserName.fulfilled, (state, action) => {
-        console.log(action);
         state.isLoading = false;
         state.detail = action.payload;
       })
