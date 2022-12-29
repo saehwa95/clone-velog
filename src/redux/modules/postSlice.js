@@ -26,6 +26,8 @@ const initialState = {
   },
   isLoding: false,
   error: false,
+  isPosting: false,
+  isUpdating: false,
 };
 
 //게시글 전체 조회
@@ -176,6 +178,7 @@ export const postSlice = createSlice({
       .addCase(__addPost.fulfilled, (state, action) => {
         state.isLoding = false;
         state.posts = action.payload;
+        state.isPosting = true;
       })
       .addCase(__addPost.rejected, (state, action) => {
         state.isLoding = false;
@@ -200,6 +203,7 @@ export const postSlice = createSlice({
       .addCase(__updatePost.fulfilled, (state, action) => {
         state.isLoding = false;
         state.posts = action.payload;
+        state.isUpdating = true;
       })
       .addCase(__updatePost.rejected, (state, action) => {
         state.isLoding = false;

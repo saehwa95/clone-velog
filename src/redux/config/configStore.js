@@ -5,6 +5,7 @@ import loginSlice from "../modules/loginSlice";
 
 const store = configureStore({
   reducer: { postSlice, loginSlice, commentSlice },
+  devTools:false
 });
 
 export default store;
