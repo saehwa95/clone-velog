@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import __editUserDetail from "../../redux/modules/loginSlice";
+import {__editUserDetail} from "../../redux/modules/loginSlice";
 
 const UserInfo = () => {
   const dispatch = useDispatch();
@@ -11,10 +11,10 @@ const UserInfo = () => {
 
   // const { userId } = useSelector((state) => state.loginSlice);
 
-  // useEffect(() => {
-  //   console.log(userId);
-  //   dispatch(__editUserDetail(userId));
-  // }, []);
+  useEffect(() => {
+    console.log(localStorage.getItem("userId"));
+    dispatch(__editUserDetail(localStorage.getItem("userId")));
+  }, []);
 
   //이름 수정
   const titleBtnHandler = () => {

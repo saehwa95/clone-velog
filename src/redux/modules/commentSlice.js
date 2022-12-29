@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { CommentApi, instance } from "../api/axios";
 
-
-
 const initialState = {
   comments: [
     {
@@ -27,6 +25,9 @@ export const __getComment = createAsyncThunk(
       const response = await instance.get(`/posts/${id}/comments`)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
+
+      if (error.response.data.errorMessage === "게시글이 존재하지 않음") alert("게시글이 존재하지 않습니다.")
+
       return thunkAPI.rejectWithValue(error.message)
     }
   }
@@ -43,6 +44,13 @@ export const __addComment = createAsyncThunk(
       const result = await instance.get(`/posts/${comment.id}/comments`);
       return thunkAPI.fulfillWithValue(result.data)
     } catch (error) {
+
+      const cmtError = error.response.data.errorMessage
+      if (cmtError === "잘못된 요청") alert("잘못된 요청입니다.")
+      else if (cmtError === "게시글이 존재하지 않음") alert("게시글이 존재하지 않습니다.")
+      else if (cmtError === "로그인 정보 없음") alert("로그인이 필요합니다.")
+      else alert("알 수 없는 오류입니다.")
+
       return thunkAPI.rejectWithValue(error.message)
     }
   }
@@ -57,6 +65,14 @@ export const __updateComment = createAsyncThunk(
       })
       return thunkAPI.fulfillWithValue(comment)
     } catch (error) {
+
+      const cmtError = error.response.data.errorMessage
+      if (cmtError === "잘못된 요청") alert("잘못된 요청입니다.")
+      else if (cmtError === "댓글이 존재하지 않음") alert("댓글이 존재하지 않습니다.")
+      else if (cmtError === "유저 정보 불일치") alert("권한이 없습니다.")
+      else if (cmtError === "로그인 정보 없음") alert("로그인이 필요합니다.")
+      else alert("알 수 없는 오류입니다.")
+
       return thunkAPI.rejectWithValue(error.message)
     }
   }
@@ -69,6 +85,13 @@ export const __deleteComment = createAsyncThunk(
       await instance.delete(`/comments/${id}`)
       return thunkAPI.fulfillWithValue(id)
     } catch (error) {
+
+      const cmtError = error.response.data.errorMessage
+      if (cmtError === "댓글이 존재하지 않음") alert("댓글이 존재하지 않습니다.")
+      else if (cmtError === "유저 정보 불일치") alert("권한이 없습니다.")
+      else if (cmtError === "로그인 정보 없음") alert("로그인이 필요합니다.")
+      else alert("알 수 없는 오류입니다.")
+
       return thunkAPI.rejectWithValue(error.message)
     }
   }
@@ -85,7 +108,6 @@ const commentSlice = createSlice({
       })
       .addCase(__getComment.fulfilled, (state, action) => {
         state.isLoading = false;
-        // console.log(action.payload);
         state.comments = action.payload
       })
       .addCase(__getComment.rejected, (state, action) => {
