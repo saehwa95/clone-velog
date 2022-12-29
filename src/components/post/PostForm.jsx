@@ -7,7 +7,7 @@ import { FiLink2 } from "react-icons/fi";
 import { FiArrowLeft } from "react-icons/fi";
 import { IoEarth } from "react-icons/io5";
 import { RiLock2Fill } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __addPost } from "../../redux/modules/postSlice";
 
@@ -18,8 +18,7 @@ const PostForm = () => {
   const [privateOption, setPrivateOption] = useState(1);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const isLoding = useSelector((state)=>state.postSlice.isLoding)
+  const isPosting = useSelector((state)=>state.postSlice.isPosting)
 
   const togglePrivate = (option) => {
     setPrivateOption(option);
@@ -36,12 +35,12 @@ const PostForm = () => {
   };
 
   useEffect(()=>{
-    if (!isLoding) return
-    if(isLoding){
-      alert("게시글 작성 완료!")
-      navigate(`/`)
+    if (!isPosting) return
+    if(isPosting){
+      window.alert("게시글 작성에 성공했습니다.");
+      window.location.replace(`/`)
     }
-  },[isLoding])
+  },[isPosting])
 
   return (
     <PostWrapper>
