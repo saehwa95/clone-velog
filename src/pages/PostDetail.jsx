@@ -10,17 +10,14 @@ import { __deletePost, __getDetail } from "../redux/modules/postSlice";
 import { __addComment, __getComment } from "../redux/modules/commentSlice";
 
 const PostDetail = () => {
-  const isLoding = useSelector(state => state.postSlice.isLoding)
-  const detail = useSelector(state => state.postSlice.detail.post)
-  const comments = useSelector(state => state.commentSlice.comments)
-  const error = useSelector(state => state.commentSlice.error)
+  const isLoding = useSelector((state) => state.postSlice.isLoding);
+  const detail = useSelector((state) => state.postSlice.detail.post);
+  const comments = useSelector((state) => state.commentSlice.comments);
   const [enteredComment, setEnteredComment] = useState("");
-  const [delBox, setDelBox] = useState(false)
-
+  const [delBox, setDelBox] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const {id} = useParams()
-  // const [commenCount, setCommentCount] = useState()
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
   const onEnteredCommentHandler = (event) => {
     setEnteredComment(event.target.value);
@@ -28,121 +25,115 @@ const PostDetail = () => {
 
   const onSubmitHandler = () => {
     dispatch(__addComment({ id, enteredComment }));
-    setEnteredComment('')
+    setEnteredComment("");
   };
 
   const onDeleteHandler = () => {
-    dispatch(__deletePost(id))
-    setDelBox(false)
-    navigate('/')
-  }
+    dispatch(__deletePost(id));
+    setDelBox(false);
+    navigate("/");
+  };
 
   useEffect(() => {
-    dispatch(__getDetail(id))
-    dispatch(__getComment(id))
-    if (delBox) document.body.style= `overflow: hidden`;
-    if (error === 400) alert('게시글이 존재하지 않습니다.')
-    return () => document.body.style = `overflow: auto`
-  }, [isLoding, delBox])
-  
-  const date = detail?.createdAt.split('T')[0]
-  const loginUserId = localStorage.getItem('userId')
-  const profileImage = localStorage.getItem('profileImage')
-  // console.log(loginUserId);
-  // console.log(detail?.user.userId)
-  // console.log(error)
+    dispatch(__getDetail(id));
+    dispatch(__getComment(id));
+    if (delBox) document.body.style = `overflow: hidden`;
+    return () => (document.body.style = `overflow: auto`);
+  }, [isLoding, delBox]);
+
+  const date = detail?.createdAt.split("T")[0];
+  const loginUserId = localStorage.getItem("userId");
+
   return (
     <>
       <Wrap>
-      <div className="center-div">
-        <ContentsBox>
-          <h1>{detail?.title}</h1>
-          <div className="writing-info">
-            <div>
-              <span className="top-nick">{detail?.user.userName}</span> ·{" "}
-              <label>{date}</label>
+        <div className="center-div">
+          <ContentsBox>
+            <h1>{detail?.title}</h1>
+            <div className="writing-info">
+              <div>
+                <span className="top-nick">{detail?.user.userName}</span> · <label>{date}</label>
+              </div>
+              {detail?.user.userId === +loginUserId ? (
+                <div className="modification">
+                  <label>통계 </label>
+                  <label onClick={() => navigate(`/postupdate/${id}`)}>수정 </label>
+                  <label onClick={() => setDelBox(true)}>삭제 </label>
+                </div>
+              ) : null}
             </div>
-            {detail?.user.userId === loginUserId ? <div className="modification">
-              <label>통계 </label>
-              <label onClick={() => navigate(`/postupdate/${id}`)}>
-                수정
-              </label>
-              <label onClick={() => setDelBox(true)} >삭제 </label>
-            </div> : null}
+            <div className="content">
+              {/* {detail?.content.split('\n').map((content,i) => <p key={i}>{content}</p>)} */}
+              <pre>{detail?.content}</pre>
+            </div>
+          </ContentsBox>
+          <UserBox>
+            <div>
+              <img src={detail?.user.profileImage} alt="프로필 사진" />
+            </div>
+            <div className="user-info">
+              <div className="bottom-nick">{detail?.user.userName}</div>
+              <div className="intro">안녕하세요</div>
+            </div>
+          </UserBox>
+          <CommentsBox>
+            <div className="contact">
+              <HiMail className="email" />
+            </div>
+            <div className="comment-input">
+              <div>
+                <h3>{comments.length}개의 댓글</h3>
+              </div>
+              <div>
+                <textarea placeholder="댓글을 작성하세요" type="text" name="contents" value={enteredComment} onChange={onEnteredCommentHandler} required></textarea>
+              </div>
+              <div>
+                <button className="input-btn" onClick={onSubmitHandler}>
+                  댓글 작성
+                </button>
+              </div>
+            </div>
+            <div className="comment">
+              {comments?.map((comment) => (
+                <Comment key={comment.commentId} comment={comment} />
+              ))}
+            </div>
+            <div className="copyright">
+              <div>
+                <a href="https://stellate.co/?ref=powered-by">
+                  <img src="https://graphcdn.io/badge-light.svg" alt="저작권" />
+                </a>
+              </div>
+            </div>
+          </CommentsBox>
+        </div>
+        <FixDiv>
+          <div className="hart-box">
+            <IoHeartSharp className="heart" />
           </div>
-          <div className="content">{detail?.content}</div>
-        </ContentsBox>
-        <UserBox>
+          <div className="likes-number">77</div>
+          <div className="share-box">
+            <BsShareFill className="share" />
+          </div>
+        </FixDiv>
+      </Wrap>
+      {delBox && <Backdrop />}
+      {delBox && (
+        <DeleteBox>
           <div>
-            <img
-              src={profileImage}
-              alt="프로필 사진"
-            />
+            <h1>포스트 삭제</h1>
+            <p>정말로 삭제하시겠습니까?</p>
           </div>
-          <div className="user-info">
-            <div className="bottom-nick">{detail?.user.userName}</div>
-            <div className="intro">안녕하세요</div>
+          <div className="select-box">
+            <button className="cancel" onClick={() => setDelBox(false)}>
+              취소
+            </button>
+            <button className="confirm" onClick={onDeleteHandler}>
+              확인
+            </button>
           </div>
-        </UserBox>
-        <CommentsBox>
-          <div className="contact">
-            <HiMail className="email" />
-          </div>
-          <div className="comment-input">
-            <div>
-              <h3>
-                {detail?._count.comments ? detail?._count.comments : 0}개의 댓글
-              </h3>
-            </div>
-            <div>
-              <textarea
-                placeholder="댓글을 작성하세요"
-                type="text"
-                name="contents"
-                value={enteredComment}
-                onChange={onEnteredCommentHandler}
-                required
-              ></textarea>
-            </div>
-            <div>
-              <button className="input-btn" onClick={onSubmitHandler}>
-                댓글 작성
-              </button>
-            </div>
-          </div>
-          <div className="comment">
-            {comments?.map(comment => <Comment key={comment.commentId} comment={comment} />)}
-          </div>
-          <div className="copyright">
-            <div>
-              <a href="https://stellate.co/?ref=powered-by">
-                <img src="https://graphcdn.io/badge-light.svg" alt="저작권" />
-              </a>
-            </div>
-          </div>
-        </CommentsBox>
-      </div>
-      <FixDiv>
-        <div className="hart-box">
-          <IoHeartSharp className="heart" />
-        </div>
-        <div className="likes-number">77</div>
-        <div className="share-box">
-          <BsShareFill className="share" />
-        </div>
-      </FixDiv>
-    </Wrap>
-    {delBox && <Backdrop />}
-    {delBox && <DeleteBox>
-      <div>
-        <h1>포스트 삭제</h1>
-        <p>정말로 삭제하시겠습니까?</p>
-      </div>
-      <div className="select-box">
-        <button className="cancel" onClick={() => setDelBox(false)}>취소</button>
-        <button className="confirm" onClick={onDeleteHandler}>확인</button>
-      </div>
-    </DeleteBox>}
+        </DeleteBox>
+      )}
     </>
   );
 };
@@ -193,6 +184,9 @@ const ContentsBox = styled.div`
   .content {
     margin-top: 6.3rem;
     font-size: 1.1rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow: auto;  
   }
 `;
 
@@ -346,13 +340,13 @@ const Backdrop = styled.div`
   z-index: 5;
   top: 0;
   left: 0;
-  background-color: rgba( 3, 3, 3, 0.3);
-`
+  background-color: rgba(3, 3, 3, 0.3);
+`;
 
 const DeleteBox = styled.div`
   width: 22rem;
   height: 9rem;
-  background-color: #1E1E1E;
+  background-color: #1e1e1e;
   border-radius: 4px;
   padding: 2rem 1.5rem;
   box-shadow: rgb(0 0 0 / 9%) 0px 2px 12px 0px;
@@ -360,7 +354,6 @@ const DeleteBox = styled.div`
   top: 39%;
   left: 40%;
   z-index: 10;
-  animation: 0.4s ease-in-out 0s 1 normal forwards running cptskd;
   h1 {
     margin: 0px;
     font-size: 1.5rem;
@@ -384,7 +377,7 @@ const DeleteBox = styled.div`
     margin-top: 1rem;
   }
   .cancel {
-    color: #96F2D7;
+    color: #96f2d7;
     outline: none;
     border: none;
     background: none;
@@ -392,8 +385,8 @@ const DeleteBox = styled.div`
   }
   .confirm {
     color: #121212;
-    background-color: #96F2D7;
+    background-color: #96f2d7;
   }
-`
+`;
 
 export default PostDetail;

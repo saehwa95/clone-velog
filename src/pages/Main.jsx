@@ -3,28 +3,28 @@ import styled from "styled-components";
 import Card from "../elements/Card";
 import { BiTrendingUp } from "react-icons/bi";
 import { MdOutlineAccessTime } from "react-icons/md";
-import { HiDotsVertical } from 'react-icons/hi';
+import { HiDotsVertical } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { __getPost, __getTrendingPost } from "../redux/modules/postSlice";
 
 const Main = () => {
-  const [toggle, setToggle] = useState("trending")
-  const {posts} = useSelector((state => state.postSlice.posts))
-  const dispatch = useDispatch()
+  const [toggle, setToggle] = useState("trending");
+  const { posts } = useSelector((state) => state.postSlice.posts);
+  const dispatch = useDispatch();
 
   const onTrendingHandler = () => {
-    setToggle("trending")
-    dispatch(__getTrendingPost())
-  }
+    setToggle("trending");
+    dispatch(__getTrendingPost());
+  };
 
   const onNewHandler = () => {
-    setToggle("new")
-    dispatch(__getPost())
-  }
+    setToggle("new");
+    dispatch(__getPost());
+  };
 
   useEffect(() => {
-    dispatch(__getPost())
-  },[])
+    dispatch(__getTrendingPost());
+  }, []);
 
   return (
     <Wrap>
@@ -32,7 +32,7 @@ const Main = () => {
         <div className="left-div">
           <div className="button-box">
             <button className={toggle === "trending" ? "default selected-btn" : "default"} onClick={onTrendingHandler}>
-              <BiTrendingUp className="trending" /> 
+              <BiTrendingUp className="trending" />
               <span>트렌딩</span>
             </button>
             <button className={toggle === "trending" ? "default" : "default selected-btn"} onClick={onNewHandler}>
@@ -50,12 +50,12 @@ const Main = () => {
           </div>
         </div>
         <div>
-          <HiDotsVertical className="etc"/>
+          <HiDotsVertical className="etc" />
         </div>
       </Top>
       <CardBox>
-        {posts?.map(post => {
-          return <Card key={post.postId} post={post} />
+        {posts?.map((post) => {
+          return <Card key={post?.postId} post={post} />;
         })}
       </CardBox>
     </Wrap>
@@ -117,12 +117,12 @@ const Top = styled.div`
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-  :focus {
-    color: #ececec;
-    font-weight: 700;
-    border: transparent;
-    border-bottom: 2px solid #ececec;
-  }
+    :focus {
+      color: #ececec;
+      font-weight: 700;
+      border: transparent;
+      border-bottom: 2px solid #ececec;
+    }
   }
   .selected-btn {
     color: #ececec;
@@ -140,6 +140,6 @@ const CardBox = styled.div`
   width: 90%;
   display: flex;
   flex-wrap: wrap;
-`
+`;
 
 export default Main;

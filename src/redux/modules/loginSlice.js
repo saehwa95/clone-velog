@@ -27,7 +27,6 @@ const initialState = {
   isLoading: false,
   error: null,
   dupCheck: false,
-  userId: "",
   isLogin: false,
   isSignUp: false,
 };
@@ -39,6 +38,13 @@ export const __signUpUser = createAsyncThunk(
       const res = await instance.post(`/user/signup`, payload);
       return thunkAPI.fulfillWithValue(res.data.message);
     } catch (error) {
+
+      const loginError = error.response.data.errorMessage
+      if (loginError === "중복된 이메일") alert("중복된 이메일입니다.")
+      else if (loginError === "요구사항에 맞지 않는 입력값") alert("요구사항에 맞지 않는 입력값입니다.")
+      else if (loginError === "로그인 정보가 이미 있음") alert("로그인 상태입니다.")
+      else alert("알 수 없는 오류입니다.")
+
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -69,6 +75,13 @@ export const __loginUser = createAsyncThunk(
       localStorage.setItem("profileImage", res.data.profileImage);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
+
+      const loginError = error.response.data.errorMessage
+      if (loginError === "요구사항에 맞지 않는 입력값") alert("요구사항에 맞지 않는 입력값입니다.")
+      else if (loginError === "이메일 또는 비밀번호 불일치") alert("이메일 또는 비밀번호를 다시 확인해주세요.")
+      else if (loginError === "로그인 정보가 이미 있음") alert("로그인 상태입니다.")
+      else alert("알 수 없는 오류입니다.")
+
       return thunkAPI.rejectWithValue(error.message);
     }
   }
@@ -158,7 +171,6 @@ const loginSlice = createSlice({
       })
       .addCase(__loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.userId = action.payload.userId;
         state.isLogin = true;
       })
       .addCase(__loginUser.rejected, (state, action) => {

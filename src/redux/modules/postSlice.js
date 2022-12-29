@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { instance } from "../api/axios";
 
-const initialState = {
+export const initialState = {
   posts: [
     {
       postId: "",
@@ -64,7 +64,9 @@ export const __getDetail = createAsyncThunk(
       const response = await instance.get(`/posts/${id}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      if (error.response.data.errorMessage === "존재하지 않는 게시글") alert('게시글이 존재하지 않습니다.')
+      else alert("알 수 없는 오류입니다.")
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -126,7 +128,15 @@ export const __deletePost = createAsyncThunk(
       const data = await instance.get("/posts");
       return thunkApi.fulfillWithValue(data.data);
     } catch (error) {
-      return thunkApi.rejectWithValue(error.message);
+
+      const postError = error.response.data.errorMessage
+      if (postError === "잘못된 요청") alert("잘못된 요청입니다.")
+      else if (postError === "로그인 정보 없음") alert("로그인이 필요합니다.")
+      else if (postError === "사용자 정보 불일치") alert("권한이 없습니다.")
+      else if (postError === "존재하지 않는 게시글") alert("게시글이 이미 삭제되었습니다.")
+      else alert("알 수 없는 오류입니다.")
+
+      return thunkApi.rejectWithValue(error);
     }
   }
 );

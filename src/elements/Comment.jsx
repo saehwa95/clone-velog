@@ -8,7 +8,6 @@ import {
 } from "../redux/modules/commentSlice";
 
 const Comment = ({ comment }) => {
-  const error = useSelector(state => state.commentSlice.error)
   const [enteredComment, setEnteredComment] = useState("");
   const [edit, setEdit] = useState(false);
   const dispatch = useDispatch();
@@ -28,7 +27,7 @@ const Comment = ({ comment }) => {
   };
 
   const loginUserId = localStorage.getItem('userId')
-  const date = comment?.createdAt.split("T")[0].split("-");
+  const date = comment?.createdAt.split("T")[0];
 
   return (
     <>
@@ -37,7 +36,7 @@ const Comment = ({ comment }) => {
           <div className="user-info">
             <div>
               <img
-                src={comment?.user.profileImae}
+                src={comment?.user.profileImage}
                 alt="프로필 사진"
               />
             </div>
@@ -46,7 +45,7 @@ const Comment = ({ comment }) => {
               <label>{date}</label>
             </div>
           </div>
-          {comment.user.userId === loginUserId && (
+          {comment.user.userId === +loginUserId && (
             <div>
               {edit ? null : (
                 <label className="update" onClick={startEditHandler}>
@@ -61,7 +60,7 @@ const Comment = ({ comment }) => {
               </label>
             </div>
           )}
-          {comment.user.userId !== loginUserId && null}
+          {comment.user.userId !== +loginUserId && null}
         </div>
         <ContentBox>
           {edit ? (
