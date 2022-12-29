@@ -1,33 +1,61 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import __editUserDetail from "../../redux/modules/loginSlice";
+import {
+  __editUserDetail,
+  __updateUserName,
+  __updateUserImg,
+} from "../../redux/modules/loginSlice";
 
 const UserInfo = () => {
   const dispatch = useDispatch();
   const [tittleBtnToggle, setTittleBtnToggle] = useState(false);
   const [contentBtnToggle, SetContentBtnToggle] = useState(false);
+
+  const detail = useSelector((state) => state.loginSlice.detail);
+
+  const [input, setInput] = useState("");
+  const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+  const userId = localStorage.getItem("userId");
+  const profileImage = localStorage.getItem("profileImage");
+  const onEditChangHandler = (e) => {
+    const { name, value } = e.target;
 
-  // const { userId } = useSelector((state) => state.loginSlice);
+    setInput({ ...input, [name]: value });
+  };
 
-  // useEffect(() => {
-  //   console.log(userId);
-  //   dispatch(__editUserDetail(userId));
-  // }, []);
+  const onEditComplete = () => {
+    dispatch(
+      __updateUserName({
+        userId: Number(userId),
+        userName: input.userName,
+      })
+    );
+    setTittleBtnToggle(false);
+  };
 
-  //이름 수정
+  useEffect(() => {
+    dispatch(__editUserDetail(+userId)).then((res) => {
+      setEmail(res.payload.email);
+      setUserName(res.payload.userName);
+      setProfileImg(res.payload.profileImg);
+    });
+  }, []);
+
+  //이름 수정 토글
   const titleBtnHandler = () => {
     setTittleBtnToggle(!tittleBtnToggle);
   };
 
-  //닉네임 수정
+  //닉네임 수정 토글
   const contentBtnToggleHandler = () => {
     SetContentBtnToggle(!contentBtnToggle);
   };
 
   //이미지 state생성
-  const [editProfileImg, setEditProfileImg] = useState("");
+  const [editProfileImg, setEditProfileImg] = useState();
   const fileInput = useRef(null);
 
   //이미지 변경
@@ -47,10 +75,13 @@ const UserInfo = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  //이미지 삭제
-  const deleteImage = () => {
-    URL.revokeObjectURL(editProfileImg);
-    setEditProfileImg("");
+  const onEditProfileImg = () => {
+    const form = new FormData();
+    form.append("userId", Number(userId));
+    form.append("imageUrl", profileImage);
+    form.append("profileImage", editProfileImg);
+    dispatch(__updateUserImg(form));
+    console.log(Number(userId), profileImage, editProfileImg);
   };
 
   return (
@@ -60,11 +91,7 @@ const UserInfo = () => {
           <StHeaderContainer>
             <StImgContainer>
               <img
-                src={
-                  editProfileImg
-                    ? editProfileImg
-                    : "https://addonshop.kr/common/img/default_profile.png"
-                }
+                src={editProfileImg ? editProfileImg : detail.profileImage}
                 alt="userImg"
               />
               <input
@@ -85,24 +112,32 @@ const UserInfo = () => {
               >
                 이미지 업로드
               </StUploadBtn>
-              <StDeleteBtn onClick={() => deleteImage()}>
-                이미지 제거
-              </StDeleteBtn>
+              <StSaveBtn onClick={onEditProfileImg}>이미지 저장</StSaveBtn>
             </StImgContainer>
             {tittleBtnToggle ? (
               <StInfoArea>
                 <h2>닉네임</h2>
-                <input className="editIntro" placeholder="닉네임"></input>
+                <input
+                  className="editIntro"
+                  type="text"
+                  name="userName"
+                  value={input.userName || ""}
+                  onChange={onEditChangHandler}
+                  placeholder="닉네임"
+                ></input>
                 <div className="editBtnArea">
-                  <button className="editBtn" onClick={titleBtnHandler}>
+                  <button className="editBtn" onClick={onEditComplete}>
                     저장
+                  </button>
+                  <button className="editBtn" onClick={titleBtnHandler}>
+                    취소
                   </button>
                 </div>
               </StInfoArea>
             ) : (
               <StInfoArea>
                 <h2>닉네임</h2>
-                <h4>개발공부</h4>
+                <h4>{detail.userName}</h4>
                 <button onClick={titleBtnHandler}>수정</button>
               </StInfoArea>
             )}
@@ -128,13 +163,12 @@ const UserInfo = () => {
                 <StBodyContentBox>
                   <h3>이메일</h3>
 
-                  <StEditTitle>onBoard.log</StEditTitle>
-                  <button onClick={contentBtnToggleHandler}>수정</button>
+                  <StEditTitle>{detail.email}</StEditTitle>
                 </StBodyContentBox>
               )}
 
               <div className="textColor">
-                회원가입시 나타나는 페이지 제목입니다.
+                회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
               </div>
             </StBodyWrapper>
 
@@ -153,7 +187,7 @@ const UserInfo = () => {
                 <StEditTitle>onBoard</StEditTitle>
               </StBodyContentBox>
               <div className="textColor">
-                회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
+                회원가입시 나타나는 페이지 제목입니다.
               </div>
             </StBodyWrapper>
             <StBodyWrapper>
@@ -230,7 +264,7 @@ const StUploadBtn = styled.button`
   margin-top: 0.5rem;
   text-align: center;
 `;
-const StDeleteBtn = styled.button`
+const StSaveBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -274,19 +308,6 @@ const StInfoArea = styled.div`
     background: none;
     cursor: pointer;
   }
-  /* .editTitle {
-    width: 530px;
-    height: 40px;
-    padding: 0.5rem;
-    line-height: 1rem;
-    font-size: 1.5rem;
-    border-radius: 4px;
-    outline: none;
-    color: white;
-    font-weight: 600;
-    border: 1px solid #2a2a2a;
-    background-color: #1e1e1e;
-  } */
   .editIntro {
     width: 530px;
     height: 20px;
@@ -301,6 +322,7 @@ const StInfoArea = styled.div`
     display: flex;
     justify-content: flex-end;
     margin-top: 1rem;
+    gap: 10px;
   }
   .editBtn {
     display: flex !important;
