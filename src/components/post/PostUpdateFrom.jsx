@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import FontEdit from "./FontEdit";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __getUpdatePost, __updatePost } from "../../redux/modules/postSlice";
 import { RiLock2Fill } from "react-icons/ri";
@@ -14,15 +14,14 @@ const PostUpdateFrom = () => {
   const [privateOption, setPrivateOption] = useState(1);
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const isLoding = useSelector((state)=>state.postSlice.isLoding)
+  const isUpdating = useSelector((state) => state.postSlice.isUpdating);
 
   useEffect(() => {
-    dispatch(__getUpdatePost({postId:id})).then((res)=>{
-      setTitle(res.payload.post.title)
-      setContent(res.payload.post.content)
-    })
-  }, [])
+    dispatch(__getUpdatePost({ postId: id })).then((res) => {
+      setTitle(res.payload.post.title);
+      setContent(res.payload.post.content);
+    });
+  }, []);
 
   const postUpdateSubmit = (e) => {
     e.preventDefault();
@@ -33,13 +32,13 @@ const PostUpdateFrom = () => {
     setPrivateOption(option);
   };
 
-  useEffect(()=>{
-    if (!isLoding) return
-    if(isLoding){
-      alert("게시글 수정 완료!")
-      navigate(`/postdetail/${id}`)
+  useEffect(() => {
+    if (!isUpdating) return;
+    if (isUpdating) {
+      window.alert("게시글 수정이 완료되었습니다.");
+      window.location.replace(`/postdetail/${id}`)
     }
-  },[isLoding])
+  }, [isUpdating]);
 
   return (
     <UpdateWrapper>

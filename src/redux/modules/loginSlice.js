@@ -16,7 +16,14 @@ const initialState = {
       password: "",
     },
   ],
-  detail: {},
+  detail: [
+    {
+      email: "",
+      userId: "",
+      userName: "",
+      profileImage: "",
+    },
+  ],
   isLoading: false,
   error: null,
   dupCheck: false,
@@ -84,7 +91,6 @@ export const __editUserDetail = createAsyncThunk(
   "EDIT_USER_DETAIL",
   async (payload, thunkAPI) => {
     try {
-      console.log(payload);
       const res = await instance.post(`/user/detail/`, { userId: payload });
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
@@ -93,6 +99,38 @@ export const __editUserDetail = createAsyncThunk(
   }
 );
 
+export const __updateUserName = createAsyncThunk(
+  "UPDATE_USERNAME",
+  async (payload, thunkAPI) => {
+    try {
+      const res = await instance.patch(`/user/detail/userName`, {
+        userName: payload.userName,
+        userId: payload.userId,
+      });
+      return thunkAPI.fulfillWithValue(res.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const __updateUserImg = createAsyncThunk(
+  "UPDATE_USER_IMG",
+  async (payload, thunkAPI) => {
+    try {
+      console.log(payload);
+      const res = await instance.patch(`/user/detail/profileImage`, {
+        userId: payload.userId,
+        imageUrl: payload.profileImage,
+        profileImage: payload.editProfileImg,
+      });
+
+      return thunkAPI.fulfillWithValue(res.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 const loginSlice = createSlice({
   name: "user",
   initialState,
@@ -146,10 +184,35 @@ const loginSlice = createSlice({
       })
       .addCase(__editUserDetail.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action.payload);
         state.detail = action.payload;
       })
       .addCase(__editUserDetail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(__updateUserName.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(__updateUserName.fulfilled, (state, action) => {
+        console.log(action);
+        state.isLoading = false;
+        state.detail = action.payload;
+      })
+      .addCase(__updateUserName.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(__updateUserImg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(__updateUserImg.fulfilled, (state, action) => {
+        console.log(action);
+        state.isLoading = false;
+        state.detail = action.payload;
+      })
+      .addCase(__updateUserImg.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

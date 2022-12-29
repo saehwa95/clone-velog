@@ -47,22 +47,8 @@ const LoginSignUp = (props) => {
   };
 
   //이미지 state생성
-  const [profileImg, setProfileImg] = useState("");
+  const [profileImg, setProfileImg] = useState();
   const fileInput = useRef(null);
-
-  // dataURL을 Blob으로 변환
-  // const dataURItoBlob = (dataURI) => {
-  //   const splitDataURI = dataURI.split(",");
-  //   const byteString =
-  //     splitDataURI[0].indexOf("base64") >= 0
-  //       ? atob(splitDataURI[1])
-  //       : decodeURI(splitDataURI[1]);
-  //   const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
-  //   const ia = new Uint8Array(byteString.length);
-  //   for (let i = 0; i < byteString.length; i++)
-  //     ia[i] = byteString.charCodeAt(i);
-  //   return new Blob([ia], { type: mimeString });
-  // };
 
   //이미지 변경
   const profileImgChangeHandler = (e) => {
@@ -156,16 +142,14 @@ const LoginSignUp = (props) => {
       return alert("회원가입에 필요한 정보를 입력해주세요!");
     }
 
-    // const blob = dataURItoBlob(profileImg);
-
     let formData = new FormData();
     formData.append("email", inputSignUp.email);
     formData.append("password", inputSignUp.password);
     formData.append("userName", inputSignUp.userName);
     formData.append("profileImage", profileImg);
-    // blob.size > 20 && formData.append("image", blob, "img.file");
 
     dispatch(__signUpUser(formData));
+
     setInputSignUp({
       email: "",
       userName: "",
@@ -298,12 +282,7 @@ const LoginSignUp = (props) => {
                     <button
                       onClick={signUpHandler}
                       disabled={
-                        !(
-                          isEmail ||
-                          isPassword ||
-                          isPasswordConfirm ||
-                          isUserName
-                        )
+                        isEmail && isPassword && isPasswordConfirm && isUserName
                       }
                     >
                       회원가입
