@@ -55,21 +55,24 @@ const UserInfo = () => {
   };
 
   //이미지 state생성
-  const [editProfileImg, setEditProfileImg] = useState();
+  const [editProfileImg, setEditProfileImg] = useState(); // 미리보기용
+  const [updateImgData, setUpdateImgData] = useState(); // 서버에대 보내줄 데이터
   const fileInput = useRef(null);
 
   //이미지 변경
   const profileImgChangeHandler = (e) => {
     if (e.target.files[0]) {
-      setEditProfileImg(e.target.files[0]);
+      setUpdateImgData(e.target.files[0]);
     } else {
       setEditProfileImg(editProfileImg);
       return;
     }
+
+    /* 미리보기를 해주고싶다. reader 객체로 뺌 */
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setEditProfileImg(reader.result);
+        setEditProfileImg(reader.result); // 화면에 보여주고싶은 친구
       }
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -80,7 +83,7 @@ const UserInfo = () => {
     const form = new FormData();
     form.append("userId", Number(userId));
     form.append("imageUrl", profileImage);
-    form.append("profileImage", editProfileImg);
+    form.append("profileImage", updateImgData);
     dispatch(__updateUserImg(form));
   };
 

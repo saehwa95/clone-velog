@@ -2,28 +2,23 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { instance } from "../api/axios";
 
 const initialState = {
-  signup: [
-    {
-      email: "",
-      userName: "",
-      password: "",
-      profileImage: "",
-    },
-  ],
-  login: [
-    {
-      email: "",
-      password: "",
-    },
-  ],
-  detail: [
-    {
-      email: "",
-      userId: "",
-      userName: "",
-      profileImage: "",
-    },
-  ],
+  signup: {
+    email: "",
+    userName: "",
+    password: "",
+    profileImage: "",
+  },
+  login: {
+    email: "",
+    password: "",
+  },
+  detail: {
+    email: "",
+    userId: "",
+    userName: "",
+    profileImage: "",
+  },
+
   isLoading: false,
   error: null,
   dupCheck: false,
@@ -38,12 +33,13 @@ export const __signUpUser = createAsyncThunk(
       const res = await instance.post(`/user/signup`, payload);
       return thunkAPI.fulfillWithValue(res.data.message);
     } catch (error) {
-
-      const loginError = error.response.data.errorMessage
-      if (loginError === "중복된 이메일") alert("중복된 이메일입니다.")
-      else if (loginError === "요구사항에 맞지 않는 입력값") alert("요구사항에 맞지 않는 입력값입니다.")
-      else if (loginError === "로그인 정보가 이미 있음") alert("로그인 상태입니다.")
-      else alert("알 수 없는 오류입니다.")
+      const loginError = error.response.data.errorMessage;
+      if (loginError === "중복된 이메일") alert("중복된 이메일입니다.");
+      else if (loginError === "요구사항에 맞지 않는 입력값")
+        alert("요구사항에 맞지 않는 입력값입니다.");
+      else if (loginError === "로그인 정보가 이미 있음")
+        alert("로그인 상태입니다.");
+      else alert("알 수 없는 오류입니다.");
 
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -75,12 +71,14 @@ export const __loginUser = createAsyncThunk(
       localStorage.setItem("profileImage", res.data.profileImage);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
-
-      const loginError = error.response.data.errorMessage
-      if (loginError === "요구사항에 맞지 않는 입력값") alert("요구사항에 맞지 않는 입력값입니다.")
-      else if (loginError === "이메일 또는 비밀번호 불일치") alert("이메일 또는 비밀번호를 다시 확인해주세요.")
-      else if (loginError === "로그인 정보가 이미 있음") alert("로그인 상태입니다.")
-      else alert("알 수 없는 오류입니다.")
+      const loginError = error.response.data.errorMessage;
+      if (loginError === "요구사항에 맞지 않는 입력값")
+        alert("요구사항에 맞지 않는 입력값입니다.");
+      else if (loginError === "이메일 또는 비밀번호 불일치")
+        alert("이메일 또는 비밀번호를 다시 확인해주세요.");
+      else if (loginError === "로그인 정보가 이미 있음")
+        alert("로그인 상태입니다.");
+      else alert("알 수 없는 오류입니다.");
 
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -117,13 +115,16 @@ export const __updateUserName = createAsyncThunk(
 export const __updateUserImg = createAsyncThunk(
   "UPDATE_USER_IMG",
   async (payload, thunkAPI) => {
+    console.log(payload);
     try {
-      const res = await instance.patch(`/user/detail/profileImage`, payload
-      // {
-      //   userId: Number(payload.userId),
-      //   imageUrl: payload.profileImage,
-      //   profileImage: payload.editProfileImg,
-      // }
+      const res = await instance.patch(
+        `/user/detail/profileImage`,
+        payload
+        // {
+        //   userId: Number(payload.userId),
+        //   imageUrl: payload.profileImage,
+        //   profileImage: payload.editProfileImg,
+        // }
       );
 
       return thunkAPI.fulfillWithValue(res.data);
@@ -160,7 +161,7 @@ const loginSlice = createSlice({
       })
       .addCase(__dupEmail.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.dupCheck = action.payload;
+        state.dupCheck = true;
       })
       .addCase(__dupEmail.rejected, (state, action) => {
         state.isLoading = false;
@@ -197,7 +198,7 @@ const loginSlice = createSlice({
       })
       .addCase(__updateUserName.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.detail = action.payload;
+        state.detail.userName = action.payload.userName;
       })
       .addCase(__updateUserName.rejected, (state, action) => {
         state.isLoading = false;

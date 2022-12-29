@@ -5,30 +5,20 @@ import { IoMdQuote } from "react-icons/io";
 import { FiLink2 } from "react-icons/fi";
 import styled from "styled-components";
 
-const FontEdit = () => {
+const FontEdit = ({ setPostImage }) => {
   return (
     <FontWrapper>
-      <div className="div-box">
-        <div className="font-size">
-          H<span>1</span>
-        </div>
-      </div>
-      <div className="div-box">
-        <div className="font-size">
-          H<span>2</span>
-        </div>
-      </div>
-      <div className="div-box">
-        <div className="font-size">
-          H<span>3</span>
-        </div>
-      </div>
-      <div className="div-box">
-        <div className="font-size">
-          H<span>4</span>
-        </div>
-      </div>
+      {[1, 2, 3, 4].map((value, index) => {
+        return (
+          <div className="div-box" key={`fontEdit-h-${index}`}>
+            <div className="font-size">
+              H<span>{value}</span>
+            </div>
+          </div>
+        );
+      })}
       <span className="division">ㅣ</span>
+
       <div className="div-box">
         <BsTypeBold style={{ fontSize: "24px" }} />
       </div>
@@ -38,7 +28,9 @@ const FontEdit = () => {
       <div className="div-box">
         <CgFormatStrike style={{ fontSize: "24px" }} />
       </div>
+
       <span className="division">ㅣ</span>
+
       <div className="div-box">
         <IoMdQuote style={{ fontSize: "20px" }} />
       </div>
@@ -48,7 +40,13 @@ const FontEdit = () => {
       <div className="div-box">
         <label>
           <BsImage style={{ fontSize: "20px" }} />
-          <input type="file" accept="image/*" />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              setPostImage(e.target.files[0]);
+            }}
+          />
         </label>
       </div>
       <div className="div-box">

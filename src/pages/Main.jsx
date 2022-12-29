@@ -31,11 +31,21 @@ const Main = () => {
       <Top>
         <div className="left-div">
           <div className="button-box">
-            <button className={toggle === "trending" ? "default selected-btn" : "default"} onClick={onTrendingHandler}>
+            <button
+              className={
+                toggle === "trending" ? "default selected-btn" : "default"
+              }
+              onClick={onTrendingHandler}
+            >
               <BiTrendingUp className="trending" />
               <span>트렌딩</span>
             </button>
-            <button className={toggle === "trending" ? "default" : "default selected-btn"} onClick={onNewHandler}>
+            <button
+              className={
+                toggle === "trending" ? "default" : "default selected-btn"
+              }
+              onClick={onNewHandler}
+            >
               <MdOutlineAccessTime className="time" />
               <span>최신</span>
             </button>

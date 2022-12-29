@@ -176,6 +176,7 @@ const LoginSignUp = (props) => {
   };
 
   const isSignUp = useSelector((state) => state.loginSlice.isSignUp);
+  const dupCheck = useSelector((state) => state.loginSlice.dupCheck);
   const isLogin = useSelector((state) => state.loginSlice.isLogin);
 
   useEffect(() => {
@@ -194,9 +195,25 @@ const LoginSignUp = (props) => {
     }
   }, [isLogin]);
 
-  const check = inputSignUp.email
+  const check = inputSignUp.email;
   const Length = inputSignUp.password.length;
 
+  const signUpValidation = React.useMemo(() => {
+    if (inputSignUp.email.indexOf("@") === -1) {
+      return false;
+    } else if (Length > 16) {
+      return false;
+    } else if (inputSignUp.password !== inputSignUp.passwordConfirm) {
+      return false;
+    } else if (dupCheck === false) {
+      return false;
+    } else if (inputSignUp.userName === "") {
+      return false;
+    } else {
+      return true;
+    }
+  }, [inputSignUp, dupCheck]);
+  console.log(signUpValidation);
   return (
     <>
       {toggleOn ? (
@@ -244,7 +261,14 @@ const LoginSignUp = (props) => {
                         onChange={onChangeHandler}
                         placeholder="이메일을 입력하세요."
                       />
-                      <button className="emailBtn" onClick={dupEmail}  disabled={inputSignUp.email.indexOf("@") === -1 ? true : false} >
+                      <button
+                        className="emailBtn"
+                        onClick={dupEmail}
+                        disabled={
+                          // validation
+                          inputSignUp.email.indexOf("@") === -1 ? true : false
+                        }
+                      >
                         중복 확인
                       </button>
                     </div>
@@ -284,9 +308,7 @@ const LoginSignUp = (props) => {
                     <div className="underCheck">{userNameInput}</div>
                     <button
                       onClick={signUpHandler}
-                      disabled={
-                        Length > 16  || inputSignUp.password !== inputSignUp.passwordConfirm || check.indexOf('@') === -1 ? true : false
-                      }
+                      disabled={!signUpValidation}
                     >
                       회원가입
                     </button>

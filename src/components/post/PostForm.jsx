@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { BsTypeBold, BsTypeItalic, BsImage } from "react-icons/bs";
-import { CgFormatStrike, CgCode } from "react-icons/cg";
-import { IoMdQuote } from "react-icons/io";
-import { FiLink2 } from "react-icons/fi";
 import { FiArrowLeft } from "react-icons/fi";
 import { IoEarth } from "react-icons/io5";
 import { RiLock2Fill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { __addPost } from "../../redux/modules/postSlice";
+import { __addPost, __cleanUp } from "../../redux/modules/postSlice";
+import FontEdit from "./FontEdit";
 
 const PostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [postImage, setPostImage] = useState();
   const [privateOption, setPrivateOption] = useState(1);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isPosting = useSelector((state)=>state.postSlice.isPosting)
+  const isPosting = useSelector((state) => state.postSlice.isPosting);
 
   const togglePrivate = (option) => {
     setPrivateOption(option);
@@ -34,13 +31,17 @@ const PostForm = () => {
     dispatch(__addPost(form));
   };
 
-  useEffect(()=>{
-    if (!isPosting) return
-    if(isPosting){
+  useEffect(() => {
+    if (!isPosting) return;
+    if (isPosting) {
       window.alert("게시글 작성에 성공했습니다.");
-      window.location.replace(`/`)
+      // window.location.replace(`/`);
+      navigate("/");
     }
-  },[isPosting])
+    return () => {
+      dispatch(__cleanUp());
+    };
+  }, [isPosting]);
 
   return (
     <PostWrapper>
@@ -61,61 +62,7 @@ const PostForm = () => {
           <div className="postAdd-tag">
             <span>태그를 입력하세요</span>
           </div>
-          <FontWrapper>
-            <div className="div-box">
-              <div className="font-size">
-                H<span>1</span>
-              </div>
-            </div>
-            <div className="div-box">
-              <div className="font-size">
-                H<span>2</span>
-              </div>
-            </div>
-            <div className="div-box">
-              <div className="font-size">
-                H<span>3</span>
-              </div>
-            </div>
-            <div className="div-box">
-              <div className="font-size">
-                H<span>4</span>
-              </div>
-            </div>
-            <span className="division">ㅣ</span>
-            <div className="div-box">
-              <BsTypeBold style={{ fontSize: "24px" }} />
-            </div>
-            <div className="div-box">
-              <BsTypeItalic style={{ fontSize: "24px" }} />
-            </div>
-            <div className="div-box">
-              <CgFormatStrike style={{ fontSize: "24px" }} />
-            </div>
-            <span className="division">ㅣ</span>
-            <div className="div-box">
-              <IoMdQuote style={{ fontSize: "20px" }} />
-            </div>
-            <div className="div-box">
-              <FiLink2 style={{ fontSize: "20px" }} />
-            </div>
-            <div className="div-box">
-              <label htmlFor="postImage">
-                <BsImage style={{ fontSize: "20px" }} />
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="postImage"
-                  id="postImage"
-                  onChange={(e) => setPostImage(e.target.files[0])}
-                  onClick={(e) => (e.target.value = "")}
-                />
-              </label>
-            </div>
-            <div className="div-box">
-              <CgCode style={{ fontSize: "24px" }} />
-            </div>
-          </FontWrapper>
+          <FontEdit setPostImage={setPostImage} />
           <div className="postAdd-content">
             <label>
               <textarea

@@ -27,7 +27,7 @@ export const initialState = {
   isLoding: false,
   error: false,
   isPosting: false,
-  userName: '',
+  userName: "",
   isUpdating: false,
 };
 
@@ -65,8 +65,9 @@ export const __getDetail = createAsyncThunk(
       const response = await instance.get(`/posts/${id}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      if (error.response.data.errorMessage === "존재하지 않는 게시글") alert('게시글이 존재하지 않습니다.')
-      else alert("알 수 없는 오류입니다.")
+      if (error.response.data.errorMessage === "존재하지 않는 게시글")
+        alert("게시글이 존재하지 않습니다.");
+      else alert("알 수 없는 오류입니다.");
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -129,13 +130,13 @@ export const __deletePost = createAsyncThunk(
       const data = await instance.get("/posts");
       return thunkApi.fulfillWithValue(data.data);
     } catch (error) {
-
-      const postError = error.response.data.errorMessage
-      if (postError === "잘못된 요청") alert("잘못된 요청입니다.")
-      else if (postError === "로그인 정보 없음") alert("로그인이 필요합니다.")
-      else if (postError === "사용자 정보 불일치") alert("권한이 없습니다.")
-      else if (postError === "존재하지 않는 게시글") alert("게시글이 이미 삭제되었습니다.")
-      else alert("알 수 없는 오류입니다.")
+      const postError = error.response.data.errorMessage;
+      if (postError === "잘못된 요청") alert("잘못된 요청입니다.");
+      else if (postError === "로그인 정보 없음") alert("로그인이 필요합니다.");
+      else if (postError === "사용자 정보 불일치") alert("권한이 없습니다.");
+      else if (postError === "존재하지 않는 게시글")
+        alert("게시글이 이미 삭제되었습니다.");
+      else alert("알 수 없는 오류입니다.");
 
       return thunkApi.rejectWithValue(error);
     }
@@ -146,7 +147,11 @@ export const __deletePost = createAsyncThunk(
 export const postSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    __cleanUp(state, action) {
+      state.isPosting = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       //게시글 전체 조회
@@ -178,7 +183,7 @@ export const postSlice = createSlice({
       })
       .addCase(__getDetail.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.userName = action.payload.post.user.userName
+        state.userName = action.payload.post.user.userName;
         state.detail = action.payload;
       })
       .addCase(__getDetail.rejected, (state, action) => {
@@ -237,5 +242,7 @@ export const postSlice = createSlice({
       });
   },
 });
+
+export const { __cleanUp } = postSlice.actions;
 
 export default postSlice.reducer;
