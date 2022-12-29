@@ -1,5 +1,5 @@
-import React from 'react'
-import GlobalStyle from './components/ui/GlobalStyle';
+import React from "react";
+import GlobalStyle from "./components/ui/GlobalStyle";
 import Router from "./shared/Router";
 
 const App = () => {
@@ -8,8 +8,7 @@ const App = () => {
       <GlobalStyle />
       <Router />
     </>
+  );
+};
 
-  )
-}
-
-export default App
+export default App;
