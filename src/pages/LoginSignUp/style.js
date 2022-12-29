@@ -37,7 +37,7 @@ const StModalBlock = styled.div`
   top: 7rem;
   background-color: white;
   display: flex;
-  animation: modal-show 0.7s;
+  animation: modal-show 0.4s;
   @keyframes modal-show {
     from {
       opacity: 0;
@@ -156,7 +156,7 @@ const StLink = styled.div`
 const StLoginLink = styled.div`
   position: absolute;
   top: 500px;
-  right: 10px;
+  right: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -171,10 +171,15 @@ const StLoginLink = styled.div`
   }
 `;
 const StToggleButton = styled.button`
-  border: none;
-  font-size: 1rem;
+  outline: none !important;
+  padding: 0px !important;
+  border: none !important;
+  display: inline !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
   color: #96f2d7 !important;
-  background-color: black !important;
+  background: none !important;
+  cursor: pointer !important;
 `;
 
 export {

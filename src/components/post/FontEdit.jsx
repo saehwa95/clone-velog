@@ -48,7 +48,7 @@ const FontEdit = () => {
       <div className="div-box">
         <label>
           <BsImage style={{ fontSize: "20px" }} />
-          <input type="file" accept="image/*" required />
+          <input type="file" accept="image/*" />
         </label>
       </div>
       <div className="div-box">

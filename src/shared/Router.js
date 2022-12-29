@@ -4,11 +4,9 @@ import Main from "../pages/Main";
 import PostAdd from "../pages/PostAdd";
 import PostDetail from "../pages/PostDetail";
 import PostUpdate from "../pages/PostUpdate";
-
 import LoginSignUp from "../pages/LoginSignUp/LoginSignUp";
 import Header from "./Header";
 import UserInfo from "../pages/Userinfo/UserInfo";
-import SignUp from "../pages/LoginSignUp/SignUp";
 
 const Router = () => {
   return (
@@ -16,13 +14,12 @@ const Router = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Main />} />
-
         <Route path="/loginsignup" element={<LoginSignUp />} />
         <Route path="/postadd" element={<PostAdd />} />
         <Route path="/postdetail" element={<PostDetail />} />
-        <Route path="/postupdate" element={<PostUpdate />} />
+        <Route path="/postupdate/:id" element={<PostUpdate />} />
+        <Route path="/postdetail/:id" element={<PostDetail />} />
         <Route path="/userinfo" element={<UserInfo />} />
-        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </BrowserRouter>
   );

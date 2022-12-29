@@ -7,7 +7,7 @@ import { FiLink2 } from "react-icons/fi";
 import { FiArrowLeft } from "react-icons/fi";
 import { IoEarth } from "react-icons/io5";
 import { RiLock2Fill } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { __addPost } from "../../redux/modules/postSlice";
 
@@ -17,9 +17,8 @@ const PostForm = () => {
   const [postImage, setPostImage] = useState();
   const [privateOption, setPrivateOption] = useState(1);
 
-  const isPosting = useSelector((state) => state.postSlice.isPosting);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const isPosting = useSelector((state)=>state.postSlice.isPosting)
 
   const togglePrivate = (option) => {
     setPrivateOption(option);
@@ -27,24 +26,21 @@ const PostForm = () => {
 
   const postAddSubmit = (e) => {
     e.preventDefault();
-
     const form = new FormData();
     form.append("title", title);
-    form.append("image", postImage);
+    form.append("postImage", postImage);
     form.append("content", content);
     form.append("privateOption", privateOption);
-
-    dispatch(__addPost({ form }));
-
-    console.log(title, content, postImage, privateOption);
+    dispatch(__addPost(form));
   };
 
-  useEffect(() => {
-    if (!isPosting) return;
-    if (isPosting) {
-      navigate("/");
+  useEffect(()=>{
+    if (!isPosting) return
+    if(isPosting){
+      window.alert("게시글 작성에 성공했습니다.");
+      window.location.replace(`/`)
     }
-  }, [isPosting]);
+  },[isPosting])
 
   return (
     <PostWrapper>
@@ -112,6 +108,7 @@ const PostForm = () => {
                   name="postImage"
                   id="postImage"
                   onChange={(e) => setPostImage(e.target.files[0])}
+                  onClick={(e) => (e.target.value = "")}
                 />
               </label>
             </div>
@@ -138,6 +135,7 @@ const PostForm = () => {
                 togglePrivate(1);
               }}
               type="button"
+              className={privateOption === 0 ? "" : "open"}
             >
               <IoEarth style={{ marginRight: "25px" }} />
               전체공개
@@ -147,6 +145,7 @@ const PostForm = () => {
                 togglePrivate(0);
               }}
               type="button"
+              className={privateOption === 0 ? "open" : ""}
             >
               <RiLock2Fill style={{ marginRight: "25px" }} />
               비공개
@@ -210,7 +209,6 @@ const AddForm = styled.form`
     textarea {
       font-size: 1.125rem;
       line-height: 1.5;
-      font-style: italic;
       text-align: top;
       width: 100%;
       height: 530px;
@@ -231,6 +229,10 @@ const AddForm = styled.form`
     height: 3rem;
     gap: 20px;
     margin-bottom: 8px;
+    .open {
+      color: #63e6be;
+      border: 1px solid;
+    }
     button {
       width: 165px;
       height: 50px;
@@ -322,7 +324,6 @@ const AddForm = styled.form`
       }
     }
   }
-
   input {
     width: 100%;
     background-color: #121212;

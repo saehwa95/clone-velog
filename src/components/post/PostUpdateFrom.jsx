@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import FontEdit from "./FontEdit";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { __updatePost } from "../../redux/modules/postSlice";
+import { __getUpdatePost, __updatePost } from "../../redux/modules/postSlice";
 import { RiLock2Fill } from "react-icons/ri";
 import { IoEarth } from "react-icons/io5";
 import { FiArrowLeft } from "react-icons/fi";
@@ -12,14 +12,20 @@ const PostUpdateFrom = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [privateOption, setPrivateOption] = useState(1);
-
-  const isPosting = useSelector((state) => state.postSlice.isPosting);
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const isUpdating = useSelector((state) => state.postSlice.isUpdating);
 
-  const postAddSubmit = (e) => {
+  useEffect(() => {
+    dispatch(__getUpdatePost({ postId: id })).then((res) => {
+      setTitle(res.payload.post.title);
+      setContent(res.payload.post.content);
+    });
+  }, []);
+
+  const postUpdateSubmit = (e) => {
     e.preventDefault();
-    dispatch(__updatePost({ title, content, privateOption }));
+    dispatch(__updatePost({ title, content, privateOption, postId: id }));
   };
 
   const togglePrivate = (option) => {
@@ -27,15 +33,16 @@ const PostUpdateFrom = () => {
   };
 
   useEffect(() => {
-    if (!isPosting) return;
-    if (isPosting) {
-      navigate("/");
+    if (!isUpdating) return;
+    if (isUpdating) {
+      window.alert("게시글 수정이 완료되었습니다.");
+      window.location.replace(`/postdetail/${id}`)
     }
-  }, [isPosting]);
+  }, [isUpdating]);
 
   return (
     <UpdateWrapper>
-      <AddForm onSubmit={postAddSubmit}>
+      <AddForm onSubmit={postUpdateSubmit}>
         <Main>
           <div className="postAdd-title">
             <label>
@@ -71,6 +78,7 @@ const PostUpdateFrom = () => {
                 togglePrivate(1);
               }}
               type="button"
+              className={privateOption === 0 ? "" : "open"}
             >
               <IoEarth style={{ marginRight: "25px" }} />
               전체공개
@@ -80,6 +88,7 @@ const PostUpdateFrom = () => {
                 togglePrivate(0);
               }}
               type="button"
+              className={privateOption === 0 ? "open" : ""}
             >
               <RiLock2Fill style={{ marginRight: "25px" }} />
               비공개
@@ -143,7 +152,6 @@ const AddForm = styled.form`
     textarea {
       font-size: 1.125rem;
       line-height: 1.5;
-      font-style: italic;
       text-align: top;
       width: 100%;
       height: 530px;
@@ -164,6 +172,10 @@ const AddForm = styled.form`
     height: 3rem;
     gap: 20px;
     margin-bottom: 8px;
+    .open {
+      color: #63e6be;
+      border: 1px solid;
+    }
     button {
       width: 165px;
       height: 50px;

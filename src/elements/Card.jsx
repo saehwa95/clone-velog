@@ -1,47 +1,65 @@
-import React from 'react'
-import styled from 'styled-components'
-import { IoHeartSharp } from 'react-icons/io5';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { IoHeartSharp } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
-const Card = () => {
-  const navigate = useNavigate()
+const Card = ({ post }) => {
+  const { content, createdAt, postId, title, postImage } = post;
+  const navigate = useNavigate();
+
+  const date = createdAt.split("T")[0].split("-");
 
   return (
-    <VCard onClick={() => navigate('/postdetail')} >
-    <img className='thumbnail' src="https://picok.co.kr/data/file/prayerwoo/m15750122691864/img_m15750122691864_800.jpg" alt="메리크리스마스" />
-    <Contents>
-      <h4>제목</h4>
-      <p>동해물과 백두산이 마르고 닳도록 하나님이 보우하사 우리나라 만세 무궁화 삼천리 화려강산 대한 사람 대한으로 길이 보전하세 남산 위에 저 소나무 철갑을 두른 듯 바람서리 불변함은</p>
-    </Contents>
-    <Date>
-      <label>2022년 12월 24일 · 77개의 댓글</label>
-    </Date>
-    <Bottom>
-      <div className='userInfo'>
+    <VCard onClick={() => navigate(`/postdetail/${postId}`)}>
+      {postImage === null && (
+        <NullContents>
+          <h4>{title}</h4>
+          <p>{content}</p>
+        </NullContents>
+      )}
+      {postImage !== null && (
         <div>
-          <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
+          <img className="thumbnail" src={postImage} alt="메리크리스마스" />
+          <Contents>
+            <h4>{title}</h4>
+            <p>{content}</p>
+          </Contents>
         </div>
-        <div>
-          <label>by <span>닉네임</span></label>
+      )}
+      <Date>
+        <label>
+          {`${date[0]}년 ${date[1]}월 ${date[2]}일`} · {post._count.comments ? post._count.comments : 0}개의 댓글
+        </label>
+      </Date>
+      <Bottom>
+        <div className="userInfo">
+          <div>
+            <img src={post?.user.profileImage} alt="프로필 사진" />
+          </div>
+          <div>
+            <label>
+              by <span>{post.user.userName}</span>
+            </label>
+          </div>
         </div>
-      </div>
-      <div className='likes'>
-        <div>
-          <IoHeartSharp className='heart' />
+        <div className="likes">
+          <div>
+            <IoHeartSharp className="heart" />
+          </div>
+          <div>
+            <label>77</label>
+          </div>
         </div>
-        <div>
-          <label>77</label>
-        </div>
-      </div>
-    </Bottom>
-  </VCard>
-  )
-}
+      </Bottom>
+    </VCard>
+  );
+};
 
 const VCard = styled.div`
   width: 19.409rem;
+  height: 23.8rem;
   border-radius: 4px;
-  background-color: #1E1E1E;
+  background-color: #1e1e1e;
   margin: 1rem;
   cursor: pointer;
   :hover {
@@ -54,23 +72,26 @@ const VCard = styled.div`
       to {
         margin: 0px 1rem 1rem 1rem;
       }
-  }
+    }
   }
   .thumbnail {
-  width: 100%;
-  height: 11rem;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-}
-`
+    width: 100%;
+    height: 11rem;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    @media screen {
+      
+    }
+  }
+`;
 
 const Contents = styled.div`
   padding: 1rem;
   height: 4rem;
   overflow: hidden;
   display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   word-wrap: break-word;
   h4 {
@@ -82,24 +103,55 @@ const Contents = styled.div`
   }
   p {
     font-size: 0.875rem;
-    color: #D9D9D9;
+    color: #d9d9d9;
     line-height: 1.5;
   }
-`
+`;
+
+const NullContents = styled.div`
+  padding: 1rem;
+  height: 8.4rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  margin-bottom: 7.55rem;
+  h4 {
+    margin-top: -0.4rem;
+    margin-bottom: -0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  p {
+    font-size: 0.875rem;
+    color: #d9d9d9;
+    line-height: 1.5;
+  }
+`;
 
 const Date = styled.div`
   margin-top: 0.7rem;
   padding: 1rem;
   font-size: 0.75rem;
-  color: #ACACAC;
-`
+  color: #acacac;
+`;
+
+const NullDate = styled.div`
+  margin-top: 0.7rem;
+  padding: 1rem;
+  font-size: 0.75rem;
+  color: #acacac;
+`;
 
 const Bottom = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.625rem 1rem;
-  border-top: 1px solid #2A2A2A;
+  border-top: 1px solid #2a2a2a;
   font-size: 0.75rem;
   .userInfo {
     display: flex;
@@ -120,6 +172,6 @@ const Bottom = styled.div`
     font-size: 1rem;
     margin-top: 0.1rem;
   }
-`
+`;
 
-export default Card
+export default Card;

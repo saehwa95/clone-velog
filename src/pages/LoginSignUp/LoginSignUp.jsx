@@ -1,5 +1,5 @@
-import React from "react";
-import { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   StModalContainer,
   StBackground,
@@ -20,26 +20,35 @@ import { IoClose } from "react-icons/io5";
 import kakao from "../../image/kakao.webp";
 import github from "../../image/github.webp";
 import facebook from "../../image/facebook.webp";
+import defaultProfile from "../../image/defaultProfile.webp";
+import { useNavigate } from "react-router-dom";
+
+import {
+  __dupEmail,
+  __loginUser,
+  __signUpUser,
+} from "../../redux/modules/loginSlice";
 
 const LoginSignUp = (props) => {
-  const [profileImg, setProfileImg] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [inputSignUp, setInputSignUp] = useState({
+    email: "",
+    userName: "",
+    password: "",
+    passwordConfirm: "",
+  });
+
+  //모달 토글
   const [toggleOn, setToggleOn] = useState(false);
-
-  const fileInput = useRef(null);
-
-  // dataURL을 Blob으로 변환
-  const dataURItoBlob = (dataURI) => {
-    const splitDataURI = dataURI.split(",");
-    const byteString =
-      splitDataURI[0].indexOf("base64") >= 0
-        ? atob(splitDataURI[1])
-        : decodeURI(splitDataURI[1]);
-    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
-    const ia = new Uint8Array(byteString.length);
-    for (let i = 0; i < byteString.length; i++)
-      ia[i] = byteString.charCodeAt(i);
-    return new Blob([ia], { type: mimeString });
+  const toggleHandler = () => {
+    setToggleOn(!toggleOn);
   };
+
+  //이미지 state생성
+  const [profileImg, setProfileImg] = useState();
+  const fileInput = useRef(null);
 
   //이미지 변경
   const profileImgChangeHandler = (e) => {
@@ -58,10 +67,132 @@ const LoginSignUp = (props) => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  //모달 토글
-  const toggleHandler = () => {
-    setToggleOn(!toggleOn);
+  //회원가입inputSignUp 스테이트 구조분해 할당(for 각 상태관리, 유효성검사)
+  const { userName, email, password, passwordConfirm } = inputSignUp;
+
+  //회원가입input창 상태관리 위해 초기값 세팅
+  const [userNameInput, setUserNameInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordConfirmInput, setPasswordConfirmInput] = useState("");
+
+  const [isUserName, setIsUserName] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+
+  //정규식
+  const regEmail =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  const regPassword = /^[A-Za-z0-9]{4,16}$/;
+  const regUserName = /^[A-Za-z가-힣]{1,20}$/;
+
+  const onChangeHandler = (e) => {
+    const { value, name } = e.target;
+    setInputSignUp({ ...inputSignUp, [name]: value });
+
+    if (name === "email") {
+      if (!regEmail.test(value)) {
+        setEmailInput("올바른 이메일 주소를 입력하세요");
+        setIsEmail(false);
+      } else {
+        setEmailInput("");
+        setIsEmail(true);
+      }
+    }
+
+    if (name === "userName") {
+      if (!regUserName.test(value)) {
+        setUserNameInput("");
+        setIsUserName(false);
+      } else {
+        setUserNameInput("");
+        setIsUserName(true);
+      }
+    }
+
+    if (name === "password") {
+      if (!regPassword.test(value)) {
+        setPasswordInput("영문,숫자 포함 16글자 이내입니다");
+        setIsPassword(false);
+      } else {
+        setPasswordInput("");
+        setIsPassword(true);
+      }
+    }
+
+    if (name === "passwordConfirm") {
+      if (password !== value) {
+        setPasswordConfirmInput("비밀번호 확인이 일치하지 않습니다");
+        setIsPasswordConfirm(false);
+      } else {
+        setPasswordConfirmInput("");
+        setIsPasswordConfirm(true);
+      }
+    }
   };
+
+  const signUpHandler = () => {
+    if (
+      email.trim() === "" ||
+      userName.trim() === "" ||
+      password.trim() === "" ||
+      passwordConfirm.trim() === ""
+    ) {
+      return alert("회원가입에 필요한 정보를 입력해주세요!");
+    }
+
+    let formData = new FormData();
+    formData.append("email", inputSignUp.email);
+    formData.append("password", inputSignUp.password);
+    formData.append("userName", inputSignUp.userName);
+    formData.append("profileImage", profileImg);
+
+    dispatch(__signUpUser(formData));
+
+    setInputSignUp({
+      email: "",
+      userName: "",
+      password: "",
+      passwordConfirm: "",
+    });
+    setProfileImg("");
+  };
+
+  const dupEmail = () => {
+    dispatch(__dupEmail({ email: inputSignUp.email }));
+  };
+
+  const loginHandler = () => {
+    if (email.trim() === "" || password.trim() === "") {
+      return alert("아이디랑 비밀번호를 입력해주세요!");
+    }
+    const payload = {
+      email,
+      password,
+    };
+    dispatch(__loginUser(payload));
+    setInputSignUp({ email: "", password: "" });
+  };
+
+  const isSignUp = useSelector((state) => state.loginSlice.isSignUp);
+  const isLogin = useSelector((state) => state.loginSlice.isLogin);
+
+  useEffect(() => {
+    if (!isSignUp) return;
+    if (isSignUp) {
+      setToggleOn(!toggleOn);
+    }
+  }, [isSignUp]);
+
+  useEffect(() => {
+    if (!isLogin) return;
+    if (isLogin) {
+      alert("로그인 성공했습니다");
+      props.toggleModal(false);
+      navigate("/");
+    }
+  }, [isLogin]);
 
   return (
     <>
@@ -73,11 +204,7 @@ const LoginSignUp = (props) => {
                 <StImgContainer>
                   <StImg
                     style={{ cursor: "pointer" }}
-                    src={
-                      profileImg
-                        ? profileImg
-                        : "https://addonshop.kr/common/img/default_profile.png"
-                    }
+                    src={profileImg ? profileImg : defaultProfile}
                     onClick={() => {
                       fileInput.current.click();
                     }}
@@ -86,7 +213,10 @@ const LoginSignUp = (props) => {
                     type="file"
                     style={{ display: "none" }}
                     accept="image/*"
-                    name="profile_img"
+                    name="profileImage"
+                    onClick={(e) => {
+                      e.target.value = null;
+                    }}
                     onChange={profileImgChangeHandler}
                     ref={fileInput}
                   />
@@ -105,23 +235,58 @@ const LoginSignUp = (props) => {
                     <div className="emailWrapper">
                       <input
                         className="emailInput"
+                        type="text"
+                        name="email"
+                        value={inputSignUp.email || ""}
+                        onChange={onChangeHandler}
                         placeholder="이메일을 입력하세요."
                       />
-                      <button className="emailBtn">중복 확인</button>
+                      <button className="emailBtn" onClick={dupEmail}>
+                        중복 확인
+                      </button>
                     </div>
+                    <div className="underCheck">{emailInput}</div>
                     <h4>비밀번호</h4>
                     <div>
-                      <input placeholder="비밀번호를 입력하세요." />
+                      <input
+                        type="password"
+                        name="password"
+                        value={inputSignUp.password || ""}
+                        onChange={onChangeHandler}
+                        placeholder="비밀번호를 입력하세요."
+                      />
                     </div>
+                    <div className="underCheck">{passwordInput}</div>
                     <h4>비밀번호 재확인</h4>
                     <div>
-                      <input placeholder="비밀번호를 확인하세요." />
+                      <input
+                        type="password"
+                        name="passwordConfirm"
+                        value={inputSignUp.passwordConfirm || ""}
+                        onChange={onChangeHandler}
+                        placeholder="비밀번호를 확인하세요."
+                      />
                     </div>
+                    <div className="underCheck">{passwordConfirmInput}</div>
                     <h4>닉네임</h4>
                     <div>
-                      <input placeholder="닉네임을 입력하세요." />
+                      <input
+                        type="text"
+                        name="userName"
+                        value={inputSignUp.userName || ""}
+                        onChange={onChangeHandler}
+                        placeholder="닉네임을 입력하세요."
+                      />
                     </div>
-                    <button>회원가입</button>
+                    <div className="underCheck">{userNameInput}</div>
+                    <button
+                      onClick={signUpHandler}
+                      disabled={
+                        isEmail && isPassword && isPasswordConfirm && isUserName
+                      }
+                    >
+                      회원가입
+                    </button>
                     <h4>소셜 계정으로 로그인</h4>
                     <StIconContainer>
                       <img src={kakao} alt="kakao" />
@@ -168,13 +333,32 @@ const LoginSignUp = (props) => {
                   <h4>이메일로 로그인</h4>
                   <STinputWrapper>
                     <div>
-                      <input placeholder="이메일을 입력하세요." />
+                      <input
+                        type="text"
+                        name="email"
+                        value={inputSignUp.email}
+                        onChange={onChangeHandler}
+                        placeholder="이메일을 입력하세요."
+                      />
                     </div>
+                    <div className="underCheck">{emailInput}</div>
                     <h4>비밀번호</h4>
                     <div>
-                      <input placeholder="비밀번호를 입력하세요." />
+                      <input
+                        type="password"
+                        name="password"
+                        value={inputSignUp.password}
+                        onChange={onChangeHandler}
+                        placeholder="비밀번호를 입력하세요."
+                      />
                     </div>
-                    <button>로그인</button>
+                    <div className="underCheck">{passwordInput}</div>
+                    <button
+                      onClick={loginHandler}
+                      disabled={!(isEmail && isPassword)}
+                    >
+                      로그인
+                    </button>
                     <h4>소셜 계정으로 로그인</h4>
                     <StIconContainer>
                       <img src={kakao} alt="" />
@@ -203,4 +387,4 @@ const LoginSignUp = (props) => {
   );
 };
 
-export default LoginSignUp;
+export default React.memo(LoginSignUp);

@@ -1,7 +1,90 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import {
+  __editUserDetail,
+  __updateUserName,
+  __updateUserImg,
+} from "../../redux/modules/loginSlice";
 
 const UserInfo = () => {
+  const dispatch = useDispatch();
+  const [tittleBtnToggle, setTittleBtnToggle] = useState(false);
+  const [contentBtnToggle, SetContentBtnToggle] = useState(false);
+
+  const detail = useSelector((state) => state.loginSlice.detail);
+
+  const [input, setInput] = useState("");
+  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+  const userId = localStorage.getItem("userId");
+  const profileImage = localStorage.getItem("profileImage");
+  const onEditChangHandler = (e) => {
+    const { name, value } = e.target;
+
+    setInput({ ...input, [name]: value });
+  };
+
+  const onEditComplete = () => {
+    dispatch(
+      __updateUserName({
+        userId: Number(userId),
+        userName: input.userName,
+      })
+    );
+    setTittleBtnToggle(false);
+  };
+
+  useEffect(() => {
+    dispatch(__editUserDetail(+userId)).then((res) => {
+      setEmail(res.payload.email);
+      setUserName(res.payload.userName);
+      setProfileImg(res.payload.profileImg);
+    });
+  }, []);
+
+  //이름 수정 토글
+  const titleBtnHandler = () => {
+    setTittleBtnToggle(!tittleBtnToggle);
+  };
+
+  //닉네임 수정 토글
+  const contentBtnToggleHandler = () => {
+    SetContentBtnToggle(!contentBtnToggle);
+  };
+
+  //이미지 state생성
+  const [editProfileImg, setEditProfileImg] = useState();
+  const fileInput = useRef(null);
+
+  //이미지 변경
+  const profileImgChangeHandler = (e) => {
+    if (e.target.files[0]) {
+      setEditProfileImg(e.target.files[0]);
+    } else {
+      setEditProfileImg(editProfileImg);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setEditProfileImg(reader.result);
+      }
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  const onEditProfileImg = (e) => {
+    e.preventDefault();
+    const form = new FormData();
+    form.append("userId", Number(userId));
+    form.append("imageUrl", profileImage);
+    form.append("profileImage", editProfileImg);
+    dispatch(__updateUserImg(form));
+    console.log(Number(userId), profileImage, editProfileImg);
+  };
+
   return (
     <>
       <StMainContainer>
@@ -9,28 +92,82 @@ const UserInfo = () => {
           <StHeaderContainer>
             <StImgContainer>
               <img
-                src="http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg"
+                src={editProfileImg ? editProfileImg : detail.profileImage}
                 alt="userImg"
               />
-              <StUploadBtn>이미지 업로드</StUploadBtn>
-              <StDeleteBtn>이미지 제거</StDeleteBtn>
+              <input
+                type="file"
+                style={{ display: "none" }}
+                accept="image/*"
+                name="profileImage"
+                onClick={(e) => (e.target.value = "")}
+                onChange={profileImgChangeHandler}
+                ref={fileInput}
+              />
+              <StUploadBtn
+                onClick={() => {
+                  fileInput.current.click();
+                }}
+              >
+                이미지 업로드
+              </StUploadBtn>
+              <StSaveBtn onClick={onEditProfileImg}>이미지 저장</StSaveBtn>
             </StImgContainer>
-            <StInfoArea>
-              <h2>개발새발</h2>
-              <h4>항해중입니다.</h4>
-              <button>수정</button>
-            </StInfoArea>
+            {tittleBtnToggle ? (
+              <StInfoArea>
+                <h2>닉네임</h2>
+                <input
+                  className="editIntro"
+                  type="text"
+                  name="userName"
+                  value={input.userName || ""}
+                  onChange={onEditChangHandler}
+                  placeholder="닉네임"
+                ></input>
+                <div className="editBtnArea">
+                  <button className="editBtn" onClick={onEditComplete}>
+                    저장
+                  </button>
+                  <button className="editBtn" onClick={titleBtnHandler}>
+                    취소
+                  </button>
+                </div>
+              </StInfoArea>
+            ) : (
+              <StInfoArea>
+                <h2>닉네임</h2>
+                <h4>{detail.userName}</h4>
+                <button onClick={titleBtnHandler}>수정</button>
+              </StInfoArea>
+            )}
           </StHeaderContainer>
           <StBodyContainer>
             <StBodyWrapper>
-              <StBodyContentBox>
-                <h3>벨로그 제목</h3>
+              {contentBtnToggle ? (
+                <StBodyContentBox>
+                  <h3>이메일</h3>
 
-                <StEditTitle>onBoard.log</StEditTitle>
-                <button>수정</button>
-              </StBodyContentBox>
+                  <input
+                    className="editContent"
+                    placeholder="이메일 주소"
+                  ></input>
+                  <button
+                    className="editContentBtn"
+                    onClick={contentBtnToggleHandler}
+                  >
+                    저장
+                  </button>
+                </StBodyContentBox>
+              ) : (
+                <StBodyContentBox>
+                  <h3>이메일</h3>
+
+                  <StEditTitle>{detail.email}</StEditTitle>
+                </StBodyContentBox>
+              )}
+
               <div className="textColor">
-                개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
+                회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
               </div>
             </StBodyWrapper>
 
@@ -45,11 +182,11 @@ const UserInfo = () => {
             </StBodyWrapper>
             <StBodyWrapper>
               <StBodyContentBox>
-                <h3>이메일 주소</h3>
-                <StEditTitle>onBoard@gmail.com</StEditTitle>
+                <h3>벨로그 제목</h3>
+                <StEditTitle>onBoard</StEditTitle>
               </StBodyContentBox>
               <div className="textColor">
-                회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
+                회원가입시 나타나는 페이지 제목입니다.
               </div>
             </StBodyWrapper>
             <StBodyWrapper>
@@ -126,7 +263,7 @@ const StUploadBtn = styled.button`
   margin-top: 0.5rem;
   text-align: center;
 `;
-const StDeleteBtn = styled.button`
+const StSaveBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -170,6 +307,38 @@ const StInfoArea = styled.div`
     background: none;
     cursor: pointer;
   }
+  .editIntro {
+    width: 530px;
+    height: 20px;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    color: white;
+    outline: none;
+    border: 1px solid #2a2a2a;
+    background-color: #1e1e1e;
+  }
+  .editBtnArea {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    gap: 10px;
+  }
+  .editBtn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    outline: none !important;
+    border: none !important;
+    background: #96f2d7 !important;
+    color: #121212 !important;
+    border-radius: 4px !important;
+    padding: 0px 1.25rem !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
+    text-decoration: none !important;
+  }
 `;
 const StBodyContainer = styled.div`
   width: 768px;
@@ -192,6 +361,35 @@ const StBodyContainer = styled.div`
     color: #acacac;
     font-size: 0.875rem;
     margin-bottom: 10px;
+  }
+  .editContent {
+    width: 500px;
+    height: 15px;
+    padding: 0.5rem;
+    margin-left: 2rem;
+    margin-top: 0.8rem;
+    color: white;
+    outline: none;
+    border: 1px solid #2a2a2a;
+    background-color: #1e1e1e;
+  }
+  .editContentBtn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    outline: none !important;
+    border: none !important;
+    background: #96f2d7 !important;
+    color: #121212 !important;
+    border-radius: 4px !important;
+    padding: 0px 1.25rem !important;
+    margin-left: 1rem !important;
+    margin-top: 0.8rem !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
+    text-decoration: none !important;
   }
 `;
 const StBodyContentBox = styled.div`
