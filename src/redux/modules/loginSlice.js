@@ -1,18 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { instance } from "../api/axios";
 
-// export const BlogApi = {
-//   create: async (payload) => await instance.post("api/signup"),
-//   delete: async (id) =>
-//     await instance.delete("api/blog", {
-//       id: id,
-//     }),
-// };
-
-// export const Auth = {
-//   login: async () => await instance.post("api/login", payload),
-// };
-
 const initialState = {
   signup: [
     {
@@ -71,6 +59,7 @@ export const __loginUser = createAsyncThunk(
       localStorage.clear();
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.userId);
+      localStorage.setItem("profileImage", res.data.profileImage);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

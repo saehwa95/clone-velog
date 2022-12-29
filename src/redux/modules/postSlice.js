@@ -40,6 +40,17 @@ export const __getPost = createAsyncThunk(
     }
   }
 );
+export const __getTrendingPost = createAsyncThunk(
+  "post/getTrendingPost",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await instance.get("/posts/trending");
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
 //게시글 상세 조회
 export const __getDetail = createAsyncThunk(
@@ -95,7 +106,7 @@ export const __updatePost = createAsyncThunk(
         content: payload.content,
         privateOption: payload.privateOption,
       });
-      return thunkAPI.fulfillWithValue(res);
+      return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.");
       return thunkAPI.rejectWithValue(error.message);
@@ -133,6 +144,17 @@ export const postSlice = createSlice({
         state.posts = action.payload;
       })
       .addCase(__getPost.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(__getTrendingPost.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(__getTrendingPost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts = action.payload;
+      })
+      .addCase(__getTrendingPost.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })

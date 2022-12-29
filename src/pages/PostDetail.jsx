@@ -10,12 +10,13 @@ import { __deletePost, __getDetail } from "../redux/modules/postSlice";
 import { __addComment, __getComment } from "../redux/modules/commentSlice";
 
 const PostDetail = () => {
-  const [enteredComment, setEnteredComment] = useState("");
-  const [delBox, setDelBox] = useState(false)
   const isLoding = useSelector(state => state.postSlice.isLoding)
   const detail = useSelector(state => state.postSlice.detail.post)
   const comments = useSelector(state => state.commentSlice.comments)
-  const date = detail?.createdAt.split('T')[0].split('-')
+  const error = useSelector(state => state.commentSlice.error)
+  const [enteredComment, setEnteredComment] = useState("");
+  const [delBox, setDelBox] = useState(false)
+
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const {id} = useParams()
@@ -40,9 +41,16 @@ const PostDetail = () => {
     dispatch(__getDetail(id))
     dispatch(__getComment(id))
     if (delBox) document.body.style= `overflow: hidden`;
+    if (error === 400) alert('게시글이 존재하지 않습니다.')
     return () => document.body.style = `overflow: auto`
   }, [isLoding, delBox])
   
+  const date = detail?.createdAt.split('T')[0]
+  const loginUserId = localStorage.getItem('userId')
+  const profileImage = localStorage.getItem('profileImage')
+  // console.log(loginUserId);
+  // console.log(detail?.user.userId)
+  // console.log(error)
   return (
     <>
       <Wrap>
@@ -54,20 +62,20 @@ const PostDetail = () => {
               <span className="top-nick">{detail?.user.userName}</span> ·{" "}
               <label>{date}</label>
             </div>
-            <div className="modification">
+            {detail?.user.userId === loginUserId ? <div className="modification">
               <label>통계 </label>
               <label onClick={() => navigate(`/postupdate/${id}`)}>
-                수정{" "}
+                수정
               </label>
               <label onClick={() => setDelBox(true)} >삭제 </label>
-            </div>
+            </div> : null}
           </div>
           <div className="content">{detail?.content}</div>
         </ContentsBox>
         <UserBox>
           <div>
             <img
-              src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
+              src={profileImage}
               alt="프로필 사진"
             />
           </div>
