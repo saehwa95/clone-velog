@@ -7,8 +7,14 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const [tittleBtnToggle, setTittleBtnToggle] = useState(false);
   const [contentBtnToggle, SetContentBtnToggle] = useState(false);
+  const [userName, setUserName] = useState("");
 
-  const userId = useSelector((state) => state.loginSlice.userId);
+  // const { userId } = useSelector((state) => state.loginSlice);
+
+  // useEffect(() => {
+  //   console.log(userId);
+  //   dispatch(__editUserDetail(userId));
+  // }, []);
 
   //이름 수정
   const titleBtnHandler = () => {
@@ -86,7 +92,7 @@ const UserInfo = () => {
             {tittleBtnToggle ? (
               <StInfoArea>
                 <h2>닉네임</h2>
-                <input className="editIntro" placeholder="한 줄 소개"></input>
+                <input className="editIntro" placeholder="닉네임"></input>
                 <div className="editBtnArea">
                   <button className="editBtn" onClick={titleBtnHandler}>
                     저장
@@ -105,11 +111,11 @@ const UserInfo = () => {
             <StBodyWrapper>
               {contentBtnToggle ? (
                 <StBodyContentBox>
-                  <h3>벨로그 제목</h3>
+                  <h3>이메일</h3>
 
                   <input
                     className="editContent"
-                    placeholder="벨로그 제목"
+                    placeholder="이메일 주소"
                   ></input>
                   <button
                     className="editContentBtn"
@@ -120,7 +126,7 @@ const UserInfo = () => {
                 </StBodyContentBox>
               ) : (
                 <StBodyContentBox>
-                  <h3>닉네임</h3>
+                  <h3>이메일</h3>
 
                   <StEditTitle>onBoard.log</StEditTitle>
                   <button onClick={contentBtnToggleHandler}>수정</button>
@@ -128,7 +134,7 @@ const UserInfo = () => {
               )}
 
               <div className="textColor">
-                개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
+                회원가입시 나타나는 페이지 제목입니다.
               </div>
             </StBodyWrapper>
 
@@ -143,8 +149,8 @@ const UserInfo = () => {
             </StBodyWrapper>
             <StBodyWrapper>
               <StBodyContentBox>
-                <h3>이메일 주소</h3>
-                <StEditTitle>onBoard@gmail.com</StEditTitle>
+                <h3>벨로그 제목</h3>
+                <StEditTitle>onBoard</StEditTitle>
               </StBodyContentBox>
               <div className="textColor">
                 회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.

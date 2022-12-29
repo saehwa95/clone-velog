@@ -16,7 +16,7 @@ const initialState = {
       password: "",
     },
   ],
-  detail: [{}],
+  detail: {},
   isLoading: false,
   error: null,
   dupCheck: false,
@@ -70,7 +70,8 @@ export const __editUserDetail = createAsyncThunk(
   "EDIT_USER_DETAIL",
   async (payload, thunkAPI) => {
     try {
-      const res = await instance.post(`/user/detail/`);
+      console.log(payload);
+      const res = await instance.post(`/user/detail/`, { userId: payload });
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -81,7 +82,11 @@ export const __editUserDetail = createAsyncThunk(
 const loginSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    __logout(state, action) {
+      state.isLogin = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(__signUpUser.pending, (state) => {
@@ -128,6 +133,7 @@ const loginSlice = createSlice({
       })
       .addCase(__editUserDetail.fulfilled, (state, action) => {
         state.isLoading = false;
+        console.log(action.payload);
         state.detail = action.payload;
       })
       .addCase(__editUserDetail.rejected, (state, action) => {
@@ -137,4 +143,5 @@ const loginSlice = createSlice({
   },
 });
 
+export const { __logout } = loginSlice.actions;
 export default loginSlice.reducer;

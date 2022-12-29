@@ -8,11 +8,15 @@ import { IoMdMoon } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { __logout } from "../redux/modules/loginSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [modal, setModal] = useState(false);
-  const [toggle, setToggle] = useState(false)
+  const [toggle, setToggle] = useState(false);
+  const { isLogin } = useSelector((state) => state.loginSlice);
 
   if (window.location.pathname === "/postadd") return null;
   if (window.location.pathname.indexOf("/postupdate") === 0) return null;
@@ -22,9 +26,16 @@ const Header = () => {
   };
 
   const goToUserSetting = () => {
-    navigate('/userinfo')
-    setToggle(false)
-  }
+    navigate("/userinfo");
+    setToggle(false);
+  };
+
+  const logoutBtn = () => {
+    dispatch(__logout({ isLogin }));
+    localStorage.clear();
+    navigate("/");
+    setToggle(false);
+  };
 
   return (
     <>
@@ -33,16 +44,31 @@ const Header = () => {
         <div className="header">
           {window.location.pathname.indexOf("/postdetail") === 0 && (
             <div className="velog">
-              <img className="v-logo" src={velog} alt="logo" onClick={() => navigate("/")} />
-              <div className="nick-logo" onClick={() => window.location.reload()}>jhchoi1182.log</div>
+              <img
+                className="v-logo"
+                src={velog}
+                alt="logo"
+                onClick={() => navigate("/")}
+              />
+              <div
+                className="nick-logo"
+                onClick={() => window.location.reload()}
+              >
+                jhchoi1182.log
+              </div>
             </div>
           )}
           {window.location.pathname.indexOf("/postdetail") === -1 && (
             <div className="velog">
-              <img className="logo" src={logo} alt="logo" onClick={() => navigate("/")} />
+              <img
+                className="logo"
+                src={logo}
+                alt="logo"
+                onClick={() => navigate("/")}
+              />
             </div>
           )}
-          {localStorage.getItem('token') && (
+          {localStorage.getItem("token") && (
             <div className="menu">
               <div>
                 <IoMdMoon className="darkMode" />
@@ -50,14 +76,20 @@ const Header = () => {
               <div>
                 <CiSearch className="search" />
               </div>
-              <button className="writting" onClick={() => navigate("/postadd")}>새 글 작성</button>
+              <button className="writting" onClick={() => navigate("/postadd")}>
+                새 글 작성
+              </button>
               <section className="user-menu" onClick={() => setToggle(true)}>
-                <img className="login-img" src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="" />
+                <img
+                  className="login-img"
+                  src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
+                  alt=""
+                />
                 <IoMdArrowDropdown className="down-arrow" />
               </section>
             </div>
           )}
-          {!localStorage.getItem('token') && (
+          {!localStorage.getItem("token") && (
             <div className="menu">
               <div>
                 <IoMdMoon className="darkMode" />
@@ -65,19 +97,23 @@ const Header = () => {
               <div>
                 <CiSearch className="search" />
               </div>
-              <button className="login" onClick={toggleModal}>로그인</button>
+              <button className="login" onClick={toggleModal}>
+                로그인
+              </button>
             </div>
           )}
         </div>
       </Wrap>
       {toggle && <Backdrop onClick={() => setToggle(false)} />}
-      {toggle && <SettingModal >
+      {toggle && (
+        <SettingModal>
           <div>내 벨로그</div>
           <div>임시 글</div>
           <div>읽기 목록</div>
           <div onClick={goToUserSetting}>설정</div>
-          <div>로그아웃</div>
-      </SettingModal>}
+          <div onClick={logoutBtn}>로그아웃</div>
+        </SettingModal>
+      )}
     </>
   );
 };
@@ -182,34 +218,34 @@ const Wrap = styled.section`
     font-size: 1.2rem;
     color: #acacac;
     :hover {
-      color: #ECECEC;
+      color: #ececec;
     }
   }
 `;
 
 const Backdrop = styled.div`
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: 0;
-`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+`;
 
 const SettingModal = styled.div`
-    width: 12rem;
-    position: absolute;
-    z-index: 5;
-    top: 4rem;
-    right: 5%;
-    background-color: #1E1E1E;
-    line-height: 1.5;
-    cursor: pointer;
+  width: 12rem;
+  position: absolute;
+  z-index: 5;
+  top: 4rem;
+  right: 5%;
+  background-color: #1e1e1e;
+  line-height: 1.5;
+  cursor: pointer;
   div {
     width: 100%;
     background-color: transparent;
     padding: 0.75rem 1rem;
   }
-`
+`;
 
 export default Header;
