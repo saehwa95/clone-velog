@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# 🔅VELOG 클론 코딩🔅
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 프로젝트 소개 
+#### 클론 코딩 주제 : 벨로그
+#### 작업 기간 : 2022.12.23 ~ 2022.12.29
+## 작업 노션 
+https://crystalline-jasper-952.notion.site/3-Velog-949b7206d3ea4a64a92860e6865354df
+## 배포 주소🔥
+https://clone-velog.vercel.app/
+## Members 🤹
+😁 이승재(FE / REACT) <br/>
+😁 장세화(FE / REACT) <br/>
+😁 최지현(FE / REACT) <br/>
+😁 권태형(BE / NODE.JS) <br/>
+😁 이지용(BE / NODE.JS) <br/>
+😁 최지호(BE / NODE.JS) <br/>
 
-## Available Scripts
+## 주요 기능 
+- 회원가입
+- 로그인
+- 게시글 CRUD
+- 댓글 CRUD
+- 게시글 최신 정렬
+- 마이페이지
 
-In the project directory, you can run:
+## 기술 스택
+- REACT
+- REDUX TOOLKIT
+- AXIOS
+- STYLED COMPONENTS
+- REACT ROUTER
+- VERCEL
 
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 트러블 슈팅 
+### ✔️ 렌더링 관련 트러블 슈팅  
+- 게시글을 들어가서 상세 정보를 GET 해오는 과정에서 useSelector로 가져온 상세 정보가 undefined로 찍히며 화면이 나가는 문제 발생
+- useEffect로 params를 dispatch에 실어 보내는 사이에 렌더링이 먼저 일어나며 생긴 문제로 판단
+- 시도 1 : useEffect의 의존성 배열에 useSelector로 가져온 값을 넣음 -> 무한 렌더링 발생
+- 시도 2 : 상세 정보가 렌더링될 때 dispatch를 보내는 것이 아닌, 앞서 게시글을 누를 때 dispatch를 보내도록 로직을 짬 -> 실패
+- 시도 3 : 상세 정보에 옵셔널 체이닝 적용 -> 화면이 나가는 것만 막음
+- 시도 4 : 서버와 통신하는 시간 때문인 것 같아 axios thunk함수에서 fulfillWithValue 리턴값으로 response가 아닌 payload를 리턴해 extraReducer에서 필터를 돌려 봤지만 실패 -> 서버와 통신이 실패했냐 안 했냐를 기다려야 한다는 점에서 같은 결과였음
+- 해결 : 옵셔널 체이닝을 주고 isLoding을 useSelector로 가져와 useEffect의 의존성 배열에 추가해주니 서버와 통신이 끝나고 로딩이 끝나는 순간 리렌더링이 일어나며 해결
+### ✔️ 디테일 페이지 관련 트러블 슈팅 
+- 로그인한 userId를 localstorage에서 getItem 으로 꺼내서 활용 콘솔에 동일한 userId가 찍혀도 삼항연산자가 작동하지 않아서 로그인 할때 state에 저장한 userId를 활용했더니 해결
+- localStorage userId는 문자열이고 state는 Number로 타입이 달랐던 문제
