@@ -77,7 +77,6 @@ export const __getUpdatePost = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await instance.get(`/posts/update/${payload.postId}`);
-      console.log(res);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -95,7 +94,7 @@ export const __updatePost = createAsyncThunk(
         content: payload.content,
         privateOption: payload.privateOption,
       });
-      return thunkAPI.fulfillWithValue(res);
+      return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       window.alert("게시글 작성에 실패했습니다.");
       return thunkAPI.rejectWithValue(error.message);
