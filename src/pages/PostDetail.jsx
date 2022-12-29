@@ -35,6 +35,10 @@ const PostDetail = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  },[])
+
+  useEffect(() => {
     dispatch(__getDetail(id));
     dispatch(__getComment(id));
     if (delBox) document.body.style = `overflow: hidden`;
