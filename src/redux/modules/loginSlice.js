@@ -16,7 +16,7 @@ const initialState = {
       password: "",
     },
   ],
-  detail: [{}],
+  detail: {},
   isLoading: false,
   error: null,
   dupCheck: false,
@@ -71,7 +71,8 @@ export const __editUserDetail = createAsyncThunk(
   "EDIT_USER_DETAIL",
   async (payload, thunkAPI) => {
     try {
-      const res = await instance.post(`/user/detail/`);
+      console.log(payload);
+      const res = await instance.post(`/user/detail/`, { userId: payload });
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -82,63 +83,66 @@ export const __editUserDetail = createAsyncThunk(
 const loginSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
-  extraReducers: {
-    //__signUpUser
-    [__signUpUser.pending]: (state) => {
-      state.isLoading = true;
+  reducers: {
+    __logout(state, action) {
+      state.isLogin = false;
     },
-    [__signUpUser.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSignUp = true;
-      alert("회원가입을 축하합니다!");
-    },
-    [__signUpUser.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(__signUpUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(__signUpUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSignUp = true;
+        alert("회원가입을 축하합니다!");
+      })
+      .addCase(__signUpUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
 
-    //__dupEmail
-    [__dupEmail.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [__dupEmail.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.dupCheck = action.payload;
-    },
-    [__dupEmail.pending]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+      .addCase(__dupEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(__dupEmail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.dupCheck = action.payload;
+      })
+      .addCase(__dupEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
 
-    //__loginUser
-    [__loginUser.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [__loginUser.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.userId = action.payload.userId;
-      state.isLogin = true;
-    },
-    [__loginUser.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-      alert("로그인 정보가 일치하지 않습니다!");
-    },
+      .addCase(__loginUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(__loginUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userId = action.payload.userId;
+        state.isLogin = true;
+      })
+      .addCase(__loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        alert("로그인 정보가 일치하지 않습니다!");
+      })
 
-    //__editUserDetail
-    [__editUserDetail.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [__editUserDetail.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.detail = action.payload;
-    },
-    [__editUserDetail.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
+      .addCase(__editUserDetail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(__editUserDetail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        console.log(action.payload);
+        state.detail = action.payload;
+      })
+      .addCase(__editUserDetail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 
+export const { __logout } = loginSlice.actions;
 export default loginSlice.reducer;

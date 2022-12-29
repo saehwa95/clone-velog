@@ -88,7 +88,6 @@ export const __getUpdatePost = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const res = await instance.get(`/posts/update/${payload.postId}`);
-      console.log(res);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
