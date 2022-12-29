@@ -54,13 +54,13 @@ const PostDetail = () => {
               <div>
                 <span className="top-nick">{detail?.user.userName}</span> · <label>{date}</label>
               </div>
-              {detail?.user.userId === +loginUserId ? (
+              {detail?.userId === +loginUserId && (
                 <div className="modification">
                   <label>통계 </label>
                   <label onClick={() => navigate(`/postupdate/${id}`)}>수정 </label>
                   <label onClick={() => setDelBox(true)}>삭제 </label>
                 </div>
-              ) : null}
+              )}
             </div>
             <div className="content">
               {/* {detail?.content.split('\n').map((content,i) => <p key={i}>{content}</p>)} */}
