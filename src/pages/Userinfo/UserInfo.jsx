@@ -82,7 +82,6 @@ const UserInfo = () => {
     form.append("imageUrl", profileImage);
     form.append("profileImage", editProfileImg);
     dispatch(__updateUserImg(form));
-    console.log(Number(userId), profileImage, editProfileImg);
   };
 
   return (
