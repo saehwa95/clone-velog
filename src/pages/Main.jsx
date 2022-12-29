@@ -5,12 +5,22 @@ import { BiTrendingUp } from "react-icons/bi";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { HiDotsVertical } from 'react-icons/hi';
 import { useDispatch, useSelector } from "react-redux";
-import { __getPost } from "../redux/modules/postSlice";
+import { __getPost, __getTrendingPost } from "../redux/modules/postSlice";
 
 const Main = () => {
   const [toggle, setToggle] = useState("trending")
   const {posts} = useSelector((state => state.postSlice.posts))
   const dispatch = useDispatch()
+
+  const onTrendingHandler = () => {
+    setToggle("trending")
+    dispatch(__getTrendingPost())
+  }
+
+  const onNewHandler = () => {
+    setToggle("new")
+    dispatch(__getPost())
+  }
 
   useEffect(() => {
     dispatch(__getPost())
@@ -21,11 +31,11 @@ const Main = () => {
       <Top>
         <div className="left-div">
           <div className="button-box">
-            <button className={toggle === "trending" ? "default selected-btn" : "default"} onClick={() => setToggle("trending")}>
+            <button className={toggle === "trending" ? "default selected-btn" : "default"} onClick={onTrendingHandler}>
               <BiTrendingUp className="trending" /> 
               <span>트렌딩</span>
             </button>
-            <button className={toggle === "trending" ? "default" : "default selected-btn"} onClick={() => setToggle("new")}>
+            <button className={toggle === "trending" ? "default" : "default selected-btn"} onClick={onNewHandler}>
               <MdOutlineAccessTime className="time" />
               <span>최신</span>
             </button>

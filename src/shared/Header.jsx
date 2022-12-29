@@ -37,6 +37,8 @@ const Header = () => {
     setToggle(false);
   };
 
+  const profileImage = localStorage.getItem('profileImage')
+
   return (
     <>
       {modal && <LoginSignUp toggleModal={toggleModal} />}
@@ -80,11 +82,7 @@ const Header = () => {
                 새 글 작성
               </button>
               <section className="user-menu" onClick={() => setToggle(true)}>
-                <img
-                  className="login-img"
-                  src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
-                  alt=""
-                />
+                <img className="login-img" src={profileImage} alt="" />
                 <IoMdArrowDropdown className="down-arrow" />
               </section>
             </div>

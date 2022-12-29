@@ -8,20 +8,18 @@ import {
 } from "../redux/modules/commentSlice";
 
 const Comment = ({ comment }) => {
-  const loginUserId = useSelector((state) => state.loginSlice.userId);
-  const dispatch = useDispatch();
-  const [edit, setEdit] = useState(false);
+  const error = useSelector(state => state.commentSlice.error)
   const [enteredComment, setEnteredComment] = useState("");
+  const [edit, setEdit] = useState(false);
+  const dispatch = useDispatch();
+
+  const onEditHandler = () => {
+    dispatch(__updateComment({ id: comment.commentId, content: enteredComment }));
+    setEdit(false);
+  };
 
   const onEnteredCommentHandler = (event) => {
     setEnteredComment(event.target.value);
-  };
-
-  const onEditHandler = () => {
-    dispatch(
-      __updateComment({ id: comment.commentId, content: enteredComment })
-    );
-    setEdit(false);
   };
 
   const startEditHandler = () => {
@@ -29,9 +27,9 @@ const Comment = ({ comment }) => {
     setEnteredComment();
   };
 
+  const loginUserId = localStorage.getItem('userId')
   const date = comment?.createdAt.split("T")[0].split("-");
-  // console.log(comment.user.userId);
-  // console.log(loginUserId);
+
   return (
     <>
       <CommentBox>
@@ -39,7 +37,7 @@ const Comment = ({ comment }) => {
           <div className="user-info">
             <div>
               <img
-                src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo"
+                src={comment?.user.profileImae}
                 alt="프로필 사진"
               />
             </div>

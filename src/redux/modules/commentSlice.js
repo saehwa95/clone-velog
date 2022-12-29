@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { CommentApi, instance } from "../api/axios";
 
+
+
 const initialState = {
   comments: [
     {
@@ -38,13 +40,7 @@ export const __addComment = createAsyncThunk(
         content: comment.enteredComment
       }
       )
-      
-      // 디스패치 두개 보내기
-      // 디스패치 보낼 때 .then
-      // const data = thunkAPI.dispatch(__getComment)
       const result = await instance.get(`/posts/${comment.id}/comments`);
-      // CommentApi.read(comment.id)
-
       return thunkAPI.fulfillWithValue(result.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message)
@@ -89,6 +85,7 @@ const commentSlice = createSlice({
       })
       .addCase(__getComment.fulfilled, (state, action) => {
         state.isLoading = false;
+        // console.log(action.payload);
         state.comments = action.payload
       })
       .addCase(__getComment.rejected, (state, action) => {

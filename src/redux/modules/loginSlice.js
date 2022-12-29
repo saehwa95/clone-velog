@@ -59,6 +59,7 @@ export const __loginUser = createAsyncThunk(
       localStorage.clear();
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data.userId);
+      localStorage.setItem("profileImage", res.data.profileImage);
       return thunkAPI.fulfillWithValue(res.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

@@ -4,14 +4,14 @@ import { IoHeartSharp } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
 const Card = ({post}) => {
-  const navigate = useNavigate()
-
   const {content, createdAt, postId, title, postImage} = post
-  const date = createdAt.split('T')[0].split('-')
+  const navigate = useNavigate()
 
   const onDetailChange = () => {
     navigate(`/postdetail/${postId}`)
   }
+
+  const date = createdAt.split('T')[0].split('-')
 
   return (
     <VCard onClick={onDetailChange} >
@@ -32,7 +32,7 @@ const Card = ({post}) => {
     <Bottom>
       <div className='userInfo'>
         <div>
-          <img src="https://lh3.googleusercontent.com/a/AEdFTp48u_P5jsUApq_vhtxsyJi4vCSCN8MAK_ieJk5N=s288-p-rw-no-mo" alt="프로필 사진"/>
+          <img src={post?.user.profileImage} alt="프로필 사진"/>
         </div>
         <div>
           <label>by <span>{post.user.userName}</span></label>

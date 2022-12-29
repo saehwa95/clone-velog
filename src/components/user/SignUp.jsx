@@ -153,7 +153,6 @@ const SignUp = (props) => {
     formData.append("userName", inputSignUp.userName);
     formData.append("profileImage", blob, "img.file");
     // blob.size > 20 && formData.append("image", blob, "img.file");
-
     dispatchEvent(signUpUser(formData));
     setInputSignUp({
       email: "",
