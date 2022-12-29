@@ -244,7 +244,7 @@ const LoginSignUp = (props) => {
                         onChange={onChangeHandler}
                         placeholder="이메일을 입력하세요."
                       />
-                      <button className="emailBtn" onClick={dupEmail}>
+                      <button className="emailBtn" onClick={dupEmail}  disabled={inputSignUp.email.indexOf("@") === -1 ? true : false} >
                         중복 확인
                       </button>
                     </div>
@@ -285,7 +285,7 @@ const LoginSignUp = (props) => {
                     <button
                       onClick={signUpHandler}
                       disabled={
-                        Length > 16 && inputSignUp.password !== inputSignUp.passwordConfirm && check.indexOf('@') === -1 ? false : true
+                        Length > 16  || inputSignUp.password !== inputSignUp.passwordConfirm || check.indexOf('@') === -1 ? true : false
                       }
                     >
                       회원가입
