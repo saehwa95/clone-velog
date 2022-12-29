@@ -17,6 +17,8 @@ const Header = () => {
   const [modal, setModal] = useState(false);
   const [toggle, setToggle] = useState(false);
   const { isLogin } = useSelector((state) => state.loginSlice);
+  const {userName} = useSelector((state) => state.postSlice);
+
 
   if (window.location.pathname === "/postadd") return null;
   if (window.location.pathname.indexOf("/postupdate") === 0) return null;
@@ -56,7 +58,7 @@ const Header = () => {
                 className="nick-logo"
                 onClick={() => window.location.reload()}
               >
-                jhchoi1182.log
+                {userName}.log
               </div>
             </div>
           )}
