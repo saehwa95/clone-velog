@@ -1,13 +1,13 @@
 # 🔅VELOG 클론 코딩🔅
 
-## 프로젝트 소개 
+## 🔆 프로젝트 소개 
 #### 클론 코딩 주제 : 벨로그
 #### 작업 기간 : 2022.12.23 ~ 2022.12.29
-## 작업 노션 
+## 🔆 작업 노션 
 https://crystalline-jasper-952.notion.site/3-Velog-949b7206d3ea4a64a92860e6865354df
-## 배포 주소🔥
+## 🔆 배포 주소
 https://clone-velog.vercel.app/
-## Members 🤹
+## 🔆 Members
 😁 이승재(FE / REACT) <br/>
 😁 장세화(FE / REACT) <br/>
 😁 최지현(FE / REACT) <br/>
@@ -15,7 +15,7 @@ https://clone-velog.vercel.app/
 😁 이지용(BE / NODE.JS) <br/>
 😁 최지호(BE / NODE.JS) <br/>
 
-## 주요 기능 
+## 🔆 주요 기능 
 - 회원가입
 - 로그인
 - 게시글 CRUD
@@ -23,7 +23,7 @@ https://clone-velog.vercel.app/
 - 게시글 최신 정렬
 - 마이페이지
 
-## 기술 스택
+## 🔆 기술 스택
 - REACT
 - REDUX TOOLKIT
 - AXIOS
@@ -31,7 +31,7 @@ https://clone-velog.vercel.app/
 - REACT ROUTER
 - VERCEL
 
-## 트러블 슈팅 
+## 🔆 트러블 슈팅 
 ### ✔️ 렌더링 관련 트러블 슈팅  
 - 게시글을 들어가서 상세 정보를 GET 해오는 과정에서 useSelector로 가져온 상세 정보가 undefined로 찍히며 화면이 나가는 문제 발생
 - useEffect로 params를 dispatch에 실어 보내는 사이에 렌더링이 먼저 일어나며 생긴 문제로 판단
