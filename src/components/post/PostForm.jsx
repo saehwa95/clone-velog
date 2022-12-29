@@ -324,7 +324,6 @@ const AddForm = styled.form`
       }
     }
   }
-
   input {
     width: 100%;
     background-color: #121212;
