@@ -10,9 +10,8 @@ instance.interceptors.request.use((config) => {
 });
 
 export const CommentApi = {
-  read: async (id) => await instance.get(`/posts/${id}/comments`),
+  read: (id) => instance.get(`/posts/${id}/comments`),
+  create: (comment) => instance.post(`/posts/${comment.id}/comments`, { content: comment.enteredComment }),
+  update: (comment) => instance.patch(`/comments/${comment.id}`, { content: comment.content }),
+  delete: (id) => instance.delete(`/comments/${id}`)
 };
-
-export const PostApi = {
-  read: async (id) => await instance.get("/posts")
-}

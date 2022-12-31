@@ -22,8 +22,8 @@ export const __getComment = createAsyncThunk(
   "comment/getComment",
   async (id, thunkAPI) => {
     try {
-      const response = await instance.get(`/posts/${id}/comments`)
-      return thunkAPI.fulfillWithValue(response.data)
+      const { data } = await CommentApi.read(id)
+      return thunkAPI.fulfillWithValue(data)
     } catch (error) {
 
       if (error.response.data.errorMessage === "게시글이 존재하지 않음") alert("게시글이 존재하지 않습니다.")
@@ -37,11 +37,8 @@ export const __addComment = createAsyncThunk(
   "comment/addComment",
   async (comment, thunkAPI) => {
     try {
-      await instance.post(`/posts/${comment.id}/comments`, {
-        content: comment.enteredComment
-      }
-      )
-      const result = await instance.get(`/posts/${comment.id}/comments`);
+      await CommentApi.create(comment)
+      const result = await CommentApi.read(comment.id)
       return thunkAPI.fulfillWithValue(result.data)
     } catch (error) {
 
@@ -60,9 +57,7 @@ export const __updateComment = createAsyncThunk(
   "comment/updateComment",
   async (comment, thunkAPI) => {
     try {
-      await instance.patch(`/comments/${comment.id}`, {
-        content: comment.content
-      })
+      await CommentApi.update(comment)
       return thunkAPI.fulfillWithValue(comment)
     } catch (error) {
 
@@ -82,7 +77,7 @@ export const __deleteComment = createAsyncThunk(
   "comment/deleteComment",
   async (id, thunkAPI) => {
     try {
-      await instance.delete(`/comments/${id}`)
+      await CommentApi.delete(id)
       return thunkAPI.fulfillWithValue(id)
     } catch (error) {
 
